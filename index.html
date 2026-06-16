@@ -1635,42 +1635,28 @@
         function goPage(num) {
             const cur = document.querySelector('.page.active');
             if (cur) {
-                cur.style.opacity = '0';
-                cur.style.transform = 'translateY(-12px)';
-                setTimeout(() => {
-                    cur.classList.remove('active');
-                    cur.style.display = 'none';
-                    cur.style.opacity = '';
-                    cur.style.transform = '';
-                    showPage(num);
-                }, 350);
+                cur.classList.remove('active');
+                cur.style.display = 'none';
+                showPage(num);
             } else {
                 showPage(num);
             }
         }
         function showPage(num) {
             const target = document.getElementById('page' + num);
+            if (!target) return;
             target.style.display = 'block';
-            target.offsetHeight;
             target.classList.add('active');
             window.scrollTo(0, 0);
-            
-            // 根据章节切换不同BGM
-            if (num <= 2) {
-                playBGMByType('romantic'); // 第1-2章：邂逅与相爱
-            } else if (num === 3) {
-                playBGMByType('dark');     // 第3章：暴风雨危机
-            } else if (num >= 4 && num <= 6) {
-                playBGMByType('epic');     // 第4-6章：决心与征途
-            } else if (num === 'Game') {
-                playBGMByType('epic');     // 游戏中：战斗主题
-            }
+            // BGM延迟200ms启动，避免阻塞页面切换
+            const bgmType = num <= 2 ? 'romantic' : num === 3 ? 'dark' : (num >= 4 && num <= 6) || num === 'Game' ? 'epic' : null;
+            if (bgmType) setTimeout(() => playBGMByType(bgmType), 200);
         }
-        
+
         function startGame() {
-            initAudio();
-            playBGMByType('romantic'); // 邂逅主题开始
-            goPage(1); // 进入第一章
+            // 立即切页，AudioContext异步初始化
+            goPage(1);
+            setTimeout(() => { initAudio(); playBGMByType('romantic'); }, 300);
         }
         
         function fullRestart() {

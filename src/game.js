@@ -64,6 +64,7 @@
         createFloatBg();
         
         const ACHIEVEMENTS = [
+            { id: "firstLove", name: "爱的第一步", desc: "收集第一件宝物", icon: "👣" },
             { id: 'score99', name: '永恒宝石', desc: '力量值达到99', icon: '💞' },
             { id: 'score520', name: '真爱之心', desc: '力量值达到520', icon: '❤️' },
             { id: 'len10', name: '思念之绳', desc: '成长到10节', icon: '🐰' },
@@ -234,6 +235,8 @@
         
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
+        // roundRect polyfill for Safari/Firefox
+        if(!CanvasRenderingContext2D.prototype.roundRect){CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);};}
         const grid = 17;
         const size = canvas.width / grid;
         
@@ -260,6 +263,7 @@
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if(!audioCtx._compressorAdded){const comp=audioCtx.createDynamicsCompressor();comp.connect(audioCtx.destination);audioCtx._comp=comp;audioCtx._compressorAdded=true;}
             }
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }
@@ -326,7 +330,7 @@
                 osc.type = type;
                 osc.frequency.value = freq;
                 osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(audioCtx._comp||audioCtx.destination);
                 osc.start(now);
                 osc.stop(now + duration + 0.05);
             });

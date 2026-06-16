@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>鸽兔传奇</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -27,7 +27,7 @@
                 <button class="cover-btn" onclick="startGame()">
                     ✨ 开始冒险 ✨
                 </button>
-                <p class="cover-hint">献给世界上最可爱的兔兔 🐰</p>
+                <p class="cover-hint">献给世界上最可爱的兔兔 🐰</p><p id="skipStoryBtn" style="display:none;color:rgba(196,69,105,0.4);font-size:0.7rem;margin-top:6px;cursor:pointer;" onclick="event.stopPropagation();goPage('Game')">跳过剧情 →</p>
             </div>
         </div>
     </div>
@@ -254,7 +254,7 @@
                 <div class="battle-hp-wrap">
                     <div class="battle-hp-top">
                         <span>🐲 魔龙</span>
-                        <span class="battle-hp-pct" id="dragonHPText">100%</span>
+                        <span class="battle-hp-pct" id="dragonHPText">100%</span><span id="dragonMood" style="font-size:9px;color:#ff8888;margin-left:4px;">😤 傲慢</span>
                     </div>
                     <div class="battle-hp-bar" id="dragonHP">
                         <div class="battle-hp-fill" id="dragonHPFill"></div>

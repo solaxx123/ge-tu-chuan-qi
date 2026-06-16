@@ -253,11 +253,15 @@
         const size = canvas.width / grid;
         
         let snake = [];
-        let currentFood = {};
+        let foods = [];
         let dir = 'right';
         let nextDir = 'right';
         let score = 0;
         let frustrations = 0;
+        let comboTimer = 0;
+        let comboCount = 0;
+        let luckyCharm = 0;
+        let foods = [];
         let loop = null;
         let running = false;
         let konamiCode = [];
@@ -597,26 +601,21 @@
         }
         
         function newFood() {
-            let valid = false;
-            while (!valid) {
-                valid = true;
-                const foodIndex = Math.floor(Math.random() * FOODS.length);
-                currentFood = {
-                    x: Math.floor(Math.random() * size),
-                    y: Math.floor(Math.random() * size),
-                    type: foodIndex,
-                    ...FOODS[foodIndex]
-                };
-                
-                for (let s of snake) {
-                    if (s.x === currentFood.x && s.y === currentFood.y) {
-                        valid = false;
-                        break;
-                    }
+            while (foods.length < 2 + Math.floor(Math.random() * 2)) {
+                let foodIndex, scoreVal, emoji, name;
+                const rand = Math.random();
+                if (rand < 0.06) { foodIndex = -1; emoji = "🍀"; name = "幸运草"; scoreVal = 0; }
+                else if (rand < 0.14) { foodIndex = -2; emoji = "✨"; name = "金心"; scoreVal = 100; }
+                else { foodIndex = Math.floor(Math.random() * FOODS.length); const f = FOODS[foodIndex]; emoji = f.emoji; name = f.name; scoreVal = f.score; }
+                let valid = false, tries = 0, fx, fy;
+                while (!valid && tries < 60) { tries++; valid = true;
+                    fx = Math.floor(Math.random() * (size - 2)) + 1; fy = Math.floor(Math.random() * (size - 2)) + 1;
+                    for (let s of snake) { if (s.x === fx && s.y === fy) { valid = false; break; } }
+                    for (let f of foods) { if (f.x === fx && f.y === fy) { valid = false; break; } }
                 }
+                if (valid) foods.push({ x: fx, y: fy, type: foodIndex, emoji, name, score: scoreVal });
             }
         }
-        
         function draw() {
             const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
             gradient.addColorStop(0, '#fffaf0');
@@ -677,7 +676,7 @@
             ctx.font = 'bold 16px "Apple Color Emoji", "Segoe UI Emoji", Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(currentFood.emoji, currentFood.x * grid + grid/2, currentFood.y * grid + grid/2 + 1);
+            foods.forEach(f => { ctx.fillText(f.emoji, f.x * grid + grid/2, f.y * grid + grid/2 + 1); });
         }
         
         function handleWallHit() {
@@ -732,34 +731,39 @@
             if (snake.length >= 10) unlockAchievement('len10');
             if (snake.length >= 20) unlockAchievement('len20');
             
-            if (head.x === currentFood.x && head.y === currentFood.y) {
-                const addScore = currentFood.score;
-                const newScore = score + addScore;
-                playEat();
-                
-                foodsCollected.add(currentFood.type);
-                if (foodsCollected.size >= 8) unlockAchievement('allFoods');
-                
-                if (currentFood.emoji === '💎') {
-                    diamondCount++;
-                    if (diamondCount >= 3) unlockAchievement('diamond');
+            // 多食物+连击+稀有道具
+            let ate = false;
+            for (let fi = 0; fi < foods.length; fi++) {
+                const f = foods[fi];
+                if (head.x === f.x && head.y === f.y) {
+                    let addScore = f.score;
+                    const now = Date.now();
+                    if (now - comboTimer < 3000) { comboCount++; } else { comboCount = 1; }
+                    comboTimer = now;
+                    if (comboCount >= 2) addScore = Math.floor(addScore * comboCount);
+                    if (luckyCharm > 0) { addScore *= 2; luckyCharm--; }
+                    if (f.type === -1) { luckyCharm += 3; showFrustration('🍀 接下来3个食物双倍分！'); }
+                    playEat();
+                    if (f.type >= 0) foodsCollected.add(f.type);
+                    if (f.emoji === '💎') { diamondCount++; if (diamondCount >= 3) unlockAchievement('diamond'); }
+                    if (foodsCollected.size >= 8) unlockAchievement('allFoods');
+                    const newScore = score + addScore;
+                    checkSpecialScore(newScore);
+                    score = newScore;
+                    if (score >= 520) trigger520Celebration();
+                    if (score >= 1314) { unlockAchievement('love1314'); trigger1314Celebration(); }
+                    document.getElementById('score').textContent = score;
+                    scoreAnim();
+                    if (comboCount >= 3) showScoreFloat(addScore, comboCount);
+                    else showScoreFloat(addScore);
+                    flash('pink');
+                    foods.splice(fi, 1);
+                    newFood();
+                    ate = true;
+                    break;
                 }
-                
-                checkSpecialScore(newScore);
-                score = newScore;
-
-                if (score >= 520) trigger520Celebration();
-                if (score >= 1314) { unlockAchievement('love1314'); trigger1314Celebration(); }
-
-                document.getElementById('score').textContent = score;
-                scoreAnim();
-                showScoreFloat(addScore);
-                flash('pink');
-                
-                newFood();
-            } else {
-                snake.pop();
             }
+            if (!ate) { snake.pop(); }
             
             draw();
         }

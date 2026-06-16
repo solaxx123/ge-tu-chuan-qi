@@ -181,26 +181,26 @@
         }
         
         .game-box {
-            background: linear-gradient(180deg, 
-                rgba(255, 255, 255, 0.98) 0%, 
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.98) 0%,
                 rgba(255, 248, 250, 0.95) 100%);
-            border-radius: 24px;
-            padding: 18px;
+            border-radius: 20px;
+            padding: 8px 10px;
             border: 2px solid rgba(255, 107, 157, 0.3);
             width: 100%;
             max-width: 380px;
             position: relative;
             z-index: 10;
-            margin: 10px auto;
-            box-shadow: 
+            margin: 6px auto;
+            box-shadow:
                 0 10px 40px rgba(255, 107, 157, 0.15),
                 0 2px 10px rgba(0, 0, 0, 0.05),
                 inset 0 1px 0 rgba(255, 255, 255, 0.8);
         }
-        
+
         .header {
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 4px;
             cursor: pointer;
         }
         
@@ -239,14 +239,14 @@
         .score-bar {
             display: flex;
             justify-content: space-around;
-            background: linear-gradient(135deg, 
-                rgba(255, 240, 245, 0.8), 
+            background: linear-gradient(135deg,
+                rgba(255, 240, 245, 0.8),
                 rgba(255, 228, 236, 0.9));
-            padding: 12px 15px;
-            border-radius: 16px;
-            margin-bottom: 15px;
+            padding: 6px 10px;
+            border-radius: 12px;
+            margin-bottom: 6px;
             border: 1px solid rgba(255, 182, 193, 0.5);
-            box-shadow: 
+            box-shadow:
                 inset 0 2px 8px rgba(255, 107, 157, 0.1),
                 0 2px 8px rgba(255, 107, 157, 0.08);
         }
@@ -278,11 +278,13 @@
         }
         
         canvas {
-            border: 3px solid #ff6b9d;
+            border: 2px solid #ff6b9d;
             border-radius: 10px;
             background: linear-gradient(135deg, #fffaf0, #fff0f5);
             display: block;
             margin: 0 auto;
+            width: 290px;
+            height: 290px;
             max-width: 100%;
             touch-action: none;
         }
@@ -337,12 +339,12 @@
         
         /* ===== 最简单可靠：四大块方向键（100%点击响应） ===== */
         .dpad-container {
-            width: 240px;
-            height: 240px;
-            margin: 20px auto 0;
+            width: 170px;
+            height: 170px;
+            margin: 10px auto 0;
             position: relative;
             background: rgba(255, 182, 193, 0.15);
-            border-radius: 25px;
+            border-radius: 20px;
         }
         
         .dir-btn {
@@ -379,43 +381,40 @@
         
         /* 上键：顶部大方块 */
         .btn-up {
-            top: 5px;
-            left: 80px;
-            width: 80px;
-            height: 80px;
+            top: 3px;
+            left: 56px;
+            width: 58px;
+            height: 58px;
         }
-        
-        /* 下键：底部大方块 */
+
         .btn-down {
-            bottom: 5px;
-            left: 80px;
-            width: 80px;
-            height: 80px;
+            bottom: 3px;
+            left: 56px;
+            width: 58px;
+            height: 58px;
         }
-        
-        /* 左键：左边大方块 */
+
         .btn-left {
-            top: 80px;
-            left: 5px;
-            width: 80px;
-            height: 80px;
+            top: 56px;
+            left: 3px;
+            width: 58px;
+            height: 58px;
         }
-        
-        /* 右键：右边大方块 */
+
         .btn-right {
-            top: 80px;
-            right: 5px;
-            width: 80px;
-            height: 80px;
+            top: 56px;
+            right: 3px;
+            width: 58px;
+            height: 58px;
         }
-        
+
         .dpad-center {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
+            width: 42px;
+            height: 42px;
             background: rgba(255, 107, 157, 0.1);
             border-radius: 50%;
             z-index: 1;
@@ -701,10 +700,9 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: flex-end;
+            align-items: center;
             position: relative;
             padding: 20px;
-            padding-bottom: 60px;
         }
 
         .cover-photo {
@@ -718,13 +716,8 @@
 
         .cover-gradient {
             position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 55%;
-            background: linear-gradient(180deg,
-                transparent 0%,
-                rgba(255,240,245,0.6) 30%,
-                rgba(255,255,255,0.9) 60%,
-                #fff 100%);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.15);
             pointer-events: none;
         }
 
@@ -734,19 +727,18 @@
         }
 
         .cover-content {
-            background: rgba(255,255,255,0.72);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 28px;
-            padding: 36px 28px;
+            background: rgba(255,255,255,0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 32px 24px;
             text-align: center;
-            border: 1.5px solid rgba(255,255,255,0.9);
-            box-shadow:
-                0 8px 40px rgba(255,107,157,0.18),
-                0 2px 12px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255,255,255,0.7);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
             position: relative;
             z-index: 10;
-            width: 100%;
+            width: 88%;
+            max-width: 340px;
         }
         
         /* ===== 战斗场景栏 ===== */

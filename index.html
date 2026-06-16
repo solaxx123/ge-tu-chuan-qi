@@ -341,7 +341,7 @@
         
         /* ===== 对角线三角形方向键 ===== */
         .dpad-container {
-            width: 170px; height: 170px;
+            width: 210px; height: 210px;
             margin: 10px auto 0;
             position: relative;
             border-radius: 22px;
@@ -1038,38 +1038,42 @@
 
 .achievement-list {
             margin-top: 10px; padding: 10px 8px;
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+            background: rgba(255,255,255,0.45);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
             border-radius: 14px; border: 1px solid rgba(255,182,193,0.25);
-            box-shadow: 0 4px 16px rgba(255,107,157,0.05);
         }
         .achievement-title {
-            text-align: center; color: #c44569; font-size: 0.78rem;
-            font-weight: 700; margin-bottom: 5px; letter-spacing: 1px;
+            text-align: center; color: #c44569; font-size: 0.75rem;
+            font-weight: 700; margin-bottom: 4px; letter-spacing: 1px;
         }
         .achievement-progress {
-            text-align: center; color: #a18cd1; font-size: 0.68rem;
-            margin-bottom: 6px; font-weight: 600;
+            text-align: center; color: #a18cd1; font-size: 0.65rem;
+            margin-bottom: 8px; font-weight: 600;
+        }
+        .achievement-list-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;
         }
         .achievement-item {
-            display: flex; align-items: center; padding: 6px 8px;
-            margin-bottom: 3px; border-radius: 8px; transition: all 0.3s;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 7px 3px; border-radius: 10px; transition: all 0.3s;
+            text-align: center;
         }
         .achievement-item.unlocked {
-            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,179,71,0.06));
-            border: 1px solid rgba(255,215,0,0.25);
+            background: linear-gradient(180deg, rgba(255,215,0,0.15), rgba(255,179,71,0.08));
+            border: 1px solid rgba(255,215,0,0.35);
+            box-shadow: 0 2px 8px rgba(255,215,0,0.1);
         }
         .achievement-item.locked {
-            background: rgba(220,220,220,0.12);
-            border: 1px solid rgba(200,200,200,0.15);
-            opacity: 0.5;
+            background: rgba(200,200,200,0.08);
+            border: 1px solid rgba(180,180,180,0.15);
+            opacity: 0.45; filter: grayscale(0.5);
         }
-        .achievement-icon { font-size: 1rem; margin-right: 7px; width: 20px; text-align: center; flex-shrink: 0; }
-        .achievement-info { flex: 1; min-width: 0; }
-        .achievement-name { font-size: 0.73rem; font-weight: 700; color: #884466; }
-        .achievement-desc { font-size: 0.65rem; color: #aaa; margin-top: 1px; }
+        .achievement-icon { font-size: 1.5rem; margin-bottom: 3px; display: block; }
+        .achievement-info { width: 100%; }
+        .achievement-name { font-size: 0.6rem; font-weight: 700; color: #884466; white-space: nowrap; }
+        .achievement-desc { font-size: 0.55rem; color: #bbb; margin-top: 1px; display: none; }
         .achievement-item.unlocked .achievement-desc { color: #8b4557; }
-        .achievement-check { font-size: 0.85rem; color: #ffd700; flex-shrink: 0; }
+        .achievement-check { font-size: 0.7rem; color: #ffd700; margin-top: 2px; }
 .flash-layer {
             position: fixed;
             top: 0;
@@ -1226,9 +1230,12 @@
                 <p style="animation-delay:0.320s;">某天无聊飞过王国上空……</p>
                 <p style="animation-delay:0.560s;">突然被一道光芒闪瞎了龙眼。</p>
                 <p style="animation-delay:0.800s;">它低头一看——是兔兔公主在花园里浇花。</p>
-                <p style="animation-delay:1.040s;font-weight:bold;color:#ff4757;">"太！可！爱！了！必须抢走！！！"</p>
-                <p style="animation-delay:1.280s;">魔龙一个俯冲，叼起兔兔就跑，</p>
-                <p style="animation-delay:1.520s;">还不忘顺手卷走三箱胡萝卜。</p>
+                <p style="animation-delay:1.040s;font-weight:bold;color:#ff4757;">"这个公主也太可爱了吧！！"</p>
+                <p style="animation-delay:1.25s;">魔龙掏出手机连拍三十张照片，</p>
+                <p style="animation-delay:1.45s;">"不行不行，必须抢回山洞天天看！"</p>
+                <p style="animation-delay:1.65s;">一个俯冲叼起兔兔就跑，</p>
+                <p style="animation-delay:1.85s;">临走还卷走了三箱胡萝卜——</p>
+                <p style="animation-delay:2.05s;color:#884466;">"公主这么可爱，伙食不能差。"</p>
                 <p style="animation-delay:1.760s;color:#884466;">鸽鸽："……那个，我还没表白呢。"</p>
             </div>
             <button class="next-btn" onclick="goPage(4)">继续 →</button>
@@ -1302,7 +1309,7 @@
                 <p style="animation-delay:0s;">鸽鸽背上行囊，踏上了征途。</p>
                 <p style="animation-delay:0.192s;">他不知道前方有多少危险，</p>
                 <p style="animation-delay:0.320s;">但他知道，每走一步，</p>
-                <p style="animation-delay:0.448s;">就离唐雯更近一步。</p>
+                <p style="animation-delay:0.448s;">就离兔兔更近一步。</p>
                 <p style="animation-delay:0.576s;">穿越迷雾森林，跨越深渊峡谷，</p>
                 <p style="animation-delay:0.704s;">收集每一件散落的爱情宝物——</p>
                 <p style="animation-delay:0.832s;font-weight:bold;color:#ff6b9d;text-align:center;">
@@ -1730,38 +1737,23 @@
         
         function renderAchievements() {
             const list = document.getElementById('achievementList');
-            list.innerHTML = '';
-            
+            list.innerHTML = '<div class="achievement-list-grid" id="achiGrid"></div>';
+            const grid = document.getElementById('achiGrid');
+            if (!grid) return;
+
             let unlockedCount = 0;
             let baseUnlocked = 0;
-            
+
             ACHIEVEMENTS.forEach(ach => {
                 if (ach.hidden) return;
-                
                 const unlocked = achievements[ach.id];
                 if (unlocked) unlockedCount++;
-                
-                // 统计前9个基础成就（除了终极成就）
                 if (ach.id !== 'ultimate' && unlocked) baseUnlocked++;
-                
-                list.innerHTML += `
-                    <div class="achievement-item ${unlocked ? 'unlocked' : 'locked'}">
-                        <div class="achievement-icon">${ach.icon}</div>
-                        <div class="achievement-info">
-                            <div class="achievement-name">${ach.name}</div>
-                            <div class="achievement-desc">${ach.desc}</div>
-                        </div>
-                        <div class="achievement-check">${unlocked ? '✓' : ''}</div>
-                    </div>
-                `;
+                const cls = unlocked ? 'unlocked' : 'locked';
+                const icon = unlocked ? ach.icon : '🔒';
+                const check = unlocked ? '<div class="achievement-check">✓</div>' : '';
+                grid.innerHTML += '<div class="achievement-item ' + cls + '"><div class="achievement-icon">' + icon + '</div><div class="achievement-info"><div class="achievement-name">' + ach.name + '</div></div>' + check + '</div>';
             });
-            
-            // 前9个都解锁了，自动解锁终极成就
-            if (baseUnlocked >= 9 && !achievements['ultimate']) {
-                unlockAchievement('ultimate');
-                return;
-            }
-            
             document.getElementById('achievementProgress').textContent = 
                 `已解锁：${unlockedCount} / 10`;
             
@@ -1812,7 +1804,7 @@
                             const h = document.createElement('div');
                             h.textContent = ['❤️','💕','💖','🕊️','🐰','✨'][Math.floor(Math.random()*6)];
                             h.style.cssText = `
-                                position:fixed;z-index:300;pointer-events:none;
+                                position:fixed;z-index:1;pointer-events:none;
                                 font-size:${20+Math.random()*30}px;
                                 left:${Math.random()*90}%;top:50%;
                                 animation: heartRain ${1.5+Math.random()*2.5}s ease-out forwards;
@@ -2166,7 +2158,7 @@
                     const h = document.createElement('div');
                     h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
                     h.style.cssText = `
-                        position:fixed;z-index:300;pointer-events:none;
+                        position:fixed;z-index:1;pointer-events:none;
                         font-size:${18+Math.random()*28}px;
                         left:${Math.random()*90}%;top:-30px;
                         animation: heartRain ${1.5+Math.random()*2}s ease-in forwards;
@@ -2190,7 +2182,7 @@
                     const h = document.createElement('div');
                     h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
                     h.style.cssText = `
-                        position:fixed;z-index:300;pointer-events:none;
+                        position:fixed;z-index:1;pointer-events:none;
                         font-size:${20+Math.random()*36}px;
                         left:${Math.random()*90}%;top:-30px;
                         animation: heartRain ${1.5+Math.random()*3}s ease-in forwards;
@@ -2649,7 +2641,7 @@
                 rabbitRunning = false; cancelAnimationFrame(rabbitLoop); playVictoryMusic();
                 document.getElementById('rabbitStartBtn').textContent = '🐰 已通关！';
                 document.getElementById('rabbitStartBtn').disabled = true;
-                for (let i = 0; i < 25; i++) { setTimeout(() => { const p = document.createElement('div'); p.textContent = ['🗝️','💕','🐰','✨'][Math.floor(Math.random()*4)]; p.style.cssText = 'position:fixed;z-index:400;pointer-events:none;font-size:'+(18+Math.random()*25)+'px;left:'+Math.random()*95+'%;top:-20px;animation:heartRain '+(1.5+Math.random()*2)+'s ease-in forwards;'; document.body.appendChild(p); setTimeout(() => p.remove(), 3000); }, i*50); }
+                for (let i = 0; i < 25; i++) { setTimeout(() => { const p = document.createElement('div'); p.textContent = ['🗝️','💕','🐰','✨'][Math.floor(Math.random()*4)]; p.style.cssText = 'position:fixed;z-index:1;pointer-events:none;font-size:'+(18+Math.random()*25)+'px;left:'+Math.random()*95+'%;top:-20px;animation:heartRain '+(1.5+Math.random()*2)+'s ease-in forwards;'; document.body.appendChild(p); setTimeout(() => p.remove(), 3000); }, i*50); }
                 setTimeout(() => goPage('TrueEnding'), 2500);
             }
             function rabbitJump() { if (!rabbitRunning) return; rabbit.vy = JUMP; playClick(); }

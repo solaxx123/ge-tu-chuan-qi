@@ -121,58 +121,30 @@
                 victoryCountdown();
             }
 
-            function victoryCountdown() {
-                const countdownEl = document.createElement('div');
-                countdownEl.style.cssText = `
-                    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-                    z-index:200;text-align:center;pointer-events:none;
-                    font-size:24px;color:#ff6b9d;font-weight:bold;
-                    background:rgba(255,255,255,0.92);padding:30px 40px;
-                    border-radius:20px;box-shadow:0 10px 40px rgba(255,107,157,0.3);
-                    border:2px solid rgba(255,107,157,0.3);
-                `;
-                countdownEl.innerHTML = '💖 真爱之力正在汇聚...';
-                document.body.appendChild(countdownEl);
+        }
 
-                const countdownSteps = [
-                    { text: '💖 真爱之力正在汇聚...', delay: 0 },
-                    { text: '✨ 宝物共鸣中...', delay: 1200 },
-                    { text: '3', delay: 2400 },
-                    { text: '2', delay: 3400 },
-                    { text: '1', delay: 4400 },
-                    { text: '💕 苏苏，我来了！', delay: 5400 },
-                ];
-
-                countdownSteps.forEach(step => {
-                    setTimeout(() => {
-                        countdownEl.innerHTML = step.text;
-                        countdownEl.style.animation = 'none';
-                        countdownEl.offsetHeight;
-                        countdownEl.style.animation = 'fadeIn 0.3s ease';
-                    }, step.delay);
-                });
-
-                setTimeout(() => {
-                    countdownEl.remove();
-                    playVictoryMusic();
-                    // 爱心粒子爆发
-                    for (let i = 0; i < 30; i++) {
-                        setTimeout(() => {
-                            const h = document.createElement('div');
-                            h.textContent = ['❤️','💕','💖','🕊️','🐰','✨'][Math.floor(Math.random()*6)];
-                            h.style.cssText = `
-                                position:fixed;z-index:250;pointer-events:none;
-                                font-size:${20+Math.random()*30}px;
-                                left:${Math.random()*90}%;top:50%;
-                                animation: heartRain ${1.5+Math.random()*2.5}s ease-out forwards;
-                            `;
-                            document.body.appendChild(h);
-                            setTimeout(() => h.remove(), 3500);
-                        }, i * 40);
-                    }
-                    setTimeout(() => goPage('Victory'), 800);
-                }, 6400);
-            }
+        function victoryCountdown() {
+            const countdownEl = document.createElement('div');
+            countdownEl.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:200;text-align:center;pointer-events:none;font-size:24px;color:#ff6b9d;font-weight:bold;background:rgba(255,255,255,0.92);padding:30px 40px;border-radius:20px;box-shadow:0 10px 40px rgba(255,107,157,0.3);border:2px solid rgba(255,107,157,0.3);';
+            countdownEl.innerHTML = '💖 真爱之力正在汇聚...';
+            document.body.appendChild(countdownEl);
+            const steps = [
+                { t: '💖 真爱之力正在汇聚...', d: 0 },
+                { t: '✨ 宝物共鸣中...', d: 1200 },
+                { t: '3', d: 2400 }, { t: '2', d: 3400 }, { t: '1', d: 4400 },
+                { t: '💕 我来了！', d: 5400 },
+            ];
+            steps.forEach(s => setTimeout(() => { countdownEl.innerHTML = s.t; }, s.d));
+            setTimeout(() => {
+                countdownEl.remove(); playVictoryMusic();
+                for (let i = 0; i < 30; i++) setTimeout(() => {
+                    const h = document.createElement('div');
+                    h.textContent = ['❤️','💕','💖','🕊️','🐰','✨'][Math.floor(Math.random()*6)];
+                    h.style.cssText = 'position:fixed;z-index:250;pointer-events:none;font-size:'+(20+Math.random()*30)+'px;left:'+Math.random()*90+'%;top:50%;animation:heartRain '+(1.5+Math.random()*2.5)+'s ease-out forwards;';
+                    document.body.appendChild(h); setTimeout(() => h.remove(), 3500);
+                }, i*40);
+                setTimeout(() => goPage('Victory'), 800);
+            }, 6400);
         }
         
         function unlockAchievement(id) {

@@ -1704,6 +1704,14 @@
             document.getElementById('achievementProgress').textContent = 
                 `已解锁：${unlockedCount} / 10`;
             
+            // 已通关过的玩家可以直接跳过
+            if (unlockedCount >= 10 && !endingUnlocked) {
+                const skipBtn = document.createElement('button');
+                skipBtn.textContent = '🐲 直接击败魔龙';
+                skipBtn.style.cssText = 'display:block;width:100%;margin-top:8px;padding:10px;border:2px solid #ff6b9d;border-radius:12px;background:rgba(255,107,157,0.08);color:#ff6b9d;font-size:0.85rem;font-weight:700;cursor:pointer;letter-spacing:1px;';
+                skipBtn.onclick = () => { endingUnlocked = true; victoryCountdown(); skipBtn.remove(); };
+                list.appendChild(skipBtn);
+            }
             if (unlockedCount >= 10 && !endingUnlocked && gameStarted && running) {
                 endingUnlocked = true;
                 clearTimeout(loop);

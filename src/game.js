@@ -72,7 +72,7 @@
             { id: 'allFoods', name: '百味之瓶', desc: '收集全部8种食物', icon: '🌈' },
             { id: 'diamond', name: '钻石誓言', desc: '收集3颗钻石', icon: '💎' },
             { id: 'neverGiveUp', name: '不屈之星', desc: '3次濒临失败仍坚持', icon: '🌟' },
-            { id: 'love1314', name: '爱你1314', desc: '单次获得1314分', icon: '💝' },
+            { id: 'love1314', name: '爱你1314', desc: '爱之力到达1314', icon: '💝' },
             { id: 'easter', name: '惊喜彩蛋', desc: '发现隐藏彩蛋', icon: '💝' },
             { id: 'ultimate', name: '真爱无敌', desc: '集齐全部9件宝物', icon: '👑' },
             { id: 'konami', name: '秘籍', desc: '秘籍', icon: '🎮', hidden: true }

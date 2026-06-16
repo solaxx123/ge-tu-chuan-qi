@@ -19,6 +19,7 @@
             // BGM延迟200ms启动，避免阻塞页面切换
             const bgmType = num <= 2 ? 'romantic' : num === 3 ? 'dark' : (num >= 4 && num <= 6) || num === 'Game' ? 'epic' : null;
             if (bgmType) setTimeout(() => playBGMByType(bgmType), 200);
+            if (num === 'Game') setTimeout(checkAllCleared, 300);
         }
 
         function startGame() {
@@ -113,14 +114,6 @@
             document.getElementById('achievementProgress').textContent = 
                 `已解锁：${unlockedCount} / 10`;
             
-            // 已通关过的玩家可以直接跳过
-            if (unlockedCount >= 10 && !endingUnlocked) {
-                const skipBtn = document.createElement('button');
-                skipBtn.textContent = '🐲 直接击败魔龙';
-                skipBtn.style.cssText = 'display:block;width:100%;margin-top:8px;padding:10px;border:2px solid #ff6b9d;border-radius:12px;background:rgba(255,107,157,0.08);color:#ff6b9d;font-size:0.85rem;font-weight:700;cursor:pointer;letter-spacing:1px;';
-                skipBtn.onclick = () => { endingUnlocked = true; victoryCountdown(); skipBtn.remove(); };
-                list.appendChild(skipBtn);
-            }
             if (unlockedCount >= 10 && !endingUnlocked && gameStarted && running) {
                 endingUnlocked = true;
                 clearTimeout(loop);
@@ -226,7 +219,23 @@
         }
         
         renderAchievements();
-        
+
+        function checkAllCleared() {
+            const total = ACHIEVEMENTS.filter(a => !a.hidden).length;
+            const unlocked = Object.keys(achievements).filter(k => achievements[k]).length;
+            if (unlocked >= total && !endingUnlocked) {
+                const exist = document.getElementById('skipToVictory');
+                if (exist) return;
+                const btn = document.createElement('button');
+                btn.id = 'skipToVictory';
+                btn.textContent = '🐲 直接击败魔龙';
+                btn.style.cssText = 'display:block;width:90%;margin:8px auto;padding:12px;border:2px solid #ff6b9d;border-radius:14px;background:rgba(255,107,157,0.08);color:#ff6b9d;font-size:0.9rem;font-weight:700;cursor:pointer;letter-spacing:1px;';
+                btn.onclick = () => { endingUnlocked = true; victoryCountdown(); btn.remove(); };
+                const list = document.getElementById('achievementList');
+                if (list && list.parentNode) list.parentNode.appendChild(btn);
+            }
+        }
+
         const FOODS = [
             { emoji: '🍬', name: '糖果', score: 10 },
             { emoji: '❤️', name: '爱心', score: 15 },

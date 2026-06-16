@@ -226,14 +226,14 @@
             </div>
             <h2 class="story-title" style="color:#a18cd1;">兔兔的抉择</h2>
             <div class="story-content">
-                <p style="animation-delay:0s;">兔兔气炸了。</p>
-                <p style="animation-delay:0.320s;">"你不放他是吧？行。"</p>
-                <p style="animation-delay:0.560s;">"我自己去救！"</p>
-                <p style="animation-delay:0.800s;">当天夜里，兔兔披上斗篷，</p>
-                <p style="animation-delay:1.040s;">偷偷潜入了王宫地下的远古迷宫——</p>
-                <p style="animation-delay:1.280s;">传说那里有十八层深渊，</p>
-                <p style="animation-delay:1.520s;font-weight:bold;color:#a18cd1;">每一层都有一把钥匙，</p>
-                <p style="animation-delay:1.760s;font-weight:bold;color:#ff6b9d;">集齐十把就能打开地牢的最深处。</p>
+                <p style="animation-delay:0s;">兔兔擦干眼泪，抬起头。</p>
+                <p style="animation-delay:0.320s;">"你为他翻过荆棘、飞过高墙，</p>
+                <p style="animation-delay:0.560s;">你为他打败了不可一世的魔龙。"</p>
+                <p style="animation-delay:0.800s;">"你穿越了整个王国来救我——"</p>
+                <p style="animation-delay:1.040s;font-weight:bold;color:#a18cd1;">"这一次，轮到我了。"</p>
+                <p style="animation-delay:1.280s;font-weight:bold;color:#ff6b9d;">"等着我，我永远的骑士。"</p>
+                <p style="animation-delay:1.520s;">她披上斗篷，潜入无尽深渊——</p>
+                <p style="animation-delay:1.760s;">十把钥匙，十八层地牢。</p>
             </div>
             <button class="next-btn" onclick="goPage('RabbitGame')">🐰 潜入地牢</button>
             <div class="page-indicator">最终章</div>
@@ -305,19 +305,18 @@
     </div>
     
     <!-- 兔兔跑酷游戏页 -->
-    <div class="page" id="pageRabbitGame">
-        <div class="game-box" style="background:linear-gradient(180deg,#0a0015,#1a0030,#0a0015);border-color:rgba(161,140,209,0.4);">
-            <div style="text-align:center;margin-bottom:4px;">
-                <h1 style="font-size:1.2rem;background:linear-gradient(90deg,#a18cd1,#ff6b9d,#a18cd1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">🐰 兔兔勇闯地牢 🐰</h1>
-                <p style="font-size:0.7rem;color:#a18cd1;">点击屏幕跳跃 · 躲避牢笼 · 收集10把钥匙</p>
+    <div class="page" id="pageRabbitGame" style="background:#0a0015;">
+        <div style="position:fixed;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#1a0030 0%,#0a0015 70%);">
+            <div style="text-align:center;margin-bottom:6px;z-index:2;">
+                <h1 style="font-size:1.2rem;background:linear-gradient(90deg,#a18cd1,#ff6b9d,#a18cd1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">🐰 勇闯地牢 🐰</h1>
             </div>
-            <div class="score-bar" style="background:rgba(161,140,209,0.2);border-color:rgba(161,140,209,0.3);">
-                <div class="score-item"><div class="score-label" style="color:#a18cd1;">🗝️ 钥匙</div><div class="score-num" id="rabbitKeys" style="color:#a18cd1;">0/10</div></div>
-                <div class="score-item"><div class="score-label" style="color:#a18cd1;">❤️ 生命</div><div class="score-num" id="rabbitLives" style="color:#ff6b9d;">3</div></div>
+            <div style="display:flex;gap:20px;margin-bottom:8px;z-index:2;">
+                <div style="text-align:center;"><div style="font-size:0.7rem;color:#a18cd1;">🗝️ 钥匙</div><div style="font-size:1.2rem;color:#a18cd1;font-weight:bold;" id="rabbitKeys">0/10</div></div>
+                <div style="text-align:center;"><div style="font-size:0.7rem;color:#a18cd1;">❤️ 生命</div><div style="font-size:1.2rem;color:#ff6b9d;font-weight:bold;" id="rabbitLives">3</div></div>
             </div>
-            <canvas id="rabbitCanvas" width="340" height="340" style="border-color:#a18cd1;background:#0a0015;width:290px;height:290px;"></canvas>
-            <button class="start-btn-center" id="rabbitStartBtn" style="background:linear-gradient(135deg,#a18cd1,#6c5ce7);margin-top:8px;">🐰 开始跑酷</button>
-            <p style="text-align:center;color:rgba(161,140,209,0.5);font-size:0.6rem;margin-top:4px;">💡 点击屏幕任意位置让兔兔跳跃</p>
+            <canvas id="rabbitCanvas" width="400" height="500" style="border:2px solid rgba(161,140,209,0.3);border-radius:12px;max-width:95vw;max-height:60vh;touch-action:none;"></canvas>
+            <button id="rabbitStartBtn" style="margin-top:10px;z-index:2;padding:12px 40px;border:none;border-radius:25px;background:linear-gradient(135deg,#a18cd1,#6c5ce7);color:#fff;font-size:1rem;font-weight:bold;cursor:pointer;">🐰 开始跑酷</button>
+            <p style="color:rgba(161,140,209,0.4);font-size:0.65rem;margin-top:6px;z-index:2;">💡 点击屏幕跳跃 · 躲避牢笼 · 收集10把钥匙</p>
         </div>
     </div>
 
@@ -389,23 +388,19 @@
 
     <!-- 伪结局：战胜魔龙 -->
     <div class="page" id="pageVictory">
-        <div class="victory-container">
-            <div class="victory-box">
-                <div class="victory-content">
-                    <div class="victory-icon">⚔️🐲💥</div>
-                    <h1 class="victory-title">胜 利</h1>
-                    <div class="victory-subtitle">魔龙被真爱之力彻底净化</div>
-                    <div class="divider"></div>
-                    <div class="victory-text">
-                        鸽鸽集齐十件宝物，唤醒了沉睡的真爱之力<br>
-                        魔龙在光芒中消散，<span class="highlight">兔兔公主成功获救！</span><br><br>
-                        <span style="font-style:italic;color:#884466;">鸽鸽抱着兔兔旋转了三圈半……</span><br>
-                        <span style="font-size:1.2rem;">🎉🎉🎉</span>
-                    </div>
-                    <button class="victory-btn tear-btn" onclick="triggerTear()">
-                        ✨ 迎接幸福结局 ✨
-                    </button>
+        <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:30px 16px;background:linear-gradient(180deg,#fff5f9 0%,#ffe6f2 40%,#fff0f5 100%);">
+            <div style="width:100%;max-width:360px;text-align:center;">
+                <div style="font-size:3.5rem;margin-bottom:16px;animation:heartbeat 2s ease-in-out infinite;">⚔️🐲💥</div>
+                <h1 style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#ff6b9d,#c44569);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;">胜 利</h1>
+                <p style="color:#c44569;font-size:0.95rem;letter-spacing:2px;margin-bottom:24px;">魔龙被真爱之力彻底净化</p>
+                <div style="background:rgba(255,255,255,0.7);backdrop-filter:blur(12px);border-radius:20px;padding:28px 20px;border:1px solid rgba(255,200,220,0.5);box-shadow:0 4px 24px rgba(255,107,157,0.08);margin-bottom:24px;">
+                    <p style="color:#8b4557;line-height:2;font-size:0.95rem;">
+                        鸽鸽集齐十件宝物<br>唤醒了沉睡的<span style="color:#ff6b9d;font-weight:700;">真爱之力</span><br><br>
+                        魔龙在光芒中消散<br><span style="color:#ff6b9d;font-weight:700;">兔兔公主成功获救！</span><br><br>
+                        <span style="font-style:italic;color:#884466;">鸽鸽抱着兔兔旋转了三圈半……</span>
+                    </p>
                 </div>
+                <button onclick="triggerTear()" style="width:100%;padding:16px;border:none;border-radius:30px;background:linear-gradient(135deg,#ff6b9d,#c44569);color:#fff;font-size:1.05rem;font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 6px 20px rgba(255,107,157,0.3);">✨ 迎接幸福结局 ✨</button>
             </div>
         </div>
     </div>

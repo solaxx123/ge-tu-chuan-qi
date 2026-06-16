@@ -923,14 +923,14 @@
         const rabbitCanvas = document.getElementById('rabbitCanvas');
         if (rabbitCanvas) {
             const rctx = rabbitCanvas.getContext('2d');
-            const rW = 340, rH = 340;
-            let rabbit = { y: rH/2, vy: 0, size: 22 };
+            const rW = 400, rH = 500;
+            let rabbit = { y: rH/2, vy: 0, size: 28 };
             let bars = [];
             let rabbitKeys = 0;
             let rabbitLives = 3;
             let rabbitRunning = false;
             let rabbitLoop = null;
-            const GRAVITY = 0.35, JUMP = -6, BAR_SPEED = 2.5, BAR_GAP = 95, BAR_WIDTH = 40, TARGET_KEYS = 10;
+            const GRAVITY = 0.4, JUMP = -7.5, BAR_SPEED = 2.2, BAR_GAP = 130, BAR_WIDTH = 45, TARGET_KEYS = 10;
 
             function initRabbitGame() {
                 rabbit = { y: rH/2, vy: 0, size: 22 };
@@ -956,7 +956,7 @@
                     rctx.fillRect(b.x - 2, b.topH + BAR_GAP - 2, BAR_WIDTH + 4, 6);
                     if (!b.passed) { rctx.font = '18px Arial'; rctx.fillText('🗝️', b.x + BAR_WIDTH/2 - 9, b.topH + BAR_GAP/2 + 6); }
                 });
-                rctx.font = rabbit.size + 'px Arial'; rctx.fillText('🐰', 60, rabbit.y + 8);
+                rctx.font = rabbit.size + 'px Arial'; rctx.fillText('🐰', 80, rabbit.y + 10);
                 if (!rabbitRunning && rabbitLives <= 0) {
                     rctx.fillStyle = 'rgba(0,0,0,0.6)'; rctx.fillRect(0, 0, rW, rH);
                     rctx.fillStyle = '#ff6b9d'; rctx.font = 'bold 22px Arial'; rctx.textAlign = 'center';
@@ -970,7 +970,7 @@
                 if (rabbit.y < 5 || rabbit.y > rH - 5) { loseRabbitLife(); return; }
                 for (let i = bars.length - 1; i >= 0; i--) {
                     bars[i].x -= BAR_SPEED;
-                    if (Math.abs(bars[i].x - 60) < BAR_WIDTH + rabbit.size/2) {
+                    if (Math.abs(bars[i].x - 80) < BAR_WIDTH + rabbit.size/2) {
                         if (rabbit.y - rabbit.size/2 < bars[i].topH || rabbit.y + rabbit.size/2 > bars[i].topH + BAR_GAP) {
                             loseRabbitLife(); return;
                         }

@@ -621,7 +621,7 @@
         }
         
         function newFood() {
-            while (foods.length < 2 + Math.floor(Math.random() * 2)) {
+            while (foods.length < 1 + Math.floor(Math.random() * 2)) {
                 let foodIndex, scoreVal, emoji, name;
                 const rand = Math.random();
                 if (rand < 0.06) { foodIndex = -1; emoji = "🍀"; name = "幸运草"; scoreVal = 0; }
@@ -700,31 +700,8 @@
         }
         
         function handleWallHit() {
-            const penalty = 20;
-            const oldScore = score;
-            score = Math.max(0, score - penalty);
-            document.getElementById('score').textContent = score;
-            
-            // 只有碰壁后分数 <= 0 才算一次"濒临失败"
-            if (score <= 0) {
-                frustrations++;
-            }
-            
-            showFrustration(WALL_MSGS[Math.floor(Math.random() * WALL_MSGS.length)]);
-            flash('pink');
-            playHit();
-            
-            if (frustrations >= 3) unlockAchievement('neverGiveUp');
-            
-            if (score <= 0 && frustrations >= 3) {
-                gameover();
-                return;
-            }
-            
-            snake[0].x = Math.max(1, Math.min(size - 2, snake[0].x));
-            snake[0].y = Math.max(1, Math.min(size - 2, snake[0].y));
+            gameover();
         }
-        
         function update() {
             dir = nextDir;
             let head = {...snake[0]};
@@ -816,7 +793,7 @@
             function gameLoop() {
                 if (!running) return;
                 update();
-                const speed = Math.max(70, 150 - Math.floor(score / 100) * 5);
+                const speed = Math.max(100, 150 - Math.floor(score / 200) * 4);
                 loop = setTimeout(gameLoop, speed);
             }
             document.getElementById('startBtn').textContent = '⚔️ 冒险中...';

@@ -142,7 +142,7 @@
                 <div class="subtitle-overlay">爱的试炼 · 承诺</div>
             </div>
             <h2 class="story-title">第五章 · 爱的试炼</h2>
-            <div class="story-content">
+            <div class="story-content" style="min-height:0;margin-bottom:8px;">
                 <p style="animation-delay:0s;">十件宝物，每一件都是爱的证明：</p>
             </div>
             <div style="margin-bottom:0;">
@@ -322,22 +322,9 @@
         </div>
     </div>
 
-    <!-- 真结局：完整结算画面 -->
+    <!-- 真结局 ① 故事结局 -->
     <div class="page" id="pageTrueEnding">
         <div class="true-ending-wrapper">
-            <!-- 合影大图 + 告白 -->
-            <div class="true-photo-section">
-                <div class="true-photo-frame">
-                    <img src="{{ENDING_IMAGE}}" alt="甜蜜合影" class="true-photo-img">
-                    <div class="true-photo-love">
-                        <span>唐雯</span>
-                        <span class="love-heart">💕</span>
-                        <span>我爱你</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 故事结局文字 -->
             <div class="true-story-card">
                 <div class="victory-icon">🐰💕🕊️</div>
                 <h1 class="true-ending-title">真爱永恒</h1>
@@ -355,18 +342,49 @@
                 </p>
                 <div class="couple-names">🕊️ 鸽鸽 & 兔兔 🐰</div>
                 <div class="forever-text">真爱，值得所有的冒险</div>
+                <button class="victory-btn" onclick="goPage('TruePoster')" style="margin-top:16px;">📸 查看甜蜜合影</button>
             </div>
+        </div>
+    </div>
 
-            <!-- 制作者名单 -->
-            <div class="true-credits">
-                <div class="true-credit-line">策 划：鸽鸽 🕊️</div>
-                <div class="true-credit-line">美 术：兔兔 🐰</div>
-                <div class="true-credit-line">技术支持：豆包</div>
-                <div class="true-credit-line" style="margin-top:8px;color:rgba(196,69,105,0.5);">2026年6月</div>
-                <div class="true-credit-line" style="color:rgba(196,69,105,0.4);font-size:0.75rem;">感谢每一位相信爱情的人 💕</div>
+    <!-- 真结局 ② 兔兔我爱你海报 -->
+    <div class="page" id="pageTruePoster">
+        <div class="poster-wrapper">
+            <div class="poster-frame">
+                <img src="{{ENDING_IMAGE}}" alt="甜蜜合影" class="poster-img">
+                <div class="poster-love-text">
+                    <span>兔兔</span>
+                    <span style="margin:0 4px;">我爱你</span>
+                </div>
             </div>
+            <button class="victory-btn" onclick="goPage('TrueCredits')" style="margin-top:20px;">🎬 制作人员</button>
+        </div>
+    </div>
 
-            <button class="victory-btn" onclick="fullRestart()" style="margin:16px auto;display:block;max-width:200px;">🔄 再玩一次</button>
+    <!-- 真结局 ③ 电影式制作人员 -->
+    <div class="page" id="pageTrueCredits">
+        <div class="movie-credits-wrapper">
+            <div class="movie-credits-scroll">
+                <div class="movie-credit-header">🎬</div>
+                <div class="movie-credit-role">策 划</div>
+                <div class="movie-credit-name">鸽 鸽</div>
+                <div class="movie-credit-role">编 剧</div>
+                <div class="movie-credit-name">鸽 鸽</div>
+                <div class="movie-credit-role">美 术</div>
+                <div class="movie-credit-name">鸽 鸽</div>
+                <div class="movie-credit-role">程 序</div>
+                <div class="movie-credit-name">鸽 鸽</div>
+                <div class="movie-credit-role">音 乐</div>
+                <div class="movie-credit-name">鸽 鸽</div>
+                <div class="movie-credit-role" style="margin-top:20px;">初 稿</div>
+                <div class="movie-credit-name">豆 包</div>
+                <div class="movie-credit-role">终 稿</div>
+                <div class="movie-credit-name" style="font-size:1.4rem;">Claude Code</div>
+                <div class="movie-credit-role" style="margin-top:20px;">特别鸣谢</div>
+                <div class="movie-credit-name" style="font-size:1.1rem;">DeepSeek V4.0 Pro</div>
+                <div class="movie-credit-footer">💕</div>
+            </div>
+            <button class="victory-btn" onclick="fullRestart()" style="margin:20px auto 0;display:block;max-width:200px;">🔄 再玩一次</button>
         </div>
     </div>
 

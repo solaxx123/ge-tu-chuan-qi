@@ -1,14 +1,24 @@
-// 每次打开页面自动清除成就存档
-        localStorage.removeItem('snakeAchievements');
+// 成就将在初始化后从localStorage加载
         
         function goPage(num) {
-            document.querySelectorAll('.page').forEach(p => {
-                p.classList.remove('active');
-                p.style.display = 'none';
-            });
+            const cur = document.querySelector('.page.active');
+            if (cur) {
+                cur.style.opacity = '0';
+                cur.style.transform = 'translateY(-12px)';
+                setTimeout(() => {
+                    cur.classList.remove('active');
+                    cur.style.display = 'none';
+                    cur.style.opacity = '';
+                    cur.style.transform = '';
+                    showPage(num);
+                }, 350);
+            } else {
+                showPage(num);
+            }
+        }
+        function showPage(num) {
             const target = document.getElementById('page' + num);
             target.style.display = 'block';
-            // 强制回流后触发transition
             target.offsetHeight;
             target.classList.add('active');
             window.scrollTo(0, 0);
@@ -69,6 +79,7 @@
         ];
         
         let achievements = {};
+        try { const saved = localStorage.getItem('snakeAchievements'); if (saved) achievements = JSON.parse(saved); } catch(e) {}
         let highScore = parseInt(localStorage.getItem('snakeLove') || '0');
         let highScoreDate = localStorage.getItem('snakeLoveDate') || '';
         let foodsCollected = new Set();
@@ -190,9 +201,10 @@
                 showAchievementToast(`${ach.icon} ${ach.name}`);
                 flash('gold');
                 playAchievement();
-                // 血条震动
                 const hpBar = document.getElementById('dragonHP');
                 if (hpBar) { hpBar.style.animation = 'none'; hpBar.offsetHeight; hpBar.style.animation = 'hpShake 0.5s ease'; }
+                // 持久化成就
+                try { localStorage.setItem('snakeAchievements', JSON.stringify(achievements)); } catch(e) {}
             }
         }
 
@@ -261,7 +273,6 @@
         let comboTimer = 0;
         let comboCount = 0;
         let luckyCharm = 0;
-        let foods = [];
         let loop = null;
         let running = false;
         let konamiCode = [];
@@ -277,21 +288,19 @@
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
         }
+        let audioMuted = false;
+        function toggleMute() {
+            audioMuted = !audioMuted;
+            const btn = document.getElementById('muteBtn');
+            if (audioMuted) { stopBGM(); stopEasterHintTimer(); if (btn) btn.textContent = '🔇'; }
+            else { if (running) { playBGMByType('epic'); startEasterHintTimer(); } if (btn) btn.textContent = '🔊'; }
+            return audioMuted;
+        }
+        window.toggleMute = toggleMute;
         
-        function playTone(freq, duration, type = 'sine', volume = 0.3) {
-            if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.frequency.value = freq;
-            osc.type = type;
-            gain.gain.setValueAtTime(volume, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-            osc.start();
-            osc.stop(audioCtx.currentTime + duration);
-        }
+        // playTone defined below with delay support (see BGM section)
         
         // 点击方向键音效
         function playClick() {
@@ -359,7 +368,7 @@
 
         // 新的 playTone 支持 delay 参数
         function playTone(freq, duration, type = 'sine', volume = 0.08, delay = 0) {
-            if (!audioCtx) return;
+            if (!audioCtx || audioMuted) return;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
@@ -943,5 +952,104 @@
                 document.removeEventListener('click', autoPlayOnFirstClick);
             }
         }, true);
-        
+
         init();
+
+        // ==================== 兔兔地牢跑酷引擎 ====================
+        const rabbitCanvas = document.getElementById('rabbitCanvas');
+        if (rabbitCanvas) {
+            const rctx = rabbitCanvas.getContext('2d');
+            const rW = 340, rH = 340;
+            let rabbit = { y: rH/2, vy: 0, size: 22 };
+            let bars = [];
+            let rabbitKeys = 0;
+            let rabbitLives = 3;
+            let rabbitRunning = false;
+            let rabbitLoop = null;
+            const GRAVITY = 0.35, JUMP = -6, BAR_SPEED = 2.5, BAR_GAP = 95, BAR_WIDTH = 40, TARGET_KEYS = 10;
+
+            function initRabbitGame() {
+                rabbit = { y: rH/2, vy: 0, size: 22 };
+                bars = []; rabbitKeys = 0; rabbitLives = 3;
+                updateRabbitUI(); drawRabbit();
+            }
+            function updateRabbitUI() {
+                document.getElementById('rabbitKeys').textContent = rabbitKeys + '/' + TARGET_KEYS;
+                document.getElementById('rabbitLives').textContent = rabbitLives;
+            }
+            function drawRabbit() {
+                const bgGrad = rctx.createLinearGradient(0, 0, 0, rH);
+                bgGrad.addColorStop(0, '#0a0015'); bgGrad.addColorStop(0.5, '#150030'); bgGrad.addColorStop(1, '#0a0015');
+                rctx.fillStyle = bgGrad; rctx.fillRect(0, 0, rW, rH);
+                rctx.fillStyle = '#1a0a2e';
+                for (let i = 0; i < rW; i += 30) { rctx.fillRect(i, 0, 15, 8); rctx.fillRect(i, rH - 8, 15, 8); }
+                bars.forEach(b => {
+                    rctx.fillStyle = '#4a3060';
+                    rctx.fillRect(b.x, 0, BAR_WIDTH, b.topH);
+                    rctx.fillRect(b.x, b.topH + BAR_GAP, BAR_WIDTH, rH - b.topH - BAR_GAP);
+                    rctx.fillStyle = '#6a5080';
+                    rctx.fillRect(b.x - 2, b.topH - 4, BAR_WIDTH + 4, 6);
+                    rctx.fillRect(b.x - 2, b.topH + BAR_GAP - 2, BAR_WIDTH + 4, 6);
+                    if (!b.passed) { rctx.font = '18px Arial'; rctx.fillText('🗝️', b.x + BAR_WIDTH/2 - 9, b.topH + BAR_GAP/2 + 6); }
+                });
+                rctx.font = rabbit.size + 'px Arial'; rctx.fillText('🐰', 60, rabbit.y + 8);
+                if (!rabbitRunning && rabbitLives <= 0) {
+                    rctx.fillStyle = 'rgba(0,0,0,0.6)'; rctx.fillRect(0, 0, rW, rH);
+                    rctx.fillStyle = '#ff6b9d'; rctx.font = 'bold 22px Arial'; rctx.textAlign = 'center';
+                    rctx.fillText('💔 兔兔被抓了！', rW/2, rH/2 - 10);
+                    rctx.font = '14px Arial'; rctx.fillText('点击按钮重试', rW/2, rH/2 + 20); rctx.textAlign = 'start';
+                }
+            }
+            function updateRabbit() {
+                if (!rabbitRunning) return;
+                rabbit.vy += GRAVITY; rabbit.y += rabbit.vy;
+                if (rabbit.y < 5 || rabbit.y > rH - 5) { loseRabbitLife(); return; }
+                for (let i = bars.length - 1; i >= 0; i--) {
+                    bars[i].x -= BAR_SPEED;
+                    if (Math.abs(bars[i].x - 60) < BAR_WIDTH + rabbit.size/2) {
+                        if (rabbit.y - rabbit.size/2 < bars[i].topH || rabbit.y + rabbit.size/2 > bars[i].topH + BAR_GAP) {
+                            loseRabbitLife(); return;
+                        }
+                    }
+                    if (bars[i].x + BAR_WIDTH < 60 && !bars[i].passed) {
+                        bars[i].passed = true; rabbitKeys++; updateRabbitUI(); playEat();
+                        if (rabbitKeys >= TARGET_KEYS) { rabbitWin(); return; }
+                    }
+                    if (bars[i].x + BAR_WIDTH < -20) bars.splice(i, 1);
+                }
+                if (bars.length === 0 || bars[bars.length - 1].x < rW - 200) {
+                    const minH = 35, maxH = rH - BAR_GAP - 35;
+                    bars.push({ x: rW, topH: minH + Math.random() * (maxH - minH), passed: false });
+                }
+                updateRabbitUI(); drawRabbit();
+            }
+            function loseRabbitLife() {
+                rabbitLives--; playHit();
+                if (rabbitLives <= 0) {
+                    rabbitRunning = false; cancelAnimationFrame(rabbitLoop);
+                    document.getElementById('rabbitStartBtn').textContent = '🐰 重新挑战';
+                    document.getElementById('rabbitStartBtn').disabled = false;
+                    updateRabbitUI(); drawRabbit();
+                } else { rabbit.y = rH/2; rabbit.vy = 0; bars = []; updateRabbitUI(); }
+            }
+            function rabbitWin() {
+                rabbitRunning = false; cancelAnimationFrame(rabbitLoop); playVictoryMusic();
+                document.getElementById('rabbitStartBtn').textContent = '🐰 已通关！';
+                document.getElementById('rabbitStartBtn').disabled = true;
+                for (let i = 0; i < 25; i++) { setTimeout(() => { const p = document.createElement('div'); p.textContent = ['🗝️','💕','🐰','✨'][Math.floor(Math.random()*4)]; p.style.cssText = 'position:fixed;z-index:400;pointer-events:none;font-size:'+(18+Math.random()*25)+'px;left:'+Math.random()*95+'%;top:-20px;animation:heartRain '+(1.5+Math.random()*2)+'s ease-in forwards;'; document.body.appendChild(p); setTimeout(() => p.remove(), 3000); }, i*50); }
+                setTimeout(() => goPage('TrueEnding'), 2500);
+            }
+            function rabbitJump() { if (!rabbitRunning) return; rabbit.vy = JUMP; playClick(); }
+            function startRabbitGame() {
+                initRabbitGame(); rabbitRunning = true; rabbitLives = 3; rabbitKeys = 0; bars = [];
+                updateRabbitUI();
+                document.getElementById('rabbitStartBtn').textContent = '🐰 跑酷中...';
+                document.getElementById('rabbitStartBtn').disabled = true;
+                drawRabbit();
+                (function rloop(ts) { if (!rabbitRunning) return; updateRabbit(); rabbitLoop = requestAnimationFrame(rloop); })();
+            }
+            document.getElementById('rabbitStartBtn').onclick = startRabbitGame;
+            rabbitCanvas.onclick = rabbitJump;
+            rabbitCanvas.ontouchstart = (e) => { e.preventDefault(); rabbitJump(); };
+            initRabbitGame(); drawRabbit();
+        }

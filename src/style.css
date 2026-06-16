@@ -466,6 +466,30 @@
             50% { transform: scale(1.08); opacity: 1; }
         }
         
+        /* ===== 封面页 ===== */
+        .start-cover {
+            width: 100%; max-width: 400px; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            position: relative; padding: 20px;
+        }
+        .cover-photo {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('{{COVER_IMAGE}}');
+            background-size: cover; background-position: center top;
+        }
+        .cover-gradient {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.15); pointer-events: none;
+        }
+        .cover-content {
+            background: rgba(255,255,255,0.5);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            border-radius: 24px; padding: 32px 24px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.7);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            position: relative; z-index: 10; width: 88%; max-width: 340px;
+        }
+
         .cover-title {
             font-size: clamp(2rem, 8vw, 3.2rem);
             font-weight: 900;

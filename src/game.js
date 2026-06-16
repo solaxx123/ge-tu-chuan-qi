@@ -71,7 +71,7 @@
             { id: 'neverGiveUp', name: '不屈之星', desc: '3次濒临失败仍坚持', icon: '🌟' },
             { id: 'love1314', name: '爱你1314', desc: '爱之力到达1314', icon: '💝' },
             { id: 'easter', name: '惊喜彩蛋', desc: '发现隐藏彩蛋', icon: '💝' },
-            { id: 'ultimate', name: '真爱无敌', desc: '集齐全部9件宝物', icon: '👑' },
+            { id: 'rose5', name: '玫瑰之约', desc: '收集5朵玫瑰', icon: '🌹' },
             { id: 'konami', name: '秘籍', desc: '秘籍', icon: '🎮', hidden: true }
         ];
         
@@ -81,6 +81,8 @@
         let highScoreDate = localStorage.getItem('snakeLoveDate') || '';
         let foodsCollected = new Set();
         let diamondCount = 0;
+            roseCount = 0;
+        let roseCount = 0;
         let endingUnlocked = false;
         let gameStarted = false;
 
@@ -102,7 +104,7 @@
                 if (ach.hidden) return;
                 const unlocked = achievements[ach.id];
                 if (unlocked) unlockedCount++;
-                if (ach.id !== 'ultimate' && unlocked) baseUnlocked++;
+                if (ach.id !== 'ultimate' && ach.id !== 'rose5' && unlocked) baseUnlocked++;
                 const cls = unlocked ? 'unlocked' : 'locked';
                 const icon = unlocked ? ach.icon : '🔒';
                 const check = unlocked ? '<div class="achievement-check">✓</div>' : '';
@@ -714,6 +716,7 @@
                     playEat();
                     if (f.type >= 0) foodsCollected.add(f.type);
                     if (f.emoji === '💎') { diamondCount++; if (diamondCount >= 3) unlockAchievement('diamond'); }
+                    if (f.emoji === '🌹') { roseCount++; if (roseCount >= 5) unlockAchievement('rose5'); }
                     if (foodsCollected.size >= 8) unlockAchievement('allFoods');
                     const newScore = score + addScore;
                     checkSpecialScore(newScore);

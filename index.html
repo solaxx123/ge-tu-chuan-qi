@@ -1256,7 +1256,7 @@
                 <div class="mission-item" style="animation-delay:0.896s;"><div class="mission-icon">💎</div><div class="mission-text">钻石誓言：收集3颗钻石</div></div>
                 <div class="mission-item" style="animation-delay:1.024s;"><div class="mission-icon">🌟</div><div class="mission-text">不屈之星：3次碰壁仍坚持</div></div>
                 <div class="mission-item" style="animation-delay:1.152s;"><div class="mission-icon">💖</div><div class="mission-text">惊喜彩蛋：发现隐藏惊喜</div></div>
-                <div class="mission-item" style="animation-delay:1.280s;"><div class="mission-icon">👑</div><div class="mission-text">真爱无敌：集齐前9件宝物</div></div>
+                <div class="mission-item" style="animation-delay:1.280s;"><div class="mission-icon">🌹</div><div class="mission-text">玫瑰之约：收集5朵玫瑰</div></div>
             </div>
             <button class="next-btn" onclick="goPage(6)">继续 →</button>
             <div class="page-indicator">第五章 / 共七章</div>
@@ -1667,7 +1667,7 @@
             { id: 'neverGiveUp', name: '不屈之星', desc: '3次濒临失败仍坚持', icon: '🌟' },
             { id: 'love1314', name: '爱你1314', desc: '爱之力到达1314', icon: '💝' },
             { id: 'easter', name: '惊喜彩蛋', desc: '发现隐藏彩蛋', icon: '💝' },
-            { id: 'ultimate', name: '真爱无敌', desc: '集齐全部9件宝物', icon: '👑' },
+            { id: 'rose5', name: '玫瑰之约', desc: '收集5朵玫瑰', icon: '🌹' },
             { id: 'konami', name: '秘籍', desc: '秘籍', icon: '🎮', hidden: true }
         ];
         
@@ -1677,6 +1677,8 @@
         let highScoreDate = localStorage.getItem('snakeLoveDate') || '';
         let foodsCollected = new Set();
         let diamondCount = 0;
+            roseCount = 0;
+        let roseCount = 0;
         let endingUnlocked = false;
         let gameStarted = false;
 
@@ -1698,7 +1700,7 @@
                 if (ach.hidden) return;
                 const unlocked = achievements[ach.id];
                 if (unlocked) unlockedCount++;
-                if (ach.id !== 'ultimate' && unlocked) baseUnlocked++;
+                if (ach.id !== 'ultimate' && ach.id !== 'rose5' && unlocked) baseUnlocked++;
                 const cls = unlocked ? 'unlocked' : 'locked';
                 const icon = unlocked ? ach.icon : '🔒';
                 const check = unlocked ? '<div class="achievement-check">✓</div>' : '';
@@ -2310,6 +2312,7 @@
                     playEat();
                     if (f.type >= 0) foodsCollected.add(f.type);
                     if (f.emoji === '💎') { diamondCount++; if (diamondCount >= 3) unlockAchievement('diamond'); }
+                    if (f.emoji === '🌹') { roseCount++; if (roseCount >= 5) unlockAchievement('rose5'); }
                     if (foodsCollected.size >= 8) unlockAchievement('allFoods');
                     const newScore = score + addScore;
                     checkSpecialScore(newScore);

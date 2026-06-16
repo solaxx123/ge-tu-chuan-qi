@@ -1,0 +1,899 @@
+// 每次打开页面自动清除成就存档
+        localStorage.removeItem('snakeAchievements');
+        
+        function goPage(num) {
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+                p.style.display = 'none';
+            });
+            const target = document.getElementById('page' + num);
+            target.style.display = 'block';
+            // 强制回流后触发transition
+            target.offsetHeight;
+            target.classList.add('active');
+            window.scrollTo(0, 0);
+            
+            // 根据章节切换不同BGM
+            if (num <= 2) {
+                playBGMByType('romantic'); // 第1-2章：邂逅与相爱
+            } else if (num === 3) {
+                playBGMByType('dark');     // 第3章：暴风雨危机
+            } else if (num >= 4 && num <= 6) {
+                playBGMByType('epic');     // 第4-6章：决心与征途
+            } else if (num === 'Game') {
+                playBGMByType('epic');     // 游戏中：战斗主题
+            }
+        }
+        
+        function startGame() {
+            initAudio();
+            playBGMByType('romantic'); // 邂逅主题开始
+            goPage(1); // 进入第一章
+        }
+        
+        function fullRestart() {
+            localStorage.removeItem('snakeAchievements');
+            localStorage.removeItem('snakeLove');
+            location.reload();
+        }
+        window.fullRestart = fullRestart;
+        
+        function createFloatBg() {
+            const bg = document.getElementById('floatBg');
+            const items = ['❤️', '💕', '💖', '💗', '💓', '🍬', '🐰', '🕊️', '🌹', '⭐', '🎂', '💎'];
+            for (let i = 0; i < 40; i++) {
+                const item = document.createElement('div');
+                item.className = 'float-item';
+                item.textContent = items[Math.floor(Math.random() * items.length)];
+                item.style.left = Math.random() * 100 + '%';
+                item.style.top = Math.random() * 100 + '%';
+                item.style.animationDelay = Math.random() * 8 + 's';
+                item.style.animationDuration = (6 + Math.random() * 4) + 's';
+                bg.appendChild(item);
+            }
+        }
+        createFloatBg();
+        
+        const ACHIEVEMENTS = [
+            { id: 'score99', name: '永恒宝石', desc: '力量值达到99', icon: '💞' },
+            { id: 'score520', name: '真爱之心', desc: '力量值达到520', icon: '❤️' },
+            { id: 'len10', name: '思念之绳', desc: '成长到10节', icon: '🐰' },
+            { id: 'len20', name: '牵绊之链', desc: '成长到20节', icon: '🐇' },
+            { id: 'allFoods', name: '百味之瓶', desc: '收集全部8种食物', icon: '🌈' },
+            { id: 'diamond', name: '钻石誓言', desc: '收集3颗钻石', icon: '💎' },
+            { id: 'neverGiveUp', name: '不屈之星', desc: '3次濒临失败仍坚持', icon: '🌟' },
+            { id: 'love1314', name: '爱你1314', desc: '单次获得1314分', icon: '💝' },
+            { id: 'easter', name: '惊喜彩蛋', desc: '发现隐藏彩蛋', icon: '💝' },
+            { id: 'ultimate', name: '真爱无敌', desc: '集齐全部9件宝物', icon: '👑' },
+            { id: 'konami', name: '秘籍', desc: '秘籍', icon: '🎮', hidden: true }
+        ];
+        
+        let achievements = {};
+        let highScore = parseInt(localStorage.getItem('snakeLove') || '0');
+        let highScoreDate = localStorage.getItem('snakeLoveDate') || '';
+        let foodsCollected = new Set();
+        let diamondCount = 0;
+        let endingUnlocked = false;
+        let gameStarted = false;
+
+        document.getElementById('highScore').textContent = highScore;
+        if (highScoreDate) {
+            document.getElementById('highScoreDate').textContent = '📅 ' + highScoreDate;
+        }
+        
+        function renderAchievements() {
+            const list = document.getElementById('achievementList');
+            list.innerHTML = '';
+            
+            let unlockedCount = 0;
+            let baseUnlocked = 0;
+            
+            ACHIEVEMENTS.forEach(ach => {
+                if (ach.hidden) return;
+                
+                const unlocked = achievements[ach.id];
+                if (unlocked) unlockedCount++;
+                
+                // 统计前9个基础成就（除了终极成就）
+                if (ach.id !== 'ultimate' && unlocked) baseUnlocked++;
+                
+                list.innerHTML += `
+                    <div class="achievement-item ${unlocked ? 'unlocked' : 'locked'}">
+                        <div class="achievement-icon">${ach.icon}</div>
+                        <div class="achievement-info">
+                            <div class="achievement-name">${ach.name}</div>
+                            <div class="achievement-desc">${ach.desc}</div>
+                        </div>
+                        <div class="achievement-check">${unlocked ? '✓' : ''}</div>
+                    </div>
+                `;
+            });
+            
+            // 前9个都解锁了，自动解锁终极成就
+            if (baseUnlocked >= 9 && !achievements['ultimate']) {
+                unlockAchievement('ultimate');
+                return;
+            }
+            
+            document.getElementById('achievementProgress').textContent = 
+                `已解锁：${unlockedCount} / 10`;
+            
+            if (unlockedCount >= 10 && !endingUnlocked && gameStarted && running) {
+                endingUnlocked = true;
+                clearTimeout(loop);
+                running = false;
+                victoryCountdown();
+            }
+
+            function victoryCountdown() {
+                const countdownEl = document.createElement('div');
+                countdownEl.style.cssText = `
+                    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+                    z-index:200;text-align:center;pointer-events:none;
+                    font-size:24px;color:#ff6b9d;font-weight:bold;
+                    background:rgba(255,255,255,0.92);padding:30px 40px;
+                    border-radius:20px;box-shadow:0 10px 40px rgba(255,107,157,0.3);
+                    border:2px solid rgba(255,107,157,0.3);
+                `;
+                countdownEl.innerHTML = '💖 真爱之力正在汇聚...';
+                document.body.appendChild(countdownEl);
+
+                const countdownSteps = [
+                    { text: '💖 真爱之力正在汇聚...', delay: 0 },
+                    { text: '✨ 宝物共鸣中...', delay: 1200 },
+                    { text: '3', delay: 2400 },
+                    { text: '2', delay: 3400 },
+                    { text: '1', delay: 4400 },
+                    { text: '💕 苏苏，我来了！', delay: 5400 },
+                ];
+
+                countdownSteps.forEach(step => {
+                    setTimeout(() => {
+                        countdownEl.innerHTML = step.text;
+                        countdownEl.style.animation = 'none';
+                        countdownEl.offsetHeight;
+                        countdownEl.style.animation = 'fadeIn 0.3s ease';
+                    }, step.delay);
+                });
+
+                setTimeout(() => {
+                    countdownEl.remove();
+                    playVictoryMusic();
+                    // 爱心粒子爆发
+                    for (let i = 0; i < 30; i++) {
+                        setTimeout(() => {
+                            const h = document.createElement('div');
+                            h.textContent = ['❤️','💕','💖','🕊️','🐰','✨'][Math.floor(Math.random()*6)];
+                            h.style.cssText = `
+                                position:fixed;z-index:300;pointer-events:none;
+                                font-size:${20+Math.random()*30}px;
+                                left:${Math.random()*90}%;top:50%;
+                                animation: heartRain ${1.5+Math.random()*2.5}s ease-out forwards;
+                            `;
+                            document.body.appendChild(h);
+                            setTimeout(() => h.remove(), 3500);
+                        }, i * 40);
+                    }
+                    setTimeout(() => goPage('Victory'), 800);
+                }, 6400);
+            }
+        }
+        
+        function unlockAchievement(id) {
+            if (achievements[id]) return;
+            achievements[id] = true;
+            renderAchievements();
+            
+            const ach = ACHIEVEMENTS.find(a => a.id === id);
+            if (ach && !ach.hidden) {
+                showAchievementToast(`${ach.icon} ${ach.name}`);
+                flash('gold');
+                playAchievement();
+            }
+        }
+        
+        function showAchievementToast(text) {
+            const toast = document.getElementById('achievementToast');
+            toast.textContent = '🏆 获得：' + text;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2800);
+        }
+        
+        renderAchievements();
+        
+        const FOODS = [
+            { emoji: '🍬', name: '糖果', score: 10 },
+            { emoji: '❤️', name: '爱心', score: 15 },
+            { emoji: '🐰', name: '兔兔', score: 20 },
+            { emoji: '🕊️', name: '鸽鸽', score: 25 },
+            { emoji: '🌹', name: '玫瑰', score: 30 },
+            { emoji: '💎', name: '钻石', score: 50 },
+            { emoji: '⭐', name: '星星', score: 35 },
+            { emoji: '🎂', name: '蛋糕', score: 40 }
+        ];
+        
+        const WALL_MSGS = [
+            "走弯路了...但爱会指引方向！-20",
+            "迷路也不怕，苏苏在等你！-20",
+            "碰壁了？爱情路上谁没碰过壁呢！-20"
+        ];
+
+        const OVER_MSGS = [
+            "鸽鸽从不放弃！",
+            "真爱值得所有努力！",
+            "苏苏相信你会成功！",
+            "为了苏苏，再试一次！"
+        ];
+        
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const grid = 17;
+        const size = canvas.width / grid;
+        
+        let snake = [];
+        let currentFood = {};
+        let dir = 'right';
+        let nextDir = 'right';
+        let score = 0;
+        let frustrations = 0;
+        let loop = null;
+        let running = false;
+        let konamiCode = [];
+        let konamiTarget = ['up', 'up', 'down', 'down', 'left', 'left', 'right', 'right'];
+        let headerClicks = 0;
+        
+        // ===== 音效系统 =====
+        let audioCtx = null;
+        let bgmInterval = null;
+        let bgmPlaying = false;
+        
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+        
+        function playTone(freq, duration, type = 'sine', volume = 0.3) {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = freq;
+            osc.type = type;
+            gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+        
+        // 点击方向键音效
+        function playClick() {
+            initAudio();
+            playTone(800, 0.08, 'square', 0.12);
+        }
+        
+        // 吃食物音效
+        function playEat() {
+            initAudio();
+            // 琶音音效
+            playTone(523, 0.08, 'sine', 0.15);
+            setTimeout(() => playTone(659, 0.08, 'sine', 0.14), 40);
+            setTimeout(() => playTone(784, 0.1, 'sine', 0.12), 80);
+            setTimeout(() => playTone(1047, 0.12, 'sine', 0.1), 120);
+            // 触觉反馈
+            if (navigator.vibrate) navigator.vibrate(15);
+        }
+        
+        // 撞墙音效
+        function playHit() {
+            initAudio();
+            playTone(150, 0.2, 'sawtooth', 0.18);
+            if (navigator.vibrate) navigator.vibrate([10,30,10]);
+        }
+        
+        // 获得成就音效
+        function playAchievement() {
+            initAudio();
+            playTone(523, 0.15, 'sine', 0.25);
+            setTimeout(() => playTone(659, 0.15, 'sine', 0.25), 100);
+            setTimeout(() => playTone(784, 0.15, 'sine', 0.25), 200);
+            setTimeout(() => playTone(1047, 0.3, 'sine', 0.2), 300);
+        }
+        
+        // ===== 高品质BGM系统（多声部和弦 + ADSR + 混响） =====
+        // 和弦辅助函数：同时播放多个音符模拟和弦
+        function playChord(freqs, duration, type = 'sine', volume = 0.08) {
+            if (!audioCtx) return;
+            freqs.forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                // ADSR 包络
+                const now = audioCtx.currentTime;
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(volume, now + 0.02);        // Attack
+                gain.gain.linearRampToValueAtTime(volume * 0.7, now + 0.08); // Decay
+                gain.gain.setValueAtTime(volume * 0.6, now + 0.08);           // Sustain
+                gain.gain.exponentialRampToValueAtTime(0.001, now + duration); // Release
+                osc.type = type;
+                osc.frequency.value = freq;
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + duration + 0.05);
+            });
+        }
+
+        // 混响效果：延迟+衰减模拟空间感
+        function playWithReverb(freq, duration, type = 'sine', volume = 0.06) {
+            playTone(freq, duration, type, volume);
+            playTone(freq, duration * 1.2, type, volume * 0.25, 0.06);
+            playTone(freq * 1.01, duration * 1.4, type, volume * 0.12, 0.1);
+        }
+
+        // 新的 playTone 支持 delay 参数
+        function playTone(freq, duration, type = 'sine', volume = 0.08, delay = 0) {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = freq;
+            osc.type = type;
+            const now = audioCtx.currentTime + delay;
+            gain.gain.setValueAtTime(volume, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+            osc.start(now);
+            osc.stop(now + duration + 0.05);
+        }
+
+        // === 4首原创旋律（32音符，和弦+旋律双轨） ===
+        // 邂逅主题：C大调，温柔梦幻
+        const MELODY_MEET = {
+            notes: [262,330,392,523,392,330,262,294,330,349,392,440,523,440,392,349,330,392,440,523,659,523,440,392,330,294,262,330,392,523,440,349],
+            chords: [[262,330,392],[294,349,440],[330,392,523],[262,330,392],[294,349,440],[330,392,523],[262,330,392],[349,440,523],[330,392,523],[294,349,440],[262,330,392],[330,392,523]],
+            tempo: 480, type: 'sine', vol: 0.06
+        };
+        // 相爱主题：G大调，温暖明亮
+        const MELODY_LOVE = {
+            notes: [392,440,494,587,494,440,392,349,392,440,494,523,587,659,587,523,440,392,349,330,294,330,349,392,440,494,587,523,494,440,392,440],
+            chords: [[392,494,587],[349,440,523],[330,392,494],[294,349,440],[392,494,587],[349,440,523],[330,392,494],[392,494,587]],
+            tempo: 440, type: 'sine', vol: 0.065
+        };
+        // 危机主题：C小调，低沉紧张
+        const MELODY_DARK = {
+            notes: [262,247,233,220,196,220,233,247,262,277,294,311,330,311,294,277,262,247,233,220,196,220,233,247,262,294,330,311,277,262,247,233],
+            chords: [[262,311,392],[247,294,370],[233,277,349],[220,262,330],[196,233,294],[220,262,330],[233,277,349],[247,294,370]],
+            tempo: 460, type: 'triangle', vol: 0.07
+        };
+        // 战斗主题：D大调，激昂史诗
+        const MELODY_BATTLE = {
+            notes: [294,370,440,587,440,370,294,330,370,440,494,587,659,587,494,440,370,440,494,587,698,784,880,784,698,587,494,440,587,494,440,370],
+            chords: [[294,370,440],[330,392,494],[370,440,587],[294,370,440],[330,440,523],[370,494,587],[294,370,440],[370,494,587]],
+            tempo: 380, type: 'sine', vol: 0.06
+        };
+
+        let bgmNoteIndex = 0;
+        let bgmChordIndex = 0;
+        let currentBGMType = null;
+        let bgmTimeout = null;
+
+        function playBGMByType(type) {
+            if (bgmPlaying && currentBGMType === type) return;
+            stopBGM();
+            initAudio();
+            bgmPlaying = true;
+            currentBGMType = type;
+            bgmNoteIndex = 0;
+            bgmChordIndex = 0;
+
+            let melody;
+            switch(type) {
+                case 'romantic': melody = MELODY_MEET; break;
+                case 'dark': melody = MELODY_DARK; break;
+                case 'epic': melody = MELODY_BATTLE; break;
+                default: melody = MELODY_LOVE;
+            }
+
+            function step() {
+                if (!audioCtx || !bgmPlaying) return;
+                // 旋律音
+                const noteFreq = melody.notes[bgmNoteIndex % melody.notes.length];
+                playWithReverb(noteFreq, melody.tempo / 1000 * 1.2, melody.type, melody.vol);
+                // 和弦（每两个旋律音弹一次和弦）
+                if (bgmNoteIndex % 2 === 0) {
+                    const chordFreqs = melody.chords[bgmChordIndex % melody.chords.length];
+                    playChord(chordFreqs, melody.tempo / 1000 * 1.5, 'triangle', melody.vol * 0.5);
+                    bgmChordIndex++;
+                }
+                bgmNoteIndex++;
+                bgmTimeout = setTimeout(step, melody.tempo);
+            }
+            step();
+        }
+
+        function stopBGM() {
+            bgmPlaying = false;
+            if (bgmTimeout) { clearTimeout(bgmTimeout); bgmTimeout = null; }
+            if (bgmInterval) { clearInterval(bgmInterval); bgmInterval = null; }
+        }
+        
+        // ===== 失败音效 =====
+        function playGameOver() {
+            stopBGM();
+            initAudio();
+            const sadNotes = [392, 349, 330, 294, 262, 247, 220, 196];
+            sadNotes.forEach((freq, i) => {
+                setTimeout(() => playWithReverb(freq, 0.45, 'triangle', 0.1), i * 160);
+                if (i % 3 === 0) setTimeout(() => playChord([freq, freq*1.2, freq*1.5], 0.5, 'sine', 0.04), i * 160);
+            });
+        }
+
+        // ===== 通关胜利音乐（丰富和弦版） =====
+        function playVictoryMusic() {
+            stopBGM();
+            initAudio();
+            const victoryMelody = [
+                {n:523, c:[523,659,784]},{n:587, c:[587,698,880]},
+                {n:659, c:[659,784,988]},{n:698, c:[698,880,1047]},
+                {n:784, c:[784,988,1175]},{n:880, c:[880,1047,1319]},
+                {n:988, c:[988,1175,1397]},{n:1047, c:[1047,1319,1568]}
+            ];
+            victoryMelody.forEach((note, i) => {
+                setTimeout(() => {
+                    playWithReverb(note.n, 0.6, 'sine', 0.15);
+                    playChord(note.c, 0.7, 'triangle', 0.06);
+                }, i * 200);
+            });
+            setTimeout(() => {
+                playChord([784,988,1175], 1.2, 'sine', 0.08);
+                playChord([523,659,784], 1.2, 'triangle', 0.05);
+            }, 1700);
+        }
+        
+        function flash(color) {
+            const layer = document.getElementById('flashLayer');
+            layer.className = 'flash-layer ' + color;
+            layer.style.opacity = '1';
+            setTimeout(() => layer.style.opacity = '0', 300);
+        }
+        
+        function scoreAnim() {
+            const el = document.getElementById('score');
+            el.classList.remove('score-pop');
+            void el.offsetWidth;
+            el.classList.add('score-pop');
+        }
+        
+        function showScoreFloat(addScore) {
+            const float = document.createElement('div');
+            float.className = 'score-float';
+            float.textContent = '+' + addScore;
+            float.style.color = addScore >= 30 ? '#ff6b9d' : addScore >= 20 ? '#f39c12' : '#ffd700';
+            float.style.left = '50%';
+            float.style.top = '200px';
+            float.style.fontSize = addScore >= 30 ? '24px' : '20px';
+            document.body.appendChild(float);
+            setTimeout(() => float.remove(), 1000);
+        }
+        
+        function showFrustration(msg) {
+            const popup = document.getElementById('frustrationPopup');
+            popup.textContent = msg;
+            popup.classList.add('frustration-show');
+            setTimeout(() => popup.classList.remove('frustration-show'), 2000);
+        }
+
+        // ===== 520 爱心雨特效 =====
+        let celebration520Fired = false;
+        function trigger520Celebration() {
+            if (celebration520Fired) return;
+            celebration520Fired = true;
+            const hearts = ['❤️','💕','💖','💗','💓','💝','✨','💌'];
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const h = document.createElement('div');
+                    h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    h.style.cssText = `
+                        position:fixed;z-index:300;pointer-events:none;
+                        font-size:${18+Math.random()*28}px;
+                        left:${Math.random()*90}%;top:-30px;
+                        animation: heartRain ${1.5+Math.random()*2}s ease-in forwards;
+                    `;
+                    document.body.appendChild(h);
+                    setTimeout(() => h.remove(), 3500);
+                }, i * 80);
+            }
+            showFrustration('💖 爱意满满！520！');
+            flash('pink');
+        }
+
+        // ===== 1314 巅峰庆祝 =====
+        let celebration1314Fired = false;
+        function trigger1314Celebration() {
+            if (celebration1314Fired) return;
+            celebration1314Fired = true;
+            const hearts = ['💝','💖','💕','💗','✨','💌','🕊️','🐰'];
+            for (let i = 0; i < 35; i++) {
+                setTimeout(() => {
+                    const h = document.createElement('div');
+                    h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    h.style.cssText = `
+                        position:fixed;z-index:300;pointer-events:none;
+                        font-size:${20+Math.random()*36}px;
+                        left:${Math.random()*90}%;top:-30px;
+                        animation: heartRain ${1.5+Math.random()*3}s ease-in forwards;
+                    `;
+                    document.body.appendChild(h);
+                    setTimeout(() => h.remove(), 4500);
+                }, i * 60);
+            }
+            showFrustration('💝 爱你一生一世！1314！');
+            flash('gold');
+            playAchievement();
+        }
+
+        // 爱心雨动画 keyframes（动态注入）
+        const heartRainStyle = document.createElement('style');
+        heartRainStyle.textContent = `
+            @keyframes heartRain {
+                0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+                50% { transform: translateY(50vh) rotate(180deg) scale(1.2); opacity: 0.8; }
+                100% { transform: translateY(100vh) rotate(360deg) scale(0.5); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(heartRainStyle);
+        
+        function checkSpecialScore(newScore) {
+            if (newScore >= 99 && score < 99) unlockAchievement('score99');
+            if (newScore >= 520 && score < 520) unlockAchievement('score520');
+            if (newScore >= 1314 && score < 1314) unlockAchievement('love1314');
+
+            if (newScore > highScore) {
+                highScore = newScore;
+                localStorage.setItem('snakeLove', highScore);
+                highScoreDate = new Date().toLocaleDateString('zh-CN');
+                localStorage.setItem('snakeLoveDate', highScoreDate);
+                document.getElementById('highScore').textContent = highScore;
+                document.getElementById('highScoreDate').textContent = '📅 ' + highScoreDate;
+            }
+        }
+        
+        function init() {
+            snake = [{x: 5, y: 10}, {x: 4, y: 10}, {x: 3, y: 10}];
+            dir = 'right';
+            nextDir = 'right';
+            score = 0;
+            frustrations = 0;
+            celebration520Fired = false;
+            celebration1314Fired = false;
+            foodsCollected = new Set();
+            diamondCount = 0;
+            document.getElementById('score').textContent = 0;
+            newFood();
+            draw();
+        }
+        
+        function newFood() {
+            let valid = false;
+            while (!valid) {
+                valid = true;
+                const foodIndex = Math.floor(Math.random() * FOODS.length);
+                currentFood = {
+                    x: Math.floor(Math.random() * size),
+                    y: Math.floor(Math.random() * size),
+                    type: foodIndex,
+                    ...FOODS[foodIndex]
+                };
+                
+                for (let s of snake) {
+                    if (s.x === currentFood.x && s.y === currentFood.y) {
+                        valid = false;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        function draw() {
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#fffaf0');
+            gradient.addColorStop(1, '#fff0f5');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.strokeStyle = 'rgba(255, 107, 157, 0.1)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i <= size; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * grid, 0);
+                ctx.lineTo(i * grid, canvas.height);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(0, i * grid);
+                ctx.lineTo(canvas.width, i * grid);
+                ctx.stroke();
+            }
+            
+            snake.forEach((s, i) => {
+                const x = s.x * grid;
+                const y = s.y * grid;
+                
+                if (i === 0) {
+                    ctx.fillStyle = '#ffb6c1';
+                    ctx.beginPath();
+                    ctx.roundRect(x + 1, y + 1, grid - 2, grid - 2, 5);
+                    ctx.fill();
+                    
+                    ctx.fillStyle = '#ffb6c1';
+                    ctx.beginPath();
+                    ctx.ellipse(x + 5, y - 2, 3, 5, 0, 0, Math.PI * 2);
+                    ctx.ellipse(x + 12, y - 2, 3, 5, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.fillStyle = '#333';
+                    ctx.beginPath();
+                    ctx.arc(x + 5, y + 6, 2, 0, Math.PI * 2);
+                    ctx.arc(x + 12, y + 6, 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.fillStyle = 'rgba(255, 107, 157, 0.4)';
+                    ctx.beginPath();
+                    ctx.ellipse(x + 3, y + 10, 2, 1.5, 0, 0, Math.PI * 2);
+                    ctx.ellipse(x + 14, y + 10, 2, 1.5, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                } else {
+                    const hue = 350 + (i * 3) % 30;
+                    ctx.fillStyle = `hsl(${hue}, 100%, ${75 - i * 0.5}%)`;
+                    ctx.beginPath();
+                    ctx.roundRect(x + 2, y + 2, grid - 4, grid - 4, 4);
+                    ctx.fill();
+                }
+            });
+            
+            ctx.font = 'bold 16px "Apple Color Emoji", "Segoe UI Emoji", Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(currentFood.emoji, currentFood.x * grid + grid/2, currentFood.y * grid + grid/2 + 1);
+        }
+        
+        function handleWallHit() {
+            const penalty = 20;
+            const oldScore = score;
+            score = Math.max(0, score - penalty);
+            document.getElementById('score').textContent = score;
+            
+            // 只有碰壁后分数 <= 0 才算一次"濒临失败"
+            if (score <= 0) {
+                frustrations++;
+            }
+            
+            showFrustration(WALL_MSGS[Math.floor(Math.random() * WALL_MSGS.length)]);
+            flash('pink');
+            playHit();
+            
+            if (frustrations >= 3) unlockAchievement('neverGiveUp');
+            
+            if (score <= 0 && frustrations >= 3) {
+                gameover();
+                return;
+            }
+            
+            snake[0].x = Math.max(1, Math.min(size - 2, snake[0].x));
+            snake[0].y = Math.max(1, Math.min(size - 2, snake[0].y));
+        }
+        
+        function update() {
+            dir = nextDir;
+            let head = {...snake[0]};
+            
+            if (dir === 'up') head.y--;
+            if (dir === 'down') head.y++;
+            if (dir === 'left') head.x--;
+            if (dir === 'right') head.x++;
+            
+            if (head.x < 0 || head.x >= size || head.y < 0 || head.y >= size) {
+                handleWallHit();
+                return;
+            }
+            
+            for (let s of snake) {
+                if (s.x === head.x && s.y === head.y) {
+                    gameover();
+                    return;
+                }
+            }
+            
+            snake.unshift(head);
+            
+            if (snake.length >= 10) unlockAchievement('len10');
+            if (snake.length >= 20) unlockAchievement('len20');
+            
+            if (head.x === currentFood.x && head.y === currentFood.y) {
+                const addScore = currentFood.score;
+                const newScore = score + addScore;
+                playEat();
+                
+                foodsCollected.add(currentFood.type);
+                if (foodsCollected.size >= 8) unlockAchievement('allFoods');
+                
+                if (currentFood.emoji === '💎') {
+                    diamondCount++;
+                    if (diamondCount >= 3) unlockAchievement('diamond');
+                }
+                
+                checkSpecialScore(newScore);
+                score = newScore;
+
+                if (score >= 520) trigger520Celebration();
+                if (score >= 1314) { unlockAchievement('love1314'); trigger1314Celebration(); }
+
+                document.getElementById('score').textContent = score;
+                scoreAnim();
+                showScoreFloat(addScore);
+                flash('pink');
+                
+                newFood();
+            } else {
+                snake.pop();
+            }
+            
+            draw();
+        }
+        
+        function turn(newDir) {
+            const opp = {up: 'down', down: 'up', left: 'right', right: 'left'};
+            if (opp[newDir] !== dir) {
+                nextDir = newDir;
+                playClick();
+            }
+            
+            konamiCode.push(newDir);
+            if (konamiCode.length > konamiTarget.length) konamiCode.shift();
+            if (konamiCode.join(',') === konamiTarget.join(',')) {
+                unlockAchievement('konami');
+                konamiCode = [];
+            }
+        }
+        
+        function start() {
+            if (running) return;
+            running = true;
+            gameStarted = true;
+            init();
+            playBGMByType('epic');
+            gameLoop();
+
+            function gameLoop() {
+                if (!running) return;
+                update();
+                const speed = Math.max(70, 150 - Math.floor(score / 100) * 5);
+                loop = setTimeout(gameLoop, speed);
+            }
+            document.getElementById('startBtn').textContent = '⚔️ 冒险中...';
+            document.getElementById('startBtn').disabled = true;
+        }
+        
+        function restart() {
+            clearTimeout(loop);
+            stopBGM();
+            running = false;
+            celebration520Fired = false;
+            celebration1314Fired = false;
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('startBtn').textContent = '⚔️ 开始冒险';
+            document.getElementById('startBtn').disabled = false;
+            init();
+        }
+        window.restart = restart;
+        
+        function gameover() {
+            clearTimeout(loop);
+            playGameOver();
+            running = false;
+            celebration520Fired = false;
+            celebration1314Fired = false;
+            
+            let title = '💔 爱不会停下';
+            if (score >= 1314) title = '💝 爱你1314！';
+            else if (score >= 520) title = '❤️ 传奇真爱！';
+            else if (score >= 200) title = '⭐ 强大的爱！';
+            else if (score >= 100) title = '✨ 爱的冒险者！';
+            
+            document.getElementById('endTitle').textContent = title;
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('loveMsg').textContent = OVER_MSGS[Math.floor(Math.random() * OVER_MSGS.length)];
+            
+            let frustrationText = '';
+            if (frustrations > 0) {
+                frustrationText = `经历 ${frustrations} 次碰壁，爱从未动摇！`;
+            } else {
+                frustrationText = `爱的旅途一帆风顺！`;
+            }
+            document.getElementById('frustrationMsg').textContent = frustrationText;
+            
+            document.getElementById('gameOver').style.display = 'flex';
+            document.getElementById('startBtn').textContent = '⚔️ 开始冒险';
+            document.getElementById('startBtn').disabled = false;
+        }
+        
+        // 双重绑定：click + touchstart，确保100%响应
+        const btnUp = document.getElementById('btnUp');
+        const btnDown = document.getElementById('btnDown');
+        const btnLeft = document.getElementById('btnLeft');
+        const btnRight = document.getElementById('btnRight');
+        
+        btnUp.addEventListener('click', () => turn('up'));
+        btnDown.addEventListener('click', () => turn('down'));
+        btnLeft.addEventListener('click', () => turn('left'));
+        btnRight.addEventListener('click', () => turn('right'));
+        
+        btnUp.addEventListener('touchstart', (e) => { e.preventDefault(); turn('up'); }, {passive: false});
+        btnDown.addEventListener('touchstart', (e) => { e.preventDefault(); turn('down'); }, {passive: false});
+        btnLeft.addEventListener('touchstart', (e) => { e.preventDefault(); turn('left'); }, {passive: false});
+        btnRight.addEventListener('touchstart', (e) => { e.preventDefault(); turn('right'); }, {passive: false});
+        
+        let sx = 0, sy = 0;
+        canvas.ontouchstart = (e) => {
+            sx = e.touches[0].clientX;
+            sy = e.touches[0].clientY;
+        };
+        canvas.ontouchend = (e) => {
+            if (!running) return;
+            let dx = e.changedTouches[0].clientX - sx;
+            let dy = e.changedTouches[0].clientY - sy;
+            if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    turn(dx > 0 ? 'right' : 'left');
+                } else {
+                    turn(dy > 0 ? 'down' : 'up');
+                }
+            }
+        };
+        
+        document.onkeydown = (e) => {
+            if (e.key === 'ArrowUp' || e.key === 'w') turn('up');
+            if (e.key === 'ArrowDown' || e.key === 's') turn('down');
+            if (e.key === 'ArrowLeft' || e.key === 'a') turn('left');
+            if (e.key === 'ArrowRight' || e.key === 'd') turn('right');
+        };
+        
+        document.getElementById('header').onclick = () => {
+            headerClicks++;
+            const headerEl = document.getElementById('header');
+            if (headerClicks === 1) {
+                // 第一次：标题微闪
+                headerEl.style.transform = 'scale(1.03)';
+                setTimeout(() => headerEl.style.transform = 'scale(1)', 200);
+            } else if (headerClicks === 2) {
+                // 第二次：提示文字
+                headerEl.style.transform = 'scale(1.05)';
+                setTimeout(() => headerEl.style.transform = 'scale(1)', 200);
+                showFrustration('再点一次试试？❤️');
+            } else if (headerClicks === 3) {
+                unlockAchievement('easter');
+                headerClicks = 0;
+                headerEl.style.transform = 'scale(1)';
+            }
+        };
+
+        // 标题悬停暗示
+        document.getElementById('header').style.cursor = 'pointer';
+        document.getElementById('header').title = '点我有惊喜？';
+        
+        document.getElementById('startBtn').onclick = start;
+        
+        // ===== 用户第一次点击页面任何地方就自动播放BGM =====
+        let firstInteraction = false;
+        
+        document.addEventListener('click', function autoPlayOnFirstClick() {
+            if (!firstInteraction) {
+                firstInteraction = true;
+                initAudio();
+                playBGMByType('romantic'); // 封面：邂逅主题
+                document.removeEventListener('click', autoPlayOnFirstClick);
+            }
+        }, true);
+        
+        init();

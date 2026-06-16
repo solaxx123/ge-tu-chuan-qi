@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>鸽鸽勇者救苏苏</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="float-bg" id="floatBg"></div>
+    <div class="flash-layer" id="flashLayer"></div>
+    <div class="achievement-toast" id="achievementToast"></div>
+    <div class="frustration-popup" id="frustrationPopup"></div>
+    
+    <!-- 第0章：游戏开始封面 -->
+    <div class="page active" id="page0">
+        <div class="start-cover">
+            <div class="cover-bg"></div>
+            <div class="cover-content">
+                <div class="cover-icons">
+                    <span class="icon-float">🕊️</span>
+                    <span class="icon-heart">💕</span>
+                    <span class="icon-float">🐰</span>
+                </div>
+                <h1 class="cover-title">鸽兔传奇</h1>
+                <div class="cover-divider"></div>
+                <p class="cover-desc">
+                    一段属于鸽鸽和苏苏的爱情冒险
+                    <br>收集十件爱情宝物，用真爱之力拯救苏苏公主
+                </p>
+                <button class="cover-btn" onclick="startGame()">
+                    ✨ 开始冒险 ✨
+                </button>
+                <p class="cover-hint">献给世界上最可爱的苏苏 🐰</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 第1章：月光下的邂逅 -->
+    <div class="page" id="page1">
+        <div class="story-box">
+            <div class="chapter-illust illust-ch1">
+                <div class="scene-bg"></div>
+                <div class="scene">🌙<span style="font-size:80px;">🐰</span>🌸</div>
+                <div class="subtitle-overlay">月光下的邂逅 · 初见</div>
+            </div>
+            <h2 class="story-title">第一章 · 月光下的邂逅</h2>
+            <div class="story-content">
+                <p style="animation-delay: 0s;">那是一个月光如水的夜晚，</p>
+                <p style="animation-delay: 0.12s;">樱花在微风中轻轻摇曳。</p>
+                <p style="animation-delay: 0.2s;">在森林深处的月光湖畔，</p>
+                <p style="animation-delay: 0.28s;">年轻的鸽鸽骑士偶遇了一位少女——</p>
+                <p style="animation-delay: 0.36s;font-weight:bold;color:#ff6b9d;">她有着世界上最温柔的眼眸，</p>
+                <p style="animation-delay: 0.44s;">像星星一样闪闪发光。</p>
+                <p style="animation-delay: 0.52s;">她是兔兔公主唐雯，</p>
+                <p style="animation-delay: 0.6s;font-weight:bold;color:#c44569;">全世界最可爱的女孩。</p>
+            </div>
+            <button class="next-btn" onclick="goPage(2)">继续 →</button>
+            <div class="page-indicator">第一章 / 共六章</div>
+        </div>
+    </div>
+    
+    <!-- 第2章：心跳的声音 -->
+    <div class="page" id="page2">
+        <div class="story-box">
+            <div class="chapter-illust illust-ch2">
+                <div class="scene-bg"></div>
+                <div class="scene">🕊️<span style="font-size:40px;">💕💖💕</span>🐰</div>
+                <div class="subtitle-overlay" style="color:#884466;text-shadow:0 1px 3px rgba(255,255,255,0.6);">心跳的声音 · 相爱</div>
+            </div>
+            <h2 class="story-title">第二章 · 心跳的声音</h2>
+            <div class="story-content">
+                <p style="animation-delay: 0s;">从那个夜晚开始，</p>
+                <p style="animation-delay: 0.12s;">鸽鸽的世界彻底改变了。</p>
+                <p style="animation-delay: 0.2s;">每天清晨他都会飞到樱花树下，</p>
+                <p style="animation-delay: 0.28s;">只为看她推开窗户的那一瞬间。</p>
+                <p style="animation-delay: 0.36s;">他们一起看日落、数星星、</p>
+                <p style="animation-delay: 0.44s;">在月光下许下永远的誓言。</p>
+                <p style="animation-delay:0.52s;font-weight:bold;color:#ff6b9d;">"我要用一生来守护你。"</p>
+                <p style="animation-delay:0.6s;color:#884466;">那是鸽鸽心里最坚定的一句话。</p>
+            </div>
+            <button class="next-btn" onclick="goPage(3)">继续 →</button>
+            <div class="page-indicator">第二章 / 共六章</div>
+        </div>
+    </div>
+    
+    <!-- 第3章：暴风雨之夜 -->
+    <div class="page" id="page3">
+        <div class="story-box">
+            <div class="chapter-illust illust-ch3">
+                <div class="scene-bg"></div>
+                <div class="scene">⛈️<span style="font-size:70px;">🐲</span>⚡</div>
+                <div style="position:absolute;bottom:60px;left:50%;transform:translateX(-50%);z-index:1;font-size:30px;">😢🐰🔒</div>
+                <div class="subtitle-overlay">暴风雨之夜 · 分离</div>
+            </div>
+            <h2 class="story-title" style="color:#ff4757;">第三章 · 暴风雨之夜</h2>
+            <div class="story-content">
+                <p style="animation-delay:0s;">幸福的日子并没有持续太久。</p>
+                <p style="animation-delay:0.12s;">黑暗深渊中，孤独的魔龙苏醒了。</p>
+                <p style="animation-delay:0.2s;">它嫉妒世间一切美好的爱情，</p>
+                <p style="animation-delay:0.28s;">在一个雷鸣电闪的暴风雨之夜——</p>
+                <p style="animation-delay:0.36s;font-weight:bold;color:#ff4757;">它俯冲而下，抓走了唐雯公主！</p>
+                <p style="animation-delay:0.44s;">鸽鸽拼命地追，追过了三座山，</p>
+                <p style="animation-delay:0.52s;">但魔龙的身影消失在了黑暗中。</p>
+                <p style="animation-delay:0.6s;color:#884466;">他跪在雨里，泪水与雨水混在一起……</p>
+            </div>
+            <button class="next-btn" onclick="goPage(4)">继续 →</button>
+            <div class="page-indicator">第三章 / 共六章</div>
+        </div>
+    </div>
+    
+    <!-- 第4章：希望的微光 -->
+    <div class="page" id="page4">
+        <div class="story-box">
+            <div class="chapter-illust illust-ch4">
+                <div class="scene-bg"></div>
+                <div class="scene">👑<span style="font-size:50px;">📜</span>✨</div>
+                <div class="subtitle-overlay">希望的微光 · 决心</div>
+            </div>
+            <h2 class="story-title">第四章 · 希望的微光</h2>
+            <div class="story-content">
+                <p style="animation-delay:0s;">鸽鸽擦干眼泪，站了起来。</p>
+                <p style="animation-delay:0.12s;">他来到王国最古老的图书馆，</p>
+                <p style="animation-delay:0.2s;">翻遍所有古籍，终于找到了一线希望——</p>
+                <p style="animation-delay:0.28s;">传说在世界各地，散落着十件宝物，</p>
+                <p style="animation-delay:0.36s;">每一件都蕴含着爱情的力量。</p>
+                <p style="animation-delay:0.44s;font-weight:bold;color:#6c5ce7;">"集齐十件爱情宝物，</p>
+                <p style="animation-delay:0.52s;font-weight:bold;color:#6c5ce7;">就能唤醒真爱之力，战胜一切黑暗！"</p>
+                <p style="animation-delay:0.6s;color:#ff6b9d;">鸽鸽的眼中重新燃起了光芒。</p>
+            </div>
+            <button class="next-btn" onclick="goPage(5)">继续 →</button>
+            <div class="page-indicator">第四章 / 共六章</div>
+        </div>
+    </div>
+    
+    <!-- 第5章：爱的试炼 -->
+    <div class="page" id="page5">
+        <div class="story-box">
+            <div class="chapter-illust illust-ch5">
+                <div class="scene-bg"></div>
+                <div class="scene" style="font-size:40px;">💞❤️🐰🐇🌈💎🌟✨💝👑</div>
+                <div class="subtitle-overlay">爱的试炼 · 承诺</div>
+            </div>
+            <h2 class="story-title">第五章 · 爱的试炼</h2>
+            <div class="story-content">
+                <p style="animation-delay:0s;">十件宝物，每一件都是爱的证明：</p>
+            </div>
+            <div style="margin-bottom:12px;">
+                <div class="mission-item" style="animation-delay:0.1s;"><div class="mission-icon">💞</div><div class="mission-text">永恒宝石：爱之力达到99</div></div>
+                <div class="mission-item" style="animation-delay:0.18s;"><div class="mission-icon">❤️</div><div class="mission-text">真爱之心：爱之力达到520</div></div>
+                <div class="mission-item" style="animation-delay:0.26s;"><div class="mission-icon">🐰</div><div class="mission-text">思念之绳：成长到10节</div></div>
+                <div class="mission-item" style="animation-delay:0.34s;"><div class="mission-icon">🐇</div><div class="mission-text">牵绊之链：成长到20节</div></div>
+                <div class="mission-item" style="animation-delay:0.42s;"><div class="mission-icon">🌈</div><div class="mission-text">百味之瓶：收集全部8种宝物</div></div>
+                <div class="mission-item" style="animation-delay:0.5s;"><div class="mission-icon">💎</div><div class="mission-text">钻石誓言：收集3颗钻石</div></div>
+                <div class="mission-item" style="animation-delay:0.58s;"><div class="mission-icon">🌟</div><div class="mission-text">不屈之星：3次碰壁仍坚持</div></div>
+                <div class="mission-item" style="animation-delay:0.66s;"><div class="mission-icon">💝</div><div class="mission-text">爱你1314：单次获得1314分</div></div>
+                <div class="mission-item" style="animation-delay:0.74s;"><div class="mission-icon">💖</div><div class="mission-text">惊喜彩蛋：发现隐藏惊喜</div></div>
+                <div class="mission-item" style="animation-delay:0.82s;"><div class="mission-icon">👑</div><div class="mission-text">真爱无敌：集齐前9件宝物</div></div>
+            </div>
+            <button class="next-btn" onclick="goPage(6)">继续 →</button>
+            <div class="page-indicator">第五章 / 共六章</div>
+        </div>
+    </div>
+    
+    <!-- 第6章：为你而战 -->
+    <div class="page" id="page6">
+        <div class="story-box">
+            <div class="chapter-illust illust-ch6">
+                <div class="scene-bg"></div>
+                <div class="scene">⚔️<span style="font-size:70px;">🕊️</span>🏰</div>
+                <div class="subtitle-overlay">为你而战 · 出发</div>
+            </div>
+            <h2 class="story-title">第六章 · 为你而战</h2>
+            <div class="story-content">
+                <p style="animation-delay:0s;">鸽鸽背上行囊，踏上了征途。</p>
+                <p style="animation-delay:0.12s;">他不知道前方有多少危险，</p>
+                <p style="animation-delay:0.2s;">但他知道，每走一步，</p>
+                <p style="animation-delay:0.28s;">就离唐雯更近一步。</p>
+                <p style="animation-delay:0.36s;">穿越迷雾森林，跨越深渊峡谷，</p>
+                <p style="animation-delay:0.44s;">收集每一件散落的爱情宝物——</p>
+                <p style="animation-delay:0.52s;font-weight:bold;color:#ff6b9d;text-align:center;">
+                    "唐雯，等我！"
+                </p>
+                <p style="animation-delay:0.6s;font-weight:bold;color:#c44569;text-align:center;">
+                    我一定会带你回家 💕
+                </p>
+            </div>
+            <button class="next-btn" onclick="goPage('Game')">🎮 开始冒险</button>
+            <div class="page-indicator">第六章 / 共六章</div>
+        </div>
+    </div>
+    
+    <!-- 游戏页面 -->
+    <div class="page" id="pageGame">
+        <div class="game-box">
+            <div class="header" id="header">
+                <div class="icons">⚔️ 🕊️ 救 🐰</div>
+                <h1>鸽鸽勇者救苏苏</h1>
+                <p class="subtitle">收集宝物，用真爱之力救出苏苏公主</p>
+            </div>
+            
+            <div class="score-bar">
+                <div class="score-item">
+                    <div class="score-label">❤️ 爱之力</div>
+                    <div class="score-num" id="score">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">🏆 最深爱意</div>
+                    <div class="score-num" id="highScore">0</div>
+                    <div style="font-size:0.6rem;color:rgba(196,69,105,0.5);margin-top:1px;" id="highScoreDate"></div>
+                </div>
+            </div>
+            
+            <canvas id="canvas" width="340" height="340"></canvas>
+            
+            <button class="start-btn-center" id="startBtn">⚔️ 开始冒险</button>
+            
+            <!-- 四大块方向键 - 100%点击响应 -->
+            <div class="dpad-container">
+                <button class="dir-btn btn-up" id="btnUp">↑</button>
+                <button class="dir-btn btn-down" id="btnDown">↓</button>
+                <button class="dir-btn btn-left" id="btnLeft">←</button>
+                <button class="dir-btn btn-right" id="btnRight">→</button>
+                <div class="dpad-center"></div>
+            </div>
+            
+            <!-- 成就列表 -->
+            <div class="achievement-list">
+                <div class="achievement-title">🏆 爱情宝物收集</div>
+                <div class="achievement-progress" id="achievementProgress">已解锁：0 / 10</div>
+                <div id="achievementList">
+                    <!-- JS生成 -->
+                </div>
+            </div>
+            
+            <p class="hint" style="margin-top: 5px;">💕 每一个音符都在说爱你</p>
+            <p class="hint">🔍 听说标题藏着秘密...</p>
+            <p class="from">—— 爱你的鸽鸽 💌</p>
+        </div>
+    </div>
+    
+    <!-- 通关页面1：战胜魔龙 + 浪漫结局 -->
+    <div class="page" id="pageVictory">
+        <div class="victory-container">
+            <div class="victory-box">
+                <div class="victory-content">
+                    <div class="victory-icon">💥 🐲 → 💀</div>
+                    
+                    <h1 class="victory-title">💕 真爱永恒 💕</h1>
+                    <div class="victory-subtitle">爱是世界上最强大的魔法</div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="victory-text">
+                        勇者鸽鸽集齐了10件爱情宝物
+                        <br>获得了无穷的<span class="highlight">真爱之力</span>
+                        <br><br>
+                        单身魔龙被爱的光芒彻底净化
+                        <br><br>
+                        <span class="highlight">兔兔公主苏苏成功获救！</span>
+                    </div>
+                    
+                    <div class="love-ending">
+                        <div class="love-text">
+                            从此以后，
+                            <br><span class="names">鸽鸽骑士</span>与
+                            <span class="names">兔兔公主苏苏</span>
+                            <br>在爱的王国里
+                            <br>幸福快乐地生活在一起
+                            <br><br>
+                            岁岁年年，朝朝暮暮
+                            <br>两情相悦，一生一世
+                        </div>
+                    </div>
+                    
+                    <div style="margin:18px 0;padding:12px;background:rgba(255,255,255,0.6);border-radius:16px;border:2px solid rgba(255,107,157,0.25);overflow:hidden;box-shadow:0 4px 16px rgba(255,107,157,0.15);position:relative;"><div style="font-size:0.75rem;color:rgba(196,69,105,0.6);margin-bottom:8px;letter-spacing:1px;">📸 甜蜜合影</div><img src="{{ENDING_IMAGE}}" style="width:100%;border-radius:10px;display:block;" alt="鸽鸽和苏苏的甜蜜合影" style="width:100%;border-radius:10px;display:block;"><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;pointer-events:none;text-align:center;"><span style="font-size:clamp(20px,6vw,32px);color:#fff;font-weight:900;letter-spacing:4px;text-shadow:0 2px 12px rgba(255,107,157,0.8),0 0 30px rgba(255,107,157,0.4),0 0 60px rgba(200,100,150,0.6);animation:heartbeat 2.5s ease-in-out infinite;display:inline-block;">唐雯 我爱你</span></div>></div>
+                    <div class="couple-names">
+                        🕊️ 鸽鸽 & 苏苏 🐰
+                    </div>
+                    <div class="forever-text">
+                        执子之手 · 与子偕老
+                    </div>
+                    
+                    <button class="victory-btn" onclick="goPage('Credits')">
+                        ✨ 查看制作人员 ✨
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 通关页面2：梦幻片尾字幕 -->
+    <div class="page" id="pageCredits">
+        <div class="credits-container">
+            <div class="credits-box">
+                <div class="credits-header">
+                    <div class="credits-icon">🎬 💕</div>
+                    <div class="credits-title">CAST & CREW</div>
+                </div>
+                
+                <div class="credits-scroll">
+                    <div class="credits-content">
+                        
+                        <div class="credit-section">
+                            <div class="credit-role">PRODUCER</div>
+                            <div class="credit-name">鸽鸽</div>
+                        </div>
+                        
+                        <div class="credit-section">
+                            <div class="credit-role">WRITER</div>
+                            <div class="credit-name">鸽鸽</div>
+                        </div>
+                        
+                        <div class="credit-section">
+                            <div class="credit-role">DESIGNER</div>
+                            <div class="credit-name">鸽鸽</div>
+                        </div>
+                        
+                        <div class="credit-section">
+                            <div class="credit-role">TECHNICAL SUPPORT</div>
+                            <div class="credit-name">豆包</div>
+                        </div>
+                        
+                        <div class="credit-section">
+                            <div class="credit-role">SPECIAL THANKS</div>
+                            <div class="credit-name special">兔兔公主苏苏 🐰</div>
+                        </div>
+                        
+                        <div class="the-end">
+                            <div class="the-end-text">THE END</div>
+                            <div class="final-heart">💕</div>
+                        </div>
+
+                        <div class="credit-section" style="margin-top: 30px;">
+                            <div class="credit-role">制作日期</div>
+                            <div class="credit-name" style="font-size: 0.9rem;">2026年6月</div>
+                        </div>
+                        <div class="credit-section">
+                            <div class="credit-role">SPECIAL THANKS TO</div>
+                            <div class="credit-name special" style="font-size: 0.9rem;">每一位相信爱情的人 💕</div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <button class="credits-btn" onclick="fullRestart()">
+                    🎮 重新开始冒险
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 游戏结束 -->
+    <div class="game-over" id="gameOver">
+        <div class="game-over-box">
+            <h2 id="endTitle">💔 休息一下</h2>
+            <p id="loveMsg">没关系，我们再来！</p>
+            <div class="final-score">爱之力：<span id="finalScore">0</span></div>
+            <div style="font-size: 0.85rem; color: #6c5ce7; margin-bottom: 15px;" id="frustrationMsg"></div>
+            <button class="start-btn-center" onclick="restart()">⚔️ 再次挑战</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

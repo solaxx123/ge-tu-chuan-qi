@@ -99,12 +99,12 @@
                 <p style="animation-delay:0.320s;">某天无聊飞过王国上空……</p>
                 <p style="animation-delay:0.560s;">突然被一道光芒闪瞎了龙眼。</p>
                 <p style="animation-delay:0.800s;">它低头一看——是兔兔公主在花园里浇花。</p>
-                <p style="animation-delay:1.040s;font-weight:bold;color:#ff4757;">"这个公主也太可爱了吧！！"</p>
-                <p style="animation-delay:1.25s;">魔龙掏出手机连拍三十张照片，</p>
-                <p style="animation-delay:1.45s;">"不行不行，必须抢回山洞天天看！"</p>
-                <p style="animation-delay:1.65s;">一个俯冲叼起兔兔就跑，</p>
-                <p style="animation-delay:1.85s;">临走还卷走了三箱胡萝卜——</p>
-                <p style="animation-delay:2.05s;color:#884466;">"公主这么可爱，伙食不能差。"</p>
+                <p style="animation-delay:1.040s;font-weight:bold;color:#ff4757;">"我的天呐——这也太可爱了吧！！！"</p>
+                <p style="animation-delay:1.25s;">魔龙激动得尾巴打结、翅膀抽筋，</p>
+                <p style="animation-delay:1.45s;">在天空中足足盘旋了十八圈才稳住。</p>
+                <p style="animation-delay:1.65s;">"不行，必须带回山洞！每天看一眼心情好！"</p>
+                <p style="animation-delay:1.85s;">一个俯冲叼起兔兔就跑，</p>
+                <p style="animation-delay:2.05s;color:#884466;">（还顺走了三箱胡萝卜——"公主这么可爱，伙食不能差。"）</p>
                 <p style="animation-delay:1.760s;color:#884466;">鸽鸽："……那个，我还没表白呢。"</p>
             </div>
             <button class="next-btn" onclick="goPage(4)">继续 →</button>
@@ -251,21 +251,18 @@
 
             <!-- 战斗场景栏：鸽鸽 vs 巨龙 -->
             <div class="battle-bar">
-                <div class="battle-hero">
-                    <span class="battle-emoji">🕊️</span>
-                    <span class="battle-label">鸽鸽</span>
-                </div>
-                <div class="battle-hp-wrapper">
-                    <div class="battle-vs">VS</div>
+                <span class="battle-hero-icon">🕊️⚔️</span>
+                <div class="battle-hp-wrap">
+                    <div class="battle-hp-top">
+                        <span>🐲 魔龙</span>
+                        <span class="battle-hp-pct" id="dragonHPText">100%</span>
+                    </div>
                     <div class="battle-hp-bar" id="dragonHP">
                         <div class="battle-hp-fill" id="dragonHPFill"></div>
+                        <div class="battle-hp-scales"></div>
                     </div>
-                    <div class="battle-hp-text" id="dragonHPText">❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️</div>
                 </div>
-                <div class="battle-enemy">
-                    <span class="battle-emoji">🐲</span>
-                    <span class="battle-label">魔龙</span>
-                </div>
+                <span class="battle-enemy-icon">🐲</span>
             </div>
 
             <div class="score-bar">

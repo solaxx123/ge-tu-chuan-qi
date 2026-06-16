@@ -384,66 +384,34 @@
         .dpad-right::after { content:"▶"; position:absolute; right:10px; top:50%; transform:translateY(-50%); font-size:16px; color:rgba(255,107,157,0.45); pointer-events:none; }
 /* ===== 战斗场景栏 ===== */
         .battle-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: min(92vw, 400px);
-            padding: 10px 14px;
-            background: linear-gradient(135deg, rgba(255,240,245,0.85), rgba(255,255,255,0.7));
-            border-radius: 16px;
-            border: 1px solid rgba(255,107,157,0.2);
-            box-shadow: 0 3px 12px rgba(255,107,157,0.1);
-            gap: 8px;
+            display: flex; align-items: center; gap: 8px;
+            width: min(92vw, 400px); padding: 6px 10px;
+            background: linear-gradient(135deg, rgba(30,10,20,0.9), rgba(50,20,30,0.75));
+            border-radius: 14px; border: 1px solid rgba(255,80,80,0.3);
+            box-shadow: 0 3px 12px rgba(255,0,0,0.12);
         }
-        .battle-hero, .battle-enemy {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            flex-shrink: 0;
-        }
-        .battle-emoji {
-            font-size: 28px;
-        }
-        .battle-label {
-            font-size: 10px;
-            color: #884466;
-            font-weight: 600;
-        }
-        .battle-hp-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-        }
-        .battle-vs {
-            font-size: 11px;
-            font-weight: 900;
-            color: #ff6b9d;
-            letter-spacing: 2px;
-        }
+        .battle-hero-icon { font-size: 22px; flex-shrink: 0; }
+        .battle-enemy-icon { font-size: 28px; flex-shrink: 0; }
+        .battle-hp-wrap { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+        .battle-hp-top { display: flex; justify-content: space-between; font-size: 10px; color: #ffaaaa; font-weight: 600; }
+        .battle-hp-pct { color: #ff6666; }
         .battle-hp-bar {
-            width: 100%;
-            height: 10px;
-            background: #eee;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            width: 100%; height: 14px; background: #1a0a0a;
+            border-radius: 7px; overflow: hidden; position: relative;
+            border: 1px solid rgba(255,80,80,0.3);
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
         }
         .battle-hp-fill {
-            height: 100%;
-            width: 100%;
-            background: linear-gradient(90deg, #ff4444, #ff6b9d, #ff8888);
-            border-radius: 5px;
-            transition: width 0.6s ease;
+            height: 100%; width: 100%;
+            background: linear-gradient(90deg, #ff2222, #ff4444 30%, #ff6666 60%, #ff8888);
+            border-radius: 7px; transition: width 0.6s ease;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
         }
-        .battle-hp-text {
-            font-size: 11px;
-            letter-spacing: 1px;
-            line-height: 1.2;
-        }
-        @keyframes hpShake {
+        .battle-hp-scales {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(90deg, transparent, transparent 9.5%, rgba(0,0,0,0.2) 9.5%, rgba(0,0,0,0.2) 10%);
+            pointer-events: none;
+        }@keyframes hpShake {
             0%,100% { transform: translateX(0); }
             25% { transform: translateX(-4px); }
             75% { transform: translateX(4px); }
@@ -1071,8 +1039,8 @@
         .achievement-icon { font-size: 1.5rem; margin-bottom: 3px; display: block; }
         .achievement-info { width: 100%; }
         .achievement-name { font-size: 0.6rem; font-weight: 700; color: #884466; white-space: nowrap; }
-        .achievement-desc { font-size: 0.55rem; color: #bbb; margin-top: 1px; display: none; }
-        .achievement-item.unlocked .achievement-desc { color: #8b4557; }
+        .achievement-desc { font-size: 0.5rem; color: #ccc; margin-top: 1px; }
+        .achievement-item.unlocked .achievement-desc { color: #8b4557; opacity: 0.6; }
         .achievement-check { font-size: 0.7rem; color: #ffd700; margin-top: 2px; }
 .flash-layer {
             position: fixed;
@@ -1230,12 +1198,12 @@
                 <p style="animation-delay:0.320s;">某天无聊飞过王国上空……</p>
                 <p style="animation-delay:0.560s;">突然被一道光芒闪瞎了龙眼。</p>
                 <p style="animation-delay:0.800s;">它低头一看——是兔兔公主在花园里浇花。</p>
-                <p style="animation-delay:1.040s;font-weight:bold;color:#ff4757;">"这个公主也太可爱了吧！！"</p>
-                <p style="animation-delay:1.25s;">魔龙掏出手机连拍三十张照片，</p>
-                <p style="animation-delay:1.45s;">"不行不行，必须抢回山洞天天看！"</p>
-                <p style="animation-delay:1.65s;">一个俯冲叼起兔兔就跑，</p>
-                <p style="animation-delay:1.85s;">临走还卷走了三箱胡萝卜——</p>
-                <p style="animation-delay:2.05s;color:#884466;">"公主这么可爱，伙食不能差。"</p>
+                <p style="animation-delay:1.040s;font-weight:bold;color:#ff4757;">"我的天呐——这也太可爱了吧！！！"</p>
+                <p style="animation-delay:1.25s;">魔龙激动得尾巴打结、翅膀抽筋，</p>
+                <p style="animation-delay:1.45s;">在天空中足足盘旋了十八圈才稳住。</p>
+                <p style="animation-delay:1.65s;">"不行，必须带回山洞！每天看一眼心情好！"</p>
+                <p style="animation-delay:1.85s;">一个俯冲叼起兔兔就跑，</p>
+                <p style="animation-delay:2.05s;color:#884466;">（还顺走了三箱胡萝卜——"公主这么可爱，伙食不能差。"）</p>
                 <p style="animation-delay:1.760s;color:#884466;">鸽鸽："……那个，我还没表白呢。"</p>
             </div>
             <button class="next-btn" onclick="goPage(4)">继续 →</button>
@@ -1382,21 +1350,18 @@
 
             <!-- 战斗场景栏：鸽鸽 vs 巨龙 -->
             <div class="battle-bar">
-                <div class="battle-hero">
-                    <span class="battle-emoji">🕊️</span>
-                    <span class="battle-label">鸽鸽</span>
-                </div>
-                <div class="battle-hp-wrapper">
-                    <div class="battle-vs">VS</div>
+                <span class="battle-hero-icon">🕊️⚔️</span>
+                <div class="battle-hp-wrap">
+                    <div class="battle-hp-top">
+                        <span>🐲 魔龙</span>
+                        <span class="battle-hp-pct" id="dragonHPText">100%</span>
+                    </div>
                     <div class="battle-hp-bar" id="dragonHP">
                         <div class="battle-hp-fill" id="dragonHPFill"></div>
+                        <div class="battle-hp-scales"></div>
                     </div>
-                    <div class="battle-hp-text" id="dragonHPText">❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️</div>
                 </div>
-                <div class="battle-enemy">
-                    <span class="battle-emoji">🐲</span>
-                    <span class="battle-label">魔龙</span>
-                </div>
+                <span class="battle-enemy-icon">🐲</span>
             </div>
 
             <div class="score-bar">
@@ -1738,7 +1703,7 @@
                 const cls = unlocked ? 'unlocked' : 'locked';
                 const icon = unlocked ? ach.icon : '🔒';
                 const check = unlocked ? '<div class="achievement-check">✓</div>' : '';
-                grid.innerHTML += '<div class="achievement-item ' + cls + '"><div class="achievement-icon">' + icon + '</div><div class="achievement-info"><div class="achievement-name">' + ach.name + '</div></div>' + check + '</div>';
+                grid.innerHTML += '<div class="achievement-item ' + cls + '" title="' + ach.desc + '"><div class="achievement-icon">' + icon + '</div><div class="achievement-info"><div class="achievement-name">' + ach.name + '</div><div class="achievement-desc">' + ach.desc + '</div></div>' + check + '</div>';
             });
             document.getElementById('achievementProgress').textContent = 
                 `已解锁：${unlockedCount} / 10`;
@@ -1790,7 +1755,7 @@
                             const h = document.createElement('div');
                             h.textContent = ['❤️','💕','💖','🕊️','🐰','✨'][Math.floor(Math.random()*6)];
                             h.style.cssText = `
-                                position:fixed;z-index:1;pointer-events:none;
+                                position:fixed;z-index:250;pointer-events:none;
                                 font-size:${20+Math.random()*30}px;
                                 left:${Math.random()*90}%;top:50%;
                                 animation: heartRain ${1.5+Math.random()*2.5}s ease-out forwards;
@@ -1883,7 +1848,7 @@
         let dir = 'right';
         let nextDir = 'right';
         let score = 0;
-        let frustrations = 0;
+        let frustrations = 0; let totalDeaths = parseInt(localStorage.getItem("snakeDeaths")||"0");
         let comboTimer = 0;
         let comboCount = 0;
         let luckyCharm = 0;
@@ -2144,7 +2109,7 @@
                     const h = document.createElement('div');
                     h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
                     h.style.cssText = `
-                        position:fixed;z-index:1;pointer-events:none;
+                        position:fixed;z-index:250;pointer-events:none;
                         font-size:${18+Math.random()*28}px;
                         left:${Math.random()*90}%;top:-30px;
                         animation: heartRain ${1.5+Math.random()*2}s ease-in forwards;
@@ -2168,7 +2133,7 @@
                     const h = document.createElement('div');
                     h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
                     h.style.cssText = `
-                        position:fixed;z-index:1;pointer-events:none;
+                        position:fixed;z-index:250;pointer-events:none;
                         font-size:${20+Math.random()*36}px;
                         left:${Math.random()*90}%;top:-30px;
                         animation: heartRain ${1.5+Math.random()*3}s ease-in forwards;
@@ -2436,6 +2401,8 @@
         window.restart = restart;
         
         function gameover() {
+            totalDeaths++; try { localStorage.setItem("snakeDeaths", totalDeaths); } catch(e) {}
+            if (totalDeaths >= 3) unlockAchievement("neverGiveUp");
             clearTimeout(loop);
             playGameOver();
             running = false;
@@ -2627,7 +2594,7 @@
                 rabbitRunning = false; cancelAnimationFrame(rabbitLoop); playVictoryMusic();
                 document.getElementById('rabbitStartBtn').textContent = '🐰 已通关！';
                 document.getElementById('rabbitStartBtn').disabled = true;
-                for (let i = 0; i < 25; i++) { setTimeout(() => { const p = document.createElement('div'); p.textContent = ['🗝️','💕','🐰','✨'][Math.floor(Math.random()*4)]; p.style.cssText = 'position:fixed;z-index:1;pointer-events:none;font-size:'+(18+Math.random()*25)+'px;left:'+Math.random()*95+'%;top:-20px;animation:heartRain '+(1.5+Math.random()*2)+'s ease-in forwards;'; document.body.appendChild(p); setTimeout(() => p.remove(), 3000); }, i*50); }
+                for (let i = 0; i < 25; i++) { setTimeout(() => { const p = document.createElement('div'); p.textContent = ['🗝️','💕','🐰','✨'][Math.floor(Math.random()*4)]; p.style.cssText = 'position:fixed;z-index:250;pointer-events:none;font-size:'+(18+Math.random()*25)+'px;left:'+Math.random()*95+'%;top:-20px;animation:heartRain '+(1.5+Math.random()*2)+'s ease-in forwards;'; document.body.appendChild(p); setTimeout(() => p.remove(), 3000); }, i*50); }
                 setTimeout(() => goPage('TrueEnding'), 2500);
             }
             function rabbitJump() { if (!rabbitRunning) return; rabbit.vy = JUMP; playClick(); }

@@ -106,7 +106,7 @@
                 const cls = unlocked ? 'unlocked' : 'locked';
                 const icon = unlocked ? ach.icon : '🔒';
                 const check = unlocked ? '<div class="achievement-check">✓</div>' : '';
-                grid.innerHTML += '<div class="achievement-item ' + cls + '"><div class="achievement-icon">' + icon + '</div><div class="achievement-info"><div class="achievement-name">' + ach.name + '</div></div>' + check + '</div>';
+                grid.innerHTML += '<div class="achievement-item ' + cls + '" title="' + ach.desc + '"><div class="achievement-icon">' + icon + '</div><div class="achievement-info"><div class="achievement-name">' + ach.name + '</div><div class="achievement-desc">' + ach.desc + '</div></div>' + check + '</div>';
             });
             document.getElementById('achievementProgress').textContent = 
                 `已解锁：${unlockedCount} / 10`;
@@ -158,7 +158,7 @@
                             const h = document.createElement('div');
                             h.textContent = ['❤️','💕','💖','🕊️','🐰','✨'][Math.floor(Math.random()*6)];
                             h.style.cssText = `
-                                position:fixed;z-index:1;pointer-events:none;
+                                position:fixed;z-index:250;pointer-events:none;
                                 font-size:${20+Math.random()*30}px;
                                 left:${Math.random()*90}%;top:50%;
                                 animation: heartRain ${1.5+Math.random()*2.5}s ease-out forwards;
@@ -251,7 +251,7 @@
         let dir = 'right';
         let nextDir = 'right';
         let score = 0;
-        let frustrations = 0;
+        let frustrations = 0; let totalDeaths = parseInt(localStorage.getItem("snakeDeaths")||"0");
         let comboTimer = 0;
         let comboCount = 0;
         let luckyCharm = 0;
@@ -512,7 +512,7 @@
                     const h = document.createElement('div');
                     h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
                     h.style.cssText = `
-                        position:fixed;z-index:1;pointer-events:none;
+                        position:fixed;z-index:250;pointer-events:none;
                         font-size:${18+Math.random()*28}px;
                         left:${Math.random()*90}%;top:-30px;
                         animation: heartRain ${1.5+Math.random()*2}s ease-in forwards;
@@ -536,7 +536,7 @@
                     const h = document.createElement('div');
                     h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
                     h.style.cssText = `
-                        position:fixed;z-index:1;pointer-events:none;
+                        position:fixed;z-index:250;pointer-events:none;
                         font-size:${20+Math.random()*36}px;
                         left:${Math.random()*90}%;top:-30px;
                         animation: heartRain ${1.5+Math.random()*3}s ease-in forwards;
@@ -804,6 +804,8 @@
         window.restart = restart;
         
         function gameover() {
+            totalDeaths++; try { localStorage.setItem("snakeDeaths", totalDeaths); } catch(e) {}
+            if (totalDeaths >= 3) unlockAchievement("neverGiveUp");
             clearTimeout(loop);
             playGameOver();
             running = false;
@@ -995,7 +997,7 @@
                 rabbitRunning = false; cancelAnimationFrame(rabbitLoop); playVictoryMusic();
                 document.getElementById('rabbitStartBtn').textContent = '🐰 已通关！';
                 document.getElementById('rabbitStartBtn').disabled = true;
-                for (let i = 0; i < 25; i++) { setTimeout(() => { const p = document.createElement('div'); p.textContent = ['🗝️','💕','🐰','✨'][Math.floor(Math.random()*4)]; p.style.cssText = 'position:fixed;z-index:1;pointer-events:none;font-size:'+(18+Math.random()*25)+'px;left:'+Math.random()*95+'%;top:-20px;animation:heartRain '+(1.5+Math.random()*2)+'s ease-in forwards;'; document.body.appendChild(p); setTimeout(() => p.remove(), 3000); }, i*50); }
+                for (let i = 0; i < 25; i++) { setTimeout(() => { const p = document.createElement('div'); p.textContent = ['🗝️','💕','🐰','✨'][Math.floor(Math.random()*4)]; p.style.cssText = 'position:fixed;z-index:250;pointer-events:none;font-size:'+(18+Math.random()*25)+'px;left:'+Math.random()*95+'%;top:-20px;animation:heartRain '+(1.5+Math.random()*2)+'s ease-in forwards;'; document.body.appendChild(p); setTimeout(() => p.remove(), 3000); }, i*50); }
                 setTimeout(() => goPage('TrueEnding'), 2500);
             }
             function rabbitJump() { if (!rabbitRunning) return; rabbit.vy = JUMP; playClick(); }

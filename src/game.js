@@ -183,12 +183,34 @@
             if (achievements[id]) return;
             achievements[id] = true;
             renderAchievements();
-            
+            updateDragonHP();
+
             const ach = ACHIEVEMENTS.find(a => a.id === id);
             if (ach && !ach.hidden) {
                 showAchievementToast(`${ach.icon} ${ach.name}`);
                 flash('gold');
                 playAchievement();
+                // 血条震动
+                const hpBar = document.getElementById('dragonHP');
+                if (hpBar) { hpBar.style.animation = 'none'; hpBar.offsetHeight; hpBar.style.animation = 'hpShake 0.5s ease'; }
+            }
+        }
+
+        // ===== 巨龙血条更新 =====
+        function updateDragonHP() {
+            const total = ACHIEVEMENTS.filter(a => !a.hidden).length;
+            const unlocked = Object.keys(achievements).filter(k => achievements[k]).length;
+            const remaining = Math.max(0, total - unlocked);
+            const pct = (remaining / total) * 100;
+
+            const fill = document.getElementById('dragonHPFill');
+            const text = document.getElementById('dragonHPText');
+            if (fill) fill.style.width = pct + '%';
+            if (text) {
+                let hearts = '';
+                for (let i = 0; i < remaining; i++) hearts += '❤️';
+                for (let i = 0; i < unlocked; i++) hearts += '🖤';
+                text.textContent = hearts || '💀';
             }
         }
         
@@ -762,7 +784,9 @@
             running = true;
             gameStarted = true;
             init();
+            updateDragonHP();
             playBGMByType('epic');
+            startEasterHintTimer();
             gameLoop();
 
             function gameLoop() {
@@ -774,6 +798,23 @@
             document.getElementById('startBtn').textContent = '⚔️ 冒险中...';
             document.getElementById('startBtn').disabled = true;
         }
+
+        // ===== 彩蛋提示定时器 =====
+        let easterHintTimer = null;
+        function startEasterHintTimer() {
+            stopEasterHintTimer();
+            easterHintTimer = setInterval(() => {
+                if (!running) return;
+                const hint = document.getElementById('easterHint');
+                if (hint && !achievements['easter']) {
+                    hint.classList.add('show');
+                    setTimeout(() => hint.classList.remove('show'), 2500);
+                }
+            }, 25000 + Math.random() * 15000); // 25-40秒随机出现
+        }
+        function stopEasterHintTimer() {
+            if (easterHintTimer) { clearInterval(easterHintTimer); easterHintTimer = null; }
+        }
         
         function restart() {
             clearTimeout(loop);
@@ -781,10 +822,12 @@
             running = false;
             celebration520Fired = false;
             celebration1314Fired = false;
+            stopEasterHintTimer();
             document.getElementById('gameOver').style.display = 'none';
             document.getElementById('startBtn').textContent = '⚔️ 开始冒险';
             document.getElementById('startBtn').disabled = false;
             init();
+            updateDragonHP();
         }
         window.restart = restart;
         
@@ -794,6 +837,7 @@
             running = false;
             celebration520Fired = false;
             celebration1314Fired = false;
+            stopEasterHintTimer();
             
             let title = '💔 爱不会停下';
             if (score >= 1314) title = '💝 爱你1314！';

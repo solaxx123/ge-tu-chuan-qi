@@ -701,82 +701,138 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
             position: relative;
             padding: 20px;
+            padding-bottom: 60px;
         }
-        
-        .cover-bg {
+
+        .cover-photo {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; right: 0; bottom: 0;
             background-image: url('{{COVER_IMAGE}}');
             background-size: cover;
-            background-position: center;
-            filter: blur(8px) brightness(1.1);
-            opacity: 0.6;
+            background-position: center top;
+            border-radius: 0;
         }
-        
+
+        .cover-gradient {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 55%;
+            background: linear-gradient(180deg,
+                transparent 0%,
+                rgba(255,240,245,0.6) 30%,
+                rgba(255,255,255,0.9) 60%,
+                #fff 100%);
+            pointer-events: none;
+        }
+
         @keyframes coverPulse {
             0%, 100% { opacity: 0.8; }
             50% { opacity: 1; }
         }
-        
+
         .cover-content {
-            background: linear-gradient(180deg, 
-                rgba(255, 255, 255, 0.95) 0%, 
-                rgba(255, 240, 245, 0.98) 100%);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 50px 35px;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 28px;
+            padding: 36px 28px;
             text-align: center;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 
-                0 0 100px rgba(255, 107, 157, 0.2),
-                0 25px 80px rgba(108, 92, 231, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1.5px solid rgba(255,255,255,0.9);
+            box-shadow:
+                0 8px 40px rgba(255,107,157,0.18),
+                0 2px 12px rgba(0,0,0,0.06);
             position: relative;
             z-index: 10;
             width: 100%;
         }
         
-        .cover-icons {
-            margin-bottom: 25px;
-            position: relative;
-            height: 60px;
+        /* ===== 战斗场景栏 ===== */
+        .battle-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: min(92vw, 400px);
+            padding: 10px 14px;
+            background: linear-gradient(135deg, rgba(255,240,245,0.85), rgba(255,255,255,0.7));
+            border-radius: 16px;
+            border: 1px solid rgba(255,107,157,0.2);
+            box-shadow: 0 3px 12px rgba(255,107,157,0.1);
+            gap: 8px;
         }
-        
-        .cover-icons span {
-            font-size: 2.5rem;
-            position: absolute;
+        .battle-hero, .battle-enemy {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
         }
-        
-        .icon-float {
-            animation: iconFloat 3s ease-in-out infinite;
+        .battle-emoji {
+            font-size: 28px;
         }
-        
-        .icon-float:first-child {
-            left: 30px;
-            animation-delay: 0s;
+        .battle-label {
+            font-size: 10px;
+            color: #884466;
+            font-weight: 600;
         }
-        
-        .icon-float:last-child {
-            right: 30px;
-            animation-delay: 1.5s;
+        .battle-hp-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
         }
-        
-        .icon-heart {
-            left: 50%;
-            transform: translateX(-50%);
-            animation: heartbeat 1.5s ease-in-out infinite;
-            font-size: 3rem !important;
+        .battle-vs {
+            font-size: 11px;
+            font-weight: 900;
+            color: #ff6b9d;
+            letter-spacing: 2px;
         }
-        
-        @keyframes iconFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        .battle-hp-bar {
+            width: 100%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .battle-hp-fill {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, #ff4444, #ff6b9d, #ff8888);
+            border-radius: 5px;
+            transition: width 0.6s ease;
+        }
+        .battle-hp-text {
+            font-size: 11px;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+        @keyframes hpShake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        /* ===== 彩蛋提示 ===== */
+        .easter-hint {
+            text-align: center;
+            font-size: 12px;
+            color: #ff99bb;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            margin-top: 4px;
+        }
+        .easter-hint.show {
+            opacity: 1;
+            animation: hintPulse 0.8s ease-in-out 2;
+        }
+        @keyframes hintPulse {
+            0%,100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.08); opacity: 1; }
         }
         
         .cover-title {

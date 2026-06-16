@@ -267,7 +267,7 @@
             <div class="score-bar">
                 <div class="score-item">
                     <div class="score-label">❤️ 爱之力</div>
-                    <div class="score-num" id="score">0</div>
+                    <div class="score-num" id="score">0</div><div id="comboInd" style="display:none;font-size:0.65rem;color:#ff6b9d;font-weight:700;text-align:center;"></div>
                 </div>
                 <div class="score-item">
                     <div class="score-label">🏆 最深爱意</div>
@@ -291,7 +291,7 @@
             
             <!-- 成就列表 -->
             <div class="achievement-list">
-                <div class="achievement-title">🏆 爱情宝物收集</div>
+                <div class="achievement-title" id="achiTitle" style="cursor:pointer;">🏆 爱情宝物收集</div>
                 <div class="achievement-progress" id="achievementProgress">已解锁：0 / 10</div>
                 <div id="achievementList">
                     <!-- JS生成 -->
@@ -349,8 +349,8 @@
     <div class="page" id="pageTruePoster">
         <div class="poster-wrapper">
             <div class="poster-frame">
-                <img src="{{ENDING_IMAGE}}" alt="甜蜜合影" class="poster-img">
-                <div class="poster-love-text">
+                <img src="{{ENDING_IMAGE}}" alt="甜蜜合影" class="poster-img" onerror="this.style.display="none";this.nextElementSibling.style.display="flex";">
+                <div class="poster-fallback" style="display:none;position:absolute;inset:0;background:linear-gradient(135deg,#ff6b9d,#a18cd1);align-items:center;justify-content:center;font-size:60px;gap:20px;"><span>🕊️</span><span style="font-size:40px;">💕</span><span>🐰</span></div><div class="poster-love-text">
                     <span>兔兔</span>
                     <span style="margin:0 4px;">我爱你</span>
                 </div>

@@ -148,6 +148,11 @@
             }, 6400);
         }
         
+        const storyQuotes=[{ach:"score99",q:"第一件宝物到手了！
+兔兔，我离你越来越近！🕊️"},{ach:"score520",q:"520分！
+这是全世界最浪漫的数字 💕"},{ach:"len10",q:"我已经成长到了10节
+对你的思念也越来越长..."}];
+        function showStoryCard(text){const c=document.createElement("div");c.style.cssText="position:fixed;top:30%;left:50%;transform:translate(-50%,-50%);z-index:220;background:rgba(255,255,255,0.95);padding:20px 28px;border-radius:18px;text-align:center;font-size:0.95rem;color:#884466;line-height:1.6;box-shadow:0 8px 32px rgba(255,107,157,0.2);border:1px solid rgba(255,107,157,0.2);pointer-events:none;animation:fadeIn 0.4s ease;white-space:pre-line;";c.textContent=text;document.body.appendChild(c);setTimeout(()=>{c.style.opacity="0";c.style.transition="opacity 0.5s";setTimeout(()=>c.remove(),500);},2500);}
         function unlockAchievement(id) {
             if (achievements[id]) return;
             achievements[id] = true;
@@ -703,7 +708,7 @@
                     const now = Date.now();
                     if (now - comboTimer < 3000) { comboCount++; } else { comboCount = 1; }
                     comboTimer = now;
-                    if (comboCount >= 2) addScore = Math.floor(addScore * comboCount);
+                    if (comboCount >= 2) { addScore = Math.floor(addScore * comboCount); const ci=document.getElementById("comboInd"); if(ci){ci.style.display="block";ci.textContent="🔥 x"+comboCount;} } else { const ci=document.getElementById("comboInd"); if(ci)ci.style.display="none"; }
                     if (luckyCharm > 0) { addScore *= 2; luckyCharm--; }
                     if (f.type === -1) { luckyCharm += 3; showFrustration('🍀 接下来3个食物双倍分！'); }
                     playEat();

@@ -938,6 +938,152 @@
         @keyframes twinkle {
             0%,100%{opacity:0.3}50%{opacity:1}
         }
+
+/* === Recovered styles === */
+.game-over {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+.game-over-box {
+            background: linear-gradient(135deg, #fff0f5, #ffe4ec);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            border: 3px solid #ff6b9d;
+            margin: 20px;
+            max-width: 85%;
+        }
+
+.achievement-toast {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 215, 0, 0.9);
+            color: #8b4513;
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            z-index: 200;
+            transform: translateX(150%);
+            transition: transform 0.4s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            max-width: 70%;
+        }
+
+.frustration-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(102, 126, 234, 0.9);
+            backdrop-filter: blur(5px);
+            color: white;
+            padding: 18px 22px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            z-index: 180;
+            text-align: center;
+            transition: transform 0.35s;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+            max-width: 70%;
+            line-height: 1.5;
+        }
+
+.achievement-list {
+            margin-top: 25px;
+            padding: 18px;
+            background: linear-gradient(180deg, 
+                rgba(255, 240, 245, 0.9), 
+                rgba(255, 228, 236, 0.95));
+            border-radius: 20px;
+            border: 1px solid rgba(255, 182, 193, 0.5);
+            box-shadow: 
+                0 8px 30px rgba(255, 107, 157, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        }
+
+.achievement-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+.flash-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+.score-float {
+            position: absolute;
+            font-weight: bold;
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
+            z-index: 60;
+        }
+
+.hint {
+            text-align: center;
+            color: #c44569;
+            font-size: 0.65rem;
+            margin-top: 10px;
+        }
+
+.from {
+            text-align: center;
+            color: #c44569;
+            font-size: 0.75rem;
+            margin-top: 15px;
+        }
+
+.start-btn-center {
+            display: block;
+            width: 75%;
+            margin: 18px auto 0;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            color: white;
+            border: none;
+            border-radius: 28px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 
+                0 8px 25px rgba(255, 107, 157, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+.final-score {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+
 </style>
 </head>
 <body>

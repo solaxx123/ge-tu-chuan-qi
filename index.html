@@ -1618,9 +1618,10 @@
         }
 
         function startGame() {
-            // 立即切页，AudioContext异步初始化
+            // 在用户手势内立即创建AudioContext
+            initAudio();
             goPage(1);
-            setTimeout(() => { initAudio(); playBGMByType('romantic'); }, 300);
+            // BGM在showPage中延迟启动，这里确保ctx已就绪
         }
         
         function fullRestart() {

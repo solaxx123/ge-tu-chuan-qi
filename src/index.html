@@ -320,81 +320,85 @@
         </div>
     </div>
 
-    <!-- 真结局页面 -->
+    <!-- 真结局：完整结算画面 -->
     <div class="page" id="pageTrueEnding">
+        <div class="true-ending-wrapper">
+            <!-- 合影大图 + 告白 -->
+            <div class="true-photo-section">
+                <div class="true-photo-frame">
+                    <img src="{{ENDING_IMAGE}}" alt="甜蜜合影" class="true-photo-img">
+                    <div class="true-photo-love">
+                        <span>唐雯</span>
+                        <span class="love-heart">💕</span>
+                        <span>我爱你</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 故事结局文字 -->
+            <div class="true-story-card">
+                <div class="victory-icon">🐰💕🕊️</div>
+                <h1 class="true-ending-title">真爱永恒</h1>
+                <div class="true-ending-sub">没有什么能阻挡真正的爱情</div>
+                <div class="divider"></div>
+                <p class="true-ending-text">
+                    兔兔用十把钥匙打开了地牢的大门<br>
+                    鸽鸽紧紧抱住了她<br>
+                    <span class="highlight">"我就知道你会来。"</span><br><br>
+                    两人连夜私奔，逃离了王国<br>
+                    在一个开满樱花的远方小村庄<br>
+                    过上了幸福快乐的生活<br><br>
+                    国王后来气到跺脚，但没人理他。<br>
+                    魔龙改邪归正，开了一家胡萝卜甜品店。
+                </p>
+                <div class="couple-names">🕊️ 鸽鸽 & 兔兔 🐰</div>
+                <div class="forever-text">真爱，值得所有的冒险</div>
+            </div>
+
+            <!-- 制作者名单 -->
+            <div class="true-credits">
+                <div class="true-credit-line">策 划：鸽鸽 🕊️</div>
+                <div class="true-credit-line">美 术：兔兔 🐰</div>
+                <div class="true-credit-line">技术支持：豆包</div>
+                <div class="true-credit-line" style="margin-top:8px;color:rgba(196,69,105,0.5);">2026年6月</div>
+                <div class="true-credit-line" style="color:rgba(196,69,105,0.4);font-size:0.75rem;">感谢每一位相信爱情的人 💕</div>
+            </div>
+
+            <button class="victory-btn" onclick="fullRestart()" style="margin:16px auto;display:block;max-width:200px;">🔄 再玩一次</button>
+        </div>
+    </div>
+
+    <!-- 伪结局：战胜魔龙 -->
+    <div class="page" id="pageVictory">
         <div class="victory-container">
-            <div class="victory-box" style="border-color:rgba(161,140,209,0.4);">
+            <div class="victory-box">
                 <div class="victory-content">
-                    <div class="victory-icon">🐰💕🕊️</div>
-                    <h1 class="victory-title" style="background:linear-gradient(135deg,#a18cd1,#ff6b9d,#a18cd1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">真爱永恒</h1>
-                    <div class="victory-subtitle">没有什么能阻挡真正的爱情</div>
+                    <div class="victory-icon">⚔️🐲💥</div>
+                    <h1 class="victory-title">胜 利</h1>
+                    <div class="victory-subtitle">魔龙被真爱之力彻底净化</div>
                     <div class="divider"></div>
                     <div class="victory-text">
-                        兔兔用十把钥匙打开了地牢的大门
-                        <br>鸽鸽紧紧抱住了她
-                        <br><br>
-                        <span class="highlight">"我就知道你会来。"</span>
-                        <br><br>
-                        两人连夜私奔，逃离了王国
-                        <br>在一个开满樱花的远方小村庄
-                        <br>过上了幸福快乐的生活
+                        鸽鸽集齐十件宝物，唤醒了沉睡的真爱之力<br>
+                        魔龙在光芒中消散，<span class="highlight">兔兔公主成功获救！</span><br><br>
+                        <span style="font-style:italic;color:#884466;">鸽鸽抱着兔兔旋转了三圈半……</span><br>
+                        <span style="font-size:1.2rem;">🎉🎉🎉</span>
                     </div>
-                    <div class="love-ending">
-                        <div class="love-text">
-                            国王后来气到跺脚，但没人理他。
-                            <br>魔龙呢？它改邪归正，
-                            <br>开了一家胡萝卜甜品店。
-                            <br><br>
-                            至于鸽鸽和兔兔——
-                            <br><span class="names">🕊️ 鸽鸽 & 兔兔 🐰</span>
-                            <br>从此过上了幸福快乐的生活 💕
-                        </div>
-                    </div>
-                    <div class="couple-names">🕊️ 鸽鸽 & 兔兔 🐰</div>
-                    <div class="forever-text">真爱，值得所有的冒险</div>
-                    <button class="victory-btn" onclick="goPage('Credits')">✨ 查看制作人员 ✨</button>
+                    <button class="victory-btn tear-btn" onclick="triggerTear()">
+                        ✨ 迎接幸福结局 ✨
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 通关页面1：战胜魔龙 + 浪漫结局 -->
-    <div class="page" id="pageVictory">
-        <div class="victory-container">
-            <div class="victory-box">
-                <div class="victory-content">
-                    <div class="victory-icon">💥 🐲 → 💀</div>
-                    
-                    <h1 class="victory-title">💕 真爱永恒 💕</h1>
-                    <div class="victory-subtitle">爱是世界上最强大的魔法</div>
-                    
-                    <div class="divider"></div>
-                    
-                    <div class="victory-text">
-                        勇者鸽鸽集齐了10件爱情宝物
-                        <br>获得了无穷的<span class="highlight">真爱之力</span>
-                        <br><br>
-                        单身魔龙被爱的光芒彻底净化
-                        <br><br>
-                        <span class="highlight">兔兔公主成功获救！</span>
-                        <br><br>
-                        <span style="color:#884466;font-style:italic;">鸽鸽抱着兔兔旋转了三圈半……</span>
-                        <br>
-                        <span style="color:#c44569;">但故事真的就这样结束了吗？</span>
-                    </div>
-                    
-                    <div style="margin:18px 0;padding:12px;background:rgba(255,255,255,0.6);border-radius:16px;border:2px solid rgba(255,107,157,0.25);overflow:hidden;box-shadow:0 4px 16px rgba(255,107,157,0.15);position:relative;"><div style="font-size:0.75rem;color:rgba(196,69,105,0.6);margin-bottom:8px;letter-spacing:1px;">📸 甜蜜合影</div><img src="{{ENDING_IMAGE}}" style="width:100%;border-radius:10px;display:block;" alt="鸽鸽和苏苏的甜蜜合影"><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;pointer-events:none;text-align:center;"><span style="font-size:clamp(20px,6vw,32px);color:#fff;font-weight:900;letter-spacing:4px;text-shadow:0 2px 12px rgba(255,107,157,0.8),0 0 30px rgba(255,107,157,0.4),0 0 60px rgba(200,100,150,0.6);animation:heartbeat 2.5s ease-in-out infinite;display:inline-block;">唐雯 我爱你</span></div></div>
-                    <div class="couple-names">
-                        🕊️ 鸽鸽 & 苏苏 🐰
-                    </div>
-                    <div class="forever-text">
-                        执子之手 · 与子偕老
-                    </div>
-                    
-                    <button class="victory-btn" onclick="goPage(7)">
-                        ▶ 继续剧情
-                    </button>
-                </div>
+    <!-- 撕裂转场 -->
+    <div class="page" id="pageTear">
+        <div class="tear-overlay" id="tearOverlay">
+            <div class="tear-left"></div>
+            <div class="tear-right"></div>
+            <div class="tear-text">
+                <p style="animation:fadeIn 0.8s ease 0.5s both;font-size:1.5rem;color:#ff4757;font-weight:900;">但是——</p>
+                <p style="animation:fadeIn 0.8s ease 1.3s both;font-size:1rem;color:#c44569;">国王撕开了幸福的画布</p>
             </div>
         </div>
     </div>

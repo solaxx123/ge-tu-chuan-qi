@@ -47,6 +47,17 @@
             location.reload();
         }
         window.fullRestart = fullRestart;
+
+        // ===== 撕裂转场 =====
+        function triggerTear() {
+            goPage('Tear');
+            const left = document.querySelector('.tear-left');
+            const right = document.querySelector('.tear-right');
+            playBGMByType('dark');
+            setTimeout(() => { if(left) left.classList.add('open'); if(right) right.classList.add('open'); }, 400);
+            setTimeout(() => goPage(7), 2200);
+        }
+        window.triggerTear = triggerTear;
         
         function createFloatBg() {
             const bg = document.getElementById('floatBg');

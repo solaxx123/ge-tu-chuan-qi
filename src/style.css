@@ -465,6 +465,92 @@
             0%,100% { transform: scale(1); opacity: 0.5; }
             50% { transform: scale(1.08); opacity: 1; }
         }
+
+        /* ===== 撕裂转场 ===== */
+        .tear-overlay {
+            position: fixed; inset: 0; z-index: 200;
+            display: flex; align-items: center; justify-content: center;
+            background: #0a0a0a; overflow: hidden;
+        }
+        .tear-left, .tear-right {
+            position: absolute; top: 0; width: 50%; height: 100%;
+            background: linear-gradient(180deg, #fff5f9, #ffe6f2);
+            transition: transform 1.2s cubic-bezier(0.7,0,0.3,1);
+        }
+        .tear-left { left: 0; transform-origin: right center; }
+        .tear-right { right: 0; transform-origin: left center; }
+        .tear-left.open { transform: translateX(-110%) rotate(-8deg); }
+        .tear-right.open { transform: translateX(110%) rotate(8deg); }
+        .tear-text {
+            position: relative; z-index: 5; text-align: center;
+        }
+
+        /* ===== 真结局 ===== */
+        .true-ending-wrapper {
+            width: 100%; max-width: 420px; margin: 0 auto; padding: 20px 16px 40px;
+            display: flex; flex-direction: column; align-items: center; gap: 16px;
+        }
+        .true-photo-section {
+            width: 100%; display: flex; justify-content: center;
+        }
+        .true-photo-frame {
+            position: relative; width: 100%; max-width: 360px;
+            border-radius: 20px; overflow: hidden;
+            box-shadow: 0 12px 48px rgba(0,0,0,0.25), 0 0 80px rgba(255,107,157,0.2);
+            border: 3px solid rgba(255,255,255,0.8);
+            animation: fadeInUp 0.8s ease-out;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .true-photo-img {
+            width: 100%; display: block; border-radius: 17px;
+        }
+        .true-photo-love {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            z-index: 5; pointer-events: none; text-align: center;
+            display: flex; align-items: center; gap: 8px;
+            font-size: clamp(24px, 7vw, 36px); font-weight: 900; color: #fff;
+            letter-spacing: 3px;
+            text-shadow: 0 2px 16px rgba(255,107,157,0.9), 0 0 40px rgba(200,80,130,0.6), 0 0 80px rgba(255,150,180,0.4);
+            animation: loveGlow 2.5s ease-in-out infinite;
+        }
+        @keyframes loveGlow {
+            0%,100% { filter: drop-shadow(0 0 8px rgba(255,255,255,0.6)); }
+            50% { filter: drop-shadow(0 0 20px rgba(255,200,220,0.9)); }
+        }
+        .love-heart {
+            animation: heartbeat 1.2s ease-in-out infinite;
+        }
+        .true-story-card {
+            width: 100%; background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px; padding: 28px 20px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 8px 32px rgba(255,107,157,0.1);
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+        .true-ending-title {
+            font-size: 2rem; font-weight: 900;
+            background: linear-gradient(135deg,#a18cd1,#ff6b9d,#a18cd1);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            background-clip: text; margin-bottom: 6px;
+        }
+        .true-ending-sub {
+            color: rgba(196,69,105,0.7); font-size: 0.9rem;
+            letter-spacing: 2px; margin-bottom: 16px;
+        }
+        .true-ending-text {
+            color: #8b4557; font-size: 0.95rem; line-height: 2; margin-bottom: 16px;
+        }
+        .true-credits {
+            width: 100%; text-align: center; padding: 20px 0;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+        .true-credit-line {
+            font-size: 0.85rem; color: #884466; line-height: 2.2;
+        }
         
         /* ===== 封面页 ===== */
         .start-cover {

@@ -348,17 +348,14 @@
     </div>
 
     <!-- 真结局 ② 兔兔我爱你海报 -->
-    <div class="page" id="pageTruePoster">
-        <div class="poster-wrapper">
-            <div class="poster-frame">
-                <img src="{{ENDING_IMAGE}}" alt="甜蜜合影" class="poster-img" onerror="this.style.display="none";this.nextElementSibling.style.display="flex";">
-                <div class="poster-fallback" style="display:none;position:absolute;inset:0;background:linear-gradient(135deg,#ff6b9d,#a18cd1);align-items:center;justify-content:center;font-size:60px;gap:20px;"><span>🕊️</span><span style="font-size:40px;">💕</span><span>🐰</span></div><div class="poster-love-text" style="top:auto;bottom:8%;transform:translateX(-50%);">
-                    <span>兔兔</span>
-                    <span style="margin:0 4px;">我爱你</span>
-                </div>
+    <div class="page" id="pageTruePoster" style="background:#000;position:fixed;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;">
+        <div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+            <img src="{{ENDING_IMAGE}}" alt="甜蜜合影" style="max-width:100%;max-height:100%;object-fit:contain;">
+            <div style="position:absolute;bottom:12%;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;">
+                <span style="font-size:clamp(24px,8vw,44px);font-weight:900;color:#fff;letter-spacing:6px;text-shadow:0 2px 16px rgba(0,0,0,0.6);">兔兔 我爱你</span>
             </div>
-            <button class="victory-btn" onclick="goPage('TrueCredits')" style="margin-top:20px;">🎬 制作人员</button>
         </div>
+        <button onclick="goPage('TrueCredits')" style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 32px;border:1px solid rgba(255,255,255,0.3);border-radius:25px;background:rgba(0,0,0,0.4);color:#fff;font-size:0.85rem;cursor:pointer;z-index:10;">🎬 制作人员</button>
     </div>
 
     <!-- 真结局 ③ 电影式制作人员 -->

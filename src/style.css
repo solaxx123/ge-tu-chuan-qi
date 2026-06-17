@@ -10,7 +10,7 @@
         
         html, body {
             font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: #fff;
+            background: #fff5f9;
             min-height: 100vh; height: 100%;
             width: 100%;
             overflow-x: hidden; overflow-y: auto;
@@ -21,7 +21,7 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 10px 0 40px 0;
+            padding: 0;
         }
         
         .page {

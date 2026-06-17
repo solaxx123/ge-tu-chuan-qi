@@ -909,6 +909,11 @@
             }
         }, true);
 
+        // 强制首页显示
+        document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+        const cover = document.getElementById('page0');
+        if (cover) { cover.style.display = 'block'; cover.classList.add('active'); }
+
         init();
 
         // ==================== 兔兔地牢跑酷引擎 ====================

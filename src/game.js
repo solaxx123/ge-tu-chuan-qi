@@ -586,7 +586,7 @@
                 const rand = Math.random();
                 if (rand < 0.06) { foodIndex = -1; emoji = "🍀"; name = "幸运草"; scoreVal = 0; }
                 else if (rand < 0.14) { foodIndex = -2; emoji = "✨"; name = "金心"; scoreVal = 100; }
-                else { foodIndex = Math.floor(Math.random() * FOODS.length); const f = FOODS[foodIndex]; emoji = f.emoji; name = f.name; scoreVal = f.score; }
+                else { const missing = []; for(let i=0;i<FOODS.length;i++){if(!foodsCollected.has(i))missing.push(i);} if(missing.length>0&&Math.random()<0.5){foodIndex=missing[Math.floor(Math.random()*missing.length)];}else{foodIndex=Math.floor(Math.random()*FOODS.length);} const f=FOODS[foodIndex]; emoji=f.emoji; name=f.name; scoreVal=f.score; }
                 let valid = false, tries = 0, fx, fy;
                 while (!valid && tries < 60) { tries++; valid = true;
                     fx = Math.floor(Math.random() * (size - 2)) + 1; fy = Math.floor(Math.random() * (size - 2)) + 1;
@@ -883,6 +883,11 @@
                 unlockAchievement('easter');
                 headerClicks = 0;
                 headerEl.style.transform = 'scale(1)';
+                const bigMsg = document.createElement('div');
+                bigMsg.textContent = '💕 鸽兔永远在一起 💕';
+                bigMsg.style.cssText = 'position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);z-index:500;font-size:1.2rem;font-weight:900;color:#ff6b9d;background:rgba(255,255,255,0.95);padding:18px 28px;border-radius:18px;box-shadow:0 8px 40px rgba(255,107,157,0.3);pointer-events:none;';
+                document.body.appendChild(bigMsg);
+                setTimeout(function(){ bigMsg.style.opacity = '0'; bigMsg.style.transition = 'opacity 0.8s'; setTimeout(function(){ bigMsg.remove(); }, 800); }, 2000);
             }
         };
 

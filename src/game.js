@@ -64,7 +64,6 @@
         createFloatBg();
         
         const ACHIEVEMENTS = [
-            { id: "firstLove", name: "爱的第一步", desc: "收集第一件宝物", icon: "👣" },
             { id: 'score99', name: '永恒宝石', desc: '力量值达到99', icon: '💞' },
             { id: 'score520', name: '真爱之心', desc: '力量值达到520', icon: '❤️' },
             { id: 'len10', name: '思念之绳', desc: '成长到10节', icon: '🐰' },

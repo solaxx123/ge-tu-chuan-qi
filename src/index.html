@@ -278,7 +278,7 @@
 
             <canvas id="canvas" width="340" height="340"></canvas>
 
-            <button class="start-btn-center" id="startBtn">⚔️ 开始冒险</button>
+            <div style="display:flex;gap:8px;margin-top:6px;"><button class="start-btn-center" id="startBtn" style="flex:1;margin:0;">⚔️ 开始冒险</button><button id="resetAllBtn" style="padding:8px 12px;border:1px solid #ddd;border-radius:20px;background:#fff;font-size:0.7rem;color:#999;cursor:pointer;">🔄 重开</button></div>
             
             <!-- 对角线三角形方向键 -->
             <div class="dpad-container" id="dpadContainer">
@@ -293,7 +293,7 @@
             <div class="achievement-list">
                 <div class="achievement-title" id="achiTitle" style="cursor:pointer;">🏆 爱情宝物收集</div>
                 <div class="achievement-progress" id="achievementProgress">已解锁：0 / 10</div>
-                <div id="achievementList">
+                <button id="victoryReadyBtn" style="display:none;width:90%;margin:8px auto;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#ff6b9d,#c44569);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:2px;box-shadow:0 6px 20px rgba(255,107,157,0.35);animation:heartbeat 1.5s ease-in-out infinite;" onclick="endingUnlocked=true;victoryCountdown();this.remove();">🐲 集合宝物之力 · 击败魔龙</button><div id="achievementList">
                     <!-- JS生成 -->
                 </div>
             </div>

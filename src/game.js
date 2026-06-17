@@ -78,7 +78,7 @@
         ];
         
         let achievements = {};
-        try { const saved = localStorage.getItem('snakeAchievements'); if (saved) { achievements = JSON.parse(saved); delete achievements.firstLove; localStorage.setItem('snakeAchievements', JSON.stringify(achievements)); } } catch(e) {}
+        try { const saved = localStorage.getItem('snakeAchievements'); if (saved) { achievements = JSON.parse(saved); Object.keys(achievements).forEach(k=>{if(!ACHIEVEMENTS.find(a=>a.id===k))delete achievements[k];}); localStorage.setItem('snakeAchievements', JSON.stringify(achievements)); } } catch(e) {}
         let highScore = parseInt(localStorage.getItem('snakeLove') || '0');
         let highScoreDate = localStorage.getItem('snakeLoveDate') || '';
         let foodsCollected = new Set();
@@ -116,10 +116,9 @@
                 `已解锁：${unlockedCount} / ${totalAch}`;
 
             if (unlockedCount >= totalAch && !endingUnlocked && gameStarted && running) {
-                endingUnlocked = true;
-                clearTimeout(loop);
-                running = false;
-                victoryCountdown();
+                const vBtn = document.getElementById('victoryReadyBtn');
+                if (vBtn) { vBtn.style.display = 'block'; playAchievement(); }
+                showFrustration('✨ 宝物已集齐！点击按钮击败魔龙');
             }
 
         }
@@ -199,15 +198,8 @@
             const total = ACHIEVEMENTS.filter(a => !a.hidden).length;
             const unlocked = Object.keys(achievements).filter(k => achievements[k]).length;
             if (unlocked >= total && !endingUnlocked) {
-                const exist = document.getElementById('skipToVictory');
-                if (exist) return;
-                const btn = document.createElement('button');
-                btn.id = 'skipToVictory';
-                btn.textContent = '🐲 直接击败魔龙';
-                btn.style.cssText = 'display:block;width:90%;margin:8px auto;padding:12px;border:2px solid #ff6b9d;border-radius:14px;background:rgba(255,107,157,0.08);color:#ff6b9d;font-size:0.9rem;font-weight:700;cursor:pointer;letter-spacing:1px;';
-                btn.onclick = () => { endingUnlocked = true; victoryCountdown(); btn.remove(); };
-                const list = document.getElementById('achievementList');
-                if (list && list.parentNode) list.parentNode.appendChild(btn);
+                const vBtn = document.getElementById('victoryReadyBtn');
+                if (vBtn) vBtn.style.display = 'block';
             }
         }
 

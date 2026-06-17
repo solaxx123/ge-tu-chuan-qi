@@ -1389,7 +1389,7 @@
                     <div class="score-num" id="score">0</div><div id="comboInd" style="display:none;font-size:0.65rem;color:#ff6b9d;font-weight:700;text-align:center;"></div>
                 </div>
                 <div class="score-item">
-                    <div class="score-label">🏆 最深爱意</div>
+                    <div class="score-label" style="font-size:0.6rem;">💎<span id="diamondUI">0</span> 🌹<span id="roseUI">0</span></div><div class="score-label">🏆 最深爱意</div>
                     <div class="score-num" id="highScore">0</div>
                     <div style="font-size:0.6rem;color:rgba(196,69,105,0.5);margin-top:1px;" id="highScoreDate"></div>
                 </div>
@@ -2324,7 +2324,7 @@
                     if (f.type === -1) { luckyCharm += 3; showFrustration('🍀 接下来3个食物双倍分！'); }
                     playEat();
                     if (f.type >= 0) foodsCollected.add(f.type);
-                    if (f.emoji === '💎' || f.type === 5) { diamondCount++; if (diamondCount >= 3) unlockAchievement('diamond'); }
+                    if (f.type === 5 || f.name === '钻石' || f.emoji === '💎') { diamondCount++; if (diamondCount >= 3) unlockAchievement('diamond'); }
                     if (f.emoji === '🌹') { roseCount++; if (roseCount >= 5) unlockAchievement('rose5'); }
                     if (foodsCollected.size >= 8) unlockAchievement('allFoods');
                     const newScore = score + addScore;
@@ -2333,6 +2333,8 @@
                     if (score >= 520) trigger520Celebration();
                     if (score >= 1314) { unlockAchievement('love1314'); trigger1314Celebration(); }
                     document.getElementById('score').textContent = score;
+            document.getElementById('diamondUI').textContent = diamondCount;
+            document.getElementById('roseUI').textContent = roseCount;
                     scoreAnim();
                     if (comboCount >= 3) showScoreFloat(addScore, comboCount);
                     else showScoreFloat(addScore);

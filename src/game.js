@@ -703,7 +703,7 @@
                     if (f.type === -1) { luckyCharm += 3; showFrustration('🍀 接下来3个食物双倍分！'); }
                     playEat();
                     if (f.type >= 0) foodsCollected.add(f.type);
-                    if (f.emoji === '💎' || f.type === 5) { diamondCount++; if (diamondCount >= 3) unlockAchievement('diamond'); }
+                    if (f.type === 5 || f.name === '钻石' || f.emoji === '💎') { diamondCount++; if (diamondCount >= 3) unlockAchievement('diamond'); }
                     if (f.emoji === '🌹') { roseCount++; if (roseCount >= 5) unlockAchievement('rose5'); }
                     if (foodsCollected.size >= 8) unlockAchievement('allFoods');
                     const newScore = score + addScore;
@@ -712,6 +712,8 @@
                     if (score >= 520) trigger520Celebration();
                     if (score >= 1314) { unlockAchievement('love1314'); trigger1314Celebration(); }
                     document.getElementById('score').textContent = score;
+            document.getElementById('diamondUI').textContent = diamondCount;
+            document.getElementById('roseUI').textContent = roseCount;
                     scoreAnim();
                     if (comboCount >= 3) showScoreFloat(addScore, comboCount);
                     else showScoreFloat(addScore);

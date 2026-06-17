@@ -2493,15 +2493,10 @@
             headerClicks++;
             const headerEl = document.getElementById('header');
             if (headerClicks === 1) {
-                // 第一次：标题微闪
+                showFrustration('🔮 再点一次标题试试？');
                 headerEl.style.transform = 'scale(1.03)';
                 setTimeout(() => headerEl.style.transform = 'scale(1)', 200);
-            } else if (headerClicks === 2) {
-                // 第二次：提示文字
-                headerEl.style.transform = 'scale(1.05)';
-                setTimeout(() => headerEl.style.transform = 'scale(1)', 200);
-                showFrustration('再点一次试试？❤️');
-            } else if (headerClicks === 3) {
+            } else if (headerClicks >= 2) {
                 unlockAchievement('easter');
                 headerClicks = 0;
                 headerEl.style.transform = 'scale(1)';

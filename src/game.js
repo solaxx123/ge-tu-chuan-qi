@@ -78,7 +78,7 @@
         ];
         
         let achievements = {};
-        try { const saved = localStorage.getItem('snakeAchievements'); if (saved) achievements = JSON.parse(saved); } catch(e) {}
+        try { const saved = localStorage.getItem('snakeAchievements'); if (saved) { achievements = JSON.parse(saved); delete achievements.firstLove; localStorage.setItem('snakeAchievements', JSON.stringify(achievements)); } } catch(e) {}
         let highScore = parseInt(localStorage.getItem('snakeLove') || '0');
         let highScoreDate = localStorage.getItem('snakeLoveDate') || '';
         let foodsCollected = new Set();
@@ -111,10 +111,11 @@
                 const check = unlocked ? '<div class="achievement-check">✓</div>' : '';
                 grid.innerHTML += '<div class="achievement-item ' + cls + '" title="' + ach.desc + '"><div class="achievement-icon">' + icon + '</div><div class="achievement-info"><div class="achievement-name">' + ach.name + '</div><div class="achievement-desc">' + ach.desc + '</div></div>' + check + '</div>';
             });
-            document.getElementById('achievementProgress').textContent = 
-                `已解锁：${unlockedCount} / 10`;
-            
-            if (unlockedCount >= 10 && !endingUnlocked && gameStarted && running) {
+            const totalAch = ACHIEVEMENTS.filter(a => !a.hidden).length;
+            document.getElementById('achievementProgress').textContent =
+                `已解锁：${unlockedCount} / ${totalAch}`;
+
+            if (unlockedCount >= totalAch && !endingUnlocked && gameStarted && running) {
                 endingUnlocked = true;
                 clearTimeout(loop);
                 running = false;

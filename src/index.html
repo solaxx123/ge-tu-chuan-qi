@@ -350,7 +350,7 @@
         <div class="poster-wrapper">
             <div class="poster-frame">
                 <img src="{{ENDING_IMAGE}}" alt="甜蜜合影" class="poster-img" onerror="this.style.display="none";this.nextElementSibling.style.display="flex";">
-                <div class="poster-fallback" style="display:none;position:absolute;inset:0;background:linear-gradient(135deg,#ff6b9d,#a18cd1);align-items:center;justify-content:center;font-size:60px;gap:20px;"><span>🕊️</span><span style="font-size:40px;">💕</span><span>🐰</span></div><div class="poster-love-text">
+                <div class="poster-fallback" style="display:none;position:absolute;inset:0;background:linear-gradient(135deg,#ff6b9d,#a18cd1);align-items:center;justify-content:center;font-size:60px;gap:20px;"><span>🕊️</span><span style="font-size:40px;">💕</span><span>🐰</span></div><div class="poster-love-text" style="top:auto;bottom:8%;transform:translateX(-50%);">
                     <span>兔兔</span>
                     <span style="margin:0 4px;">我爱你</span>
                 </div>
@@ -382,7 +382,7 @@
                 <div class="movie-credit-name" style="font-size:1.1rem;">DeepSeek V4.0 Pro</div>
                 <div class="movie-credit-footer">💕</div>
             </div>
-            <button class="victory-btn" onclick="fullRestart()" style="margin:20px auto 0;display:block;max-width:200px;">🔄 再玩一次</button>
+            <button class="victory-btn" onclick="fullRestart()" style="margin:20px auto 0;display:block;max-width:200px;">🎉 恭喜通关</button>
         </div>
     </div>
 
@@ -400,11 +400,14 @@
                         <span style="font-style:italic;color:#884466;">鸽鸽抱着兔兔旋转了三圈半……</span>
                     </p>
                 </div>
-                <button onclick="triggerTear()" style="width:100%;padding:16px;border:none;border-radius:30px;background:linear-gradient(135deg,#ff6b9d,#c44569);color:#fff;font-size:1.05rem;font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 6px 20px rgba(255,107,157,0.3);">✨ 迎接幸福结局 ✨</button>
+                <button onclick="goPage('Twist')" style="width:100%;padding:16px;border:none;border-radius:30px;background:linear-gradient(135deg,#ff6b9d,#c44569);color:#fff;font-size:1.05rem;font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 6px 20px rgba(255,107,157,0.3);">✨ 迎接幸福结局 ✨</button>
             </div>
         </div>
     </div>
 
+
+    <!-- 转折页 -->
+    <div class="page" id="pageTwist"><div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1a1a2e;text-align:center;padding:20px;"><div><p style="color:#fff;font-size:1.8rem;font-weight:300;letter-spacing:4px;">但——</p><p style="color:rgba(255,255,255,0.5);font-size:1rem;margin-top:24px;">真的是这样吗？</p><button onclick="triggerTear()" style="margin-top:48px;padding:10px 32px;border:1px solid rgba(255,255,255,0.2);border-radius:25px;background:transparent;color:rgba(255,255,255,0.6);font-size:0.85rem;cursor:pointer;">…</button></div></div></div>
     <!-- 撕裂转场 -->
     <div class="page" id="pageTear">
         <div class="tear-overlay" id="tearOverlay" onclick="goPage(7)">

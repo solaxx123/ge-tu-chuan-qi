@@ -140,7 +140,7 @@
                 for (let i = 0; i < 30; i++) setTimeout(() => {
                     const h = document.createElement('div');
                     h.textContent = ['❤️','💕','💖','🕊️','🐰','✨'][Math.floor(Math.random()*6)];
-                    h.style.cssText = 'position:fixed;z-index:500;pointer-events:none;font-size:'+(20+Math.random()*30)+'px;left:'+Math.random()*90+'%;top:50%;animation:heartRain '+(1.5+Math.random()*2.5)+'s ease-out forwards;';
+                    h.style.cssText = 'position:fixed;z-index:500;pointer-events:none;font-size:'+(20+Math.random()*30)+'px;left:'+Math.random()*90+'%;top:-30px;animation:heartRain '+(1.5+Math.random()*2.5)+'s ease-out forwards;';
                     document.body.appendChild(h); setTimeout(() => h.remove(), 3500);
                 }, i*40);
                 setTimeout(() => goPage('Victory'), 800);
@@ -970,7 +970,7 @@
                 }
                 if (bars.length === 0 || bars[bars.length - 1].x < rW - 200) {
                     const minH = 35, maxH = rH - BAR_GAP - 35;
-                    const isLast = bars.length === TARGET_KEYS - 1;
+                    const isLast = bars.length >= TARGET_KEYS;
                 bars.push({ x: rW, topH: minH + Math.random() * (maxH - minH), passed: false, isLast: isLast });
                 }
                 updateRabbitUI(); drawRabbit();

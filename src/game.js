@@ -405,7 +405,7 @@
                 if (!audioCtx || !bgmPlaying) return;
                 // 旋律音
                 const noteFreq = melody.notes[bgmNoteIndex % melody.notes.length];
-                playWithReverb(noteFreq, melody.tempo / 1000 * 1.2, melody.type, melody.vol);
+                playPiano(noteFreq, melody.tempo / 1000 * 1.2, melody.vol);
                 // 和弦（每两个旋律音弹一次和弦）
                 if (bgmNoteIndex % 2 === 0) {
                     const chordFreqs = melody.chords[bgmChordIndex % melody.chords.length];

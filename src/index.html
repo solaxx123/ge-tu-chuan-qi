@@ -278,7 +278,7 @@
 
             <canvas id="canvas" width="340" height="340"></canvas>
 
-            <div style="display:flex;gap:8px;margin-top:6px;"><button class="start-btn-center" id="startBtn" style="flex:1;margin:0;">⚔️ 开始冒险</button><button id="resetAllBtn" style="padding:8px 12px;border:1px solid #ddd;border-radius:20px;background:#fff;font-size:0.7rem;color:#999;cursor:pointer;">🔄 重开</button></div>
+            <div style="display:flex;gap:8px;margin-top:6px;"><button class="start-btn-center" id="startBtn" style="flex:1;margin:0;">⚔️ 开始冒险</button><button id="resetAllBtn" style="padding:10px 16px;border:2px solid rgba(200,200,200,0.4);border-radius:14px;background:rgba(255,255,255,0.6);font-size:0.8rem;color:#999;cursor:pointer;font-weight:600;letter-spacing:1px;" title="清空所有成就重新开始">🔄 重新开始</button></div>
             
             <!-- 对角线三角形方向键 -->
             <div class="dpad-container" id="dpadContainer">
@@ -407,7 +407,7 @@
 
     <!-- 撕裂转场 -->
     <div class="page" id="pageTear">
-        <div class="tear-overlay" id="tearOverlay">
+        <div class="tear-overlay" id="tearOverlay" onclick="goPage(7)">
             <div class="tear-left"></div>
             <div class="tear-right"></div>
             <div class="tear-text">

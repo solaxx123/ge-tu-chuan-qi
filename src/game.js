@@ -43,7 +43,7 @@
             const right = document.querySelector('.tear-right');
             playBGMByType('dark');
             setTimeout(() => { if(left) left.classList.add('open'); if(right) right.classList.add('open'); }, 400);
-            setTimeout(() => goPage(7), 2200);
+            setTimeout(() => { try { goPage(7); } catch(e) { console.log(e); } }, 1800);
         }
         window.triggerTear = triggerTear;
         
@@ -405,7 +405,7 @@
                 if (!audioCtx || !bgmPlaying) return;
                 // 旋律音
                 const noteFreq = melody.notes[bgmNoteIndex % melody.notes.length];
-                playPiano(noteFreq, melody.tempo / 1000 * 1.2, melody.vol);
+                playWithReverb(noteFreq, melody.tempo / 1000 * 1.2, melody.type, melody.vol);
                 // 和弦（每两个旋律音弹一次和弦）
                 if (bgmNoteIndex % 2 === 0) {
                     const chordFreqs = melody.chords[bgmChordIndex % melody.chords.length];

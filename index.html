@@ -1703,8 +1703,8 @@
         let highScore = parseInt(localStorage.getItem('snakeLove') || '0');
         let highScoreDate = localStorage.getItem('snakeLoveDate') || '';
         let foodsCollected = new Set();
-        let diamondCount = 0;
-        let roseCount = 0;
+        let diamondCount = parseInt(localStorage.getItem('snakeDiamonds') || '0');
+        let roseCount = parseInt(localStorage.getItem('snakeRoses') || '0');
         let endingUnlocked = false;
         let gameStarted = false;
 
@@ -2196,10 +2196,17 @@
             celebration520Fired = false;
             celebration1314Fired = false;
             foodsCollected = new Set();
-            diamondCount = 0;
+            // diamondCount/roseCount 不再重置——跨局累计
             document.getElementById('score').textContent = 0;
+            updateCollectUI();
             newFood();
             draw();
+        }
+        function updateCollectUI() {
+            const dui = document.getElementById('diamondUI');
+            const rui = document.getElementById('roseUI');
+            if (dui) dui.textContent = diamondCount;
+            if (rui) rui.textContent = roseCount;
         }
         
         function newFood() {
@@ -2324,8 +2331,8 @@
                     if (f.type === -1) { luckyCharm += 3; showFrustration('🍀 接下来3个食物双倍分！'); }
                     playEat();
                     if (f.type >= 0) foodsCollected.add(f.type);
-                    if (f.type === 5 || f.name === '钻石' || f.emoji === '💎') { diamondCount++; if (diamondCount >= 3) unlockAchievement('diamond'); }
-                    if (f.emoji === '🌹') { roseCount++; if (roseCount >= 5) unlockAchievement('rose5'); }
+                    if (f.type === 5 || f.name === '钻石' || f.emoji === '💎') { diamondCount++; localStorage.setItem('snakeDiamonds', diamondCount); updateCollectUI(); if (diamondCount >= 3) unlockAchievement('diamond'); }
+                    if (f.emoji === '🌹') { roseCount++; localStorage.setItem('snakeRoses', roseCount); updateCollectUI(); if (roseCount >= 5) unlockAchievement('rose5'); }
                     if (foodsCollected.size >= 8) unlockAchievement('allFoods');
                     const newScore = score + addScore;
                     checkSpecialScore(newScore);

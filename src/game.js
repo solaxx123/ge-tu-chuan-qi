@@ -140,7 +140,7 @@
                 for (let i = 0; i < 30; i++) setTimeout(() => {
                     const h = document.createElement('div');
                     h.textContent = ['❤️','💕','💖','🕊️','🐰','✨'][Math.floor(Math.random()*6)];
-                    h.style.cssText = 'position:fixed;z-index:250;pointer-events:none;font-size:'+(20+Math.random()*30)+'px;left:'+Math.random()*90+'%;top:50%;animation:heartRain '+(1.5+Math.random()*2.5)+'s ease-out forwards;';
+                    h.style.cssText = 'position:fixed;z-index:500;pointer-events:none;font-size:'+(20+Math.random()*30)+'px;left:'+Math.random()*90+'%;top:50%;animation:heartRain '+(1.5+Math.random()*2.5)+'s ease-out forwards;';
                     document.body.appendChild(h); setTimeout(() => h.remove(), 3500);
                 }, i*40);
                 setTimeout(() => goPage('Victory'), 800);
@@ -501,7 +501,7 @@
                     const h = document.createElement('div');
                     h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
                     h.style.cssText = `
-                        position:fixed;z-index:250;pointer-events:none;
+                        position:fixed;z-index:500;pointer-events:none;
                         font-size:${18+Math.random()*28}px;
                         left:${Math.random()*90}%;top:-30px;
                         animation: heartRain ${1.5+Math.random()*2}s ease-in forwards;
@@ -525,7 +525,7 @@
                     const h = document.createElement('div');
                     h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
                     h.style.cssText = `
-                        position:fixed;z-index:250;pointer-events:none;
+                        position:fixed;z-index:500;pointer-events:none;
                         font-size:${20+Math.random()*36}px;
                         left:${Math.random()*90}%;top:-30px;
                         animation: heartRain ${1.5+Math.random()*3}s ease-in forwards;
@@ -914,14 +914,14 @@
             let rabbit = { y: rH/2, vy: 0, size: 28 };
             let bars = [];
             let rabbitKeys = 0;
-            let rabbitLives = 3;
+            let rabbitLives = 1;
             let rabbitRunning = false;
             let rabbitLoop = null;
-            const GRAVITY = 0.4, JUMP = -7.5, BAR_SPEED = 2.2, BAR_GAP = 130, BAR_WIDTH = 45, TARGET_KEYS = 10;
+            const GRAVITY = 0.45, JUMP = -8, BAR_SPEED = 2.0, BAR_GAP = 140, BAR_WIDTH = 45, TARGET_KEYS = 10;
 
             function initRabbitGame() {
                 rabbit = { y: rH/2, vy: 0, size: 22 };
-                bars = []; rabbitKeys = 0; rabbitLives = 3;
+                bars = []; rabbitKeys = 0; rabbitLives = 1;
                 updateRabbitUI(); drawRabbit();
             }
             function updateRabbitUI() {
@@ -941,7 +941,7 @@
                     rctx.fillStyle = '#6a5080';
                     rctx.fillRect(b.x - 2, b.topH - 4, BAR_WIDTH + 4, 6);
                     rctx.fillRect(b.x - 2, b.topH + BAR_GAP - 2, BAR_WIDTH + 4, 6);
-                    if (!b.passed) { rctx.font = '18px Arial'; rctx.fillText('🗝️', b.x + BAR_WIDTH/2 - 9, b.topH + BAR_GAP/2 + 6); }
+                    if (b.isLast) { rctx.font = '24px Arial'; rctx.fillText('🕊️🔒', b.x + BAR_WIDTH/2 - 18, b.topH + BAR_GAP/2 + 8); } else if (!b.passed) { rctx.font = '18px Arial'; rctx.fillText('🗝️', b.x + BAR_WIDTH/2 - 9, b.topH + BAR_GAP/2 + 6); }
                 });
                 rctx.font = rabbit.size + 'px Arial'; rctx.fillText('🐰', 80, rabbit.y + 10);
                 if (!rabbitRunning && rabbitLives <= 0) {
@@ -970,7 +970,8 @@
                 }
                 if (bars.length === 0 || bars[bars.length - 1].x < rW - 200) {
                     const minH = 35, maxH = rH - BAR_GAP - 35;
-                    bars.push({ x: rW, topH: minH + Math.random() * (maxH - minH), passed: false });
+                    const isLast = bars.length === TARGET_KEYS - 1;
+                bars.push({ x: rW, topH: minH + Math.random() * (maxH - minH), passed: false, isLast: isLast });
                 }
                 updateRabbitUI(); drawRabbit();
             }
@@ -987,12 +988,12 @@
                 rabbitRunning = false; cancelAnimationFrame(rabbitLoop); playVictoryMusic();
                 document.getElementById('rabbitStartBtn').textContent = '🐰 已通关！';
                 document.getElementById('rabbitStartBtn').disabled = true;
-                for (let i = 0; i < 25; i++) { setTimeout(() => { const p = document.createElement('div'); p.textContent = ['🗝️','💕','🐰','✨'][Math.floor(Math.random()*4)]; p.style.cssText = 'position:fixed;z-index:250;pointer-events:none;font-size:'+(18+Math.random()*25)+'px;left:'+Math.random()*95+'%;top:-20px;animation:heartRain '+(1.5+Math.random()*2)+'s ease-in forwards;'; document.body.appendChild(p); setTimeout(() => p.remove(), 3000); }, i*50); }
+                for (let i = 0; i < 25; i++) { setTimeout(() => { const p = document.createElement('div'); p.textContent = ['🗝️','💕','🐰','✨'][Math.floor(Math.random()*4)]; p.style.cssText = 'position:fixed;z-index:500;pointer-events:none;font-size:'+(18+Math.random()*25)+'px;left:'+Math.random()*95+'%;top:-20px;animation:heartRain '+(1.5+Math.random()*2)+'s ease-in forwards;'; document.body.appendChild(p); setTimeout(() => p.remove(), 3000); }, i*50); }
                 setTimeout(() => goPage('TrueEnding'), 2500);
             }
             function rabbitJump() { if (!rabbitRunning) return; rabbit.vy = JUMP; playClick(); }
             function startRabbitGame() {
-                initRabbitGame(); rabbitRunning = true; rabbitLives = 3; rabbitKeys = 0; bars = [];
+                initRabbitGame(); rabbitRunning = true; rabbitLives = 1; rabbitKeys = 0; bars = [];
                 updateRabbitUI();
                 document.getElementById('rabbitStartBtn').textContent = '🐰 跑酷中...';
                 document.getElementById('rabbitStartBtn').disabled = true;
@@ -1001,6 +1002,8 @@
             }
             document.getElementById('rabbitStartBtn').onclick = startRabbitGame;
             rabbitCanvas.onclick = rabbitJump;
+            document.addEventListener("click", (e) => { if(document.getElementById("pageRabbitGame").classList.contains("active")) rabbitJump(); });
+            document.addEventListener("touchstart", (e) => { if(document.getElementById("pageRabbitGame").classList.contains("active")) { rabbitJump(); } }, {passive: false});
             rabbitCanvas.ontouchstart = (e) => { e.preventDefault(); rabbitJump(); };
             initRabbitGame(); drawRabbit();
         }

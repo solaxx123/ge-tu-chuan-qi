@@ -581,7 +581,7 @@
         }
         
         function newFood() {
-            while (foods.length < 1 + Math.floor(Math.random() * 3)) {
+            while (foods.length < 1 + Math.floor(Math.random() * 2)) {
                 let foodIndex, scoreVal, emoji, name;
                 const rand = Math.random();
                 if (rand < 0.06) { foodIndex = -1; emoji = "🍀"; name = "幸运草"; scoreVal = 0; }

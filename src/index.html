@@ -209,9 +209,9 @@
                 <p style="animation-delay:1.040s;">他指向角落里瑟瑟发抖的邻国王子——</p>
                 <p style="animation-delay:1.280s;">一个流着鼻涕的12岁小胖墩，正抱着布娃娃。</p>
                 <p style="animation-delay:1.520s;font-weight:bold;color:#ff4757;">"你！区区鸽子！凭什么娶我女儿？"</p>
-                <p style="animation-delay:1.760s;">国王大手一挥："来人！打入地牢！"</p>
-                <p style="animation-delay:2.0s;color:#884466;">兔兔冷冷地看着父王：</p>
-                <p style="animation-delay:2.2s;font-weight:bold;color:#a18cd1;">"父王，你知道反派最后都什么下场吗？"</p>
+                <p style="animation-delay:1.760s;">国王大手一挥："来人，把这只鸽子给我抓入地牢！"</p>
+                <p style="animation-delay:2.0s;color:#884466;">兔兔扑到父王面前，眼泪夺眶而出：</p>
+                <p style="animation-delay:2.2s;font-weight:bold;color:#ff6b9d;">"不，父王，你不能这样……他是我最爱的鸽鸽啊。"</p>
             </div>
             <button class="next-btn" onclick="goPage(8)">继续 →</button>
             <div class="page-indicator">第七章 / 共七章</div>
@@ -307,8 +307,8 @@
     </div>
     
     <!-- 兔兔跑酷游戏页 -->
-    <div class="page" id="pageRabbitGame" style="background:#0a0015;">
-        <div style="position:fixed;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#1a0030 0%,#0a0015 70%);">
+    <div class="page" id="pageRabbitGame" style="background:#0a0015;position:fixed;top:0;left:0;right:0;bottom:0;">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:radial-gradient(ellipse at center,#1a0030 0%,#0a0015 70%);">
             <div style="text-align:center;margin-bottom:6px;z-index:2;">
                 <h1 style="font-size:1.2rem;background:linear-gradient(90deg,#a18cd1,#ff6b9d,#a18cd1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">🐰 勇闯地牢 🐰</h1>
             </div>
@@ -409,15 +409,14 @@
 
 
     <!-- 转折页 -->
-    <div class="page" id="pageTwist"><div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1a1a2e;text-align:center;padding:20px;"><div><p style="color:#fff;font-size:1.8rem;font-weight:300;letter-spacing:4px;">但——</p><p style="color:rgba(255,255,255,0.5);font-size:1rem;margin-top:24px;">真的是这样吗？</p><button onclick="triggerTear()" style="margin-top:48px;padding:10px 32px;border:1px solid rgba(255,255,255,0.2);border-radius:25px;background:transparent;color:rgba(255,255,255,0.6);font-size:0.85rem;cursor:pointer;">…</button></div></div></div>
+    <div class="page" id="pageTwist"><div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#000;text-align:center;padding:20px;"><div><p style="color:#fff;font-size:1.6rem;font-weight:300;letter-spacing:6px;opacity:0;animation:fadeIn 2s ease 0.5s forwards;">然而——</p><p style="color:rgba(255,255,255,0.4);font-size:0.95rem;margin-top:32px;opacity:0;animation:fadeIn 2s ease 1.5s forwards;">故事真的就这样结束了吗？</p><button onclick="triggerTear()" style="margin-top:56px;padding:8px 28px;border:1px solid rgba(255,255,255,0.15);border-radius:20px;background:transparent;color:rgba(255,255,255,0.4);font-size:0.8rem;cursor:pointer;opacity:0;animation:fadeIn 2s ease 3s forwards;">…</button></div></div></div>
     <!-- 撕裂转场 -->
     <div class="page" id="pageTear">
         <div class="tear-overlay" id="tearOverlay" onclick="goPage(7)">
             <div class="tear-left"></div>
             <div class="tear-right"></div>
             <div class="tear-text">
-                <p style="animation:fadeIn 0.8s ease 0.5s both;font-size:1.5rem;color:#ff4757;font-weight:900;">但是——</p>
-                <p style="animation:fadeIn 0.8s ease 1.3s both;font-size:1rem;color:#c44569;">国王撕开了幸福的画布</p>
+                <p style="animation:fadeIn 0.8s ease 0.5s both;font-size:1.5rem;color:#ff4757;font-weight:900;">国王撕开了幸福的画布</p>
             </div>
         </div>
     </div>

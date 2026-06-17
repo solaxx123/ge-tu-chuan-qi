@@ -248,6 +248,7 @@
         let konamiCode = [];
         let konamiTarget = ['up', 'up', 'down', 'down', 'left', 'left', 'right', 'right'];
         let headerClicks = 0;
+                const icon=document.getElementById("easterIcon");if(icon)icon.style.display="none";
         
         // ===== 音效系统 =====
         let audioCtx = null;
@@ -702,7 +703,7 @@
                     if (f.type === -1) { luckyCharm += 3; showFrustration('🍀 接下来3个食物双倍分！'); }
                     playEat();
                     if (f.type >= 0) foodsCollected.add(f.type);
-                    if (f.emoji === '💎') { diamondCount++; if (diamondCount >= 3) unlockAchievement('diamond'); }
+                    if (f.emoji === '💎' || f.type === 5) { diamondCount++; if (diamondCount >= 3) unlockAchievement('diamond'); }
                     if (f.emoji === '🌹') { roseCount++; if (roseCount >= 5) unlockAchievement('rose5'); }
                     if (foodsCollected.size >= 8) unlockAchievement('allFoods');
                     const newScore = score + addScore;

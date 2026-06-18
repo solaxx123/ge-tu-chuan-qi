@@ -23,6 +23,12 @@
             const bgmType = num <= 2 ? 'romantic' : num === 3 ? 'dark' : (num >= 4 && num <= 6) || num === 'Game' ? 'epic' : null;
             if (bgmType) setTimeout(() => playBGMByType(bgmType), 200);
             if (num === 'Game') setTimeout(checkAllCleared, 300);
+            if (num === 'TrueCredits') {
+                setTimeout(function() {
+                    var roller = document.getElementById('creditsRoller');
+                    if (roller) { roller.style.transition = 'none'; roller.style.transform = 'translateX(-50%) translateY(100vh)'; roller.offsetHeight; roller.style.transition = 'transform 25s linear'; roller.style.transform = 'translateX(-50%) translateY(-200%)'; }
+                }, 100);
+            }
             // 跑酷页面：黑背景补丁 + 隐藏浮动粒子
             if (num === 'RabbitGame') {
                 document.body.style.background = '#0a0015';

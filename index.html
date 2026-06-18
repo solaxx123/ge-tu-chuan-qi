@@ -1459,13 +1459,13 @@
     <!-- 真结局 ① 故事结局 - 电影级 -->
     <div class="page" id="pageTrueEnding">
         <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:30px 20px;background:linear-gradient(180deg,#fff0f5 0%,#ffe6f2 50%,#fff0f5 100%);position:relative;overflow:hidden;">
-            <div style="position:absolute;top:10%;left:5%;width:3px;height:3px;background:#fff;border-radius:50%;opacity:0.3;animation:twinkle 3s ease-in-out infinite;"></div>
-            <div style="position:absolute;top:25%;right:10%;width:2px;height:2px;background:#fff;border-radius:50%;opacity:0.2;animation:twinkle 4s ease-in-out 1s infinite;"></div>
-            <div style="position:absolute;top:50%;left:15%;width:2px;height:2px;background:#ffd700;border-radius:50%;opacity:0.25;animation:twinkle 3.5s ease-in-out 0.5s infinite;"></div>
-            <div style="position:absolute;top:70%;right:20%;width:2px;height:2px;background:#ffd700;border-radius:50%;opacity:0.2;animation:twinkle 5s ease-in-out 2s infinite;"></div>
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(255,200,220,0.2) 0%,transparent 60%),radial-gradient(ellipse at 50% 70%,rgba(200,160,220,0.1) 0%,transparent 50%);"></div>
+            <div style="position:absolute;top:10%;left:8%;font-size:1.5rem;opacity:0.15;animation:float 6s ease-in-out infinite;">✨</div>
+            <div style="position:absolute;top:30%;right:10%;font-size:1.2rem;opacity:0.1;animation:float 7s ease-in-out 1s infinite;">💫</div>
+            <div style="position:absolute;bottom:25%;left:12%;font-size:1rem;opacity:0.12;animation:float 8s ease-in-out 2s infinite;">💖</div>
             <div style="width:100%;max-width:420px;text-align:center;position:relative;z-index:1;">
-                <div style="font-size:3.5rem;margin-bottom:20px;animation:heartbeat 2s ease-in-out infinite;;">🐰💕🕊️</div>
-                <h1 style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#ff6b9d,#c44569,#a18cd1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;letter-spacing:4px;">真爱永恒</h1>
+                <div style="font-size:3.5rem;margin-bottom:20px;animation:heartbeat 2s ease-in-out infinite;">🐰💕🕊️</div>
+                <h1 style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#ff6b9d,#c44569,#a18cd1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;letter-spacing:4px;animation:coverGlow 2s ease-in-out infinite;">真爱永恒</h1>
                 <p style="color:rgba(196,69,105,0.6);font-size:0.85rem;letter-spacing:3px;margin-bottom:24px;">没有什么能阻挡真正的爱情</p>
                 <div style="background:rgba(255,255,255,0.65);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:20px;padding:32px 24px;border:1px solid rgba(255,180,200,0.4);margin-bottom:24px;">
                     <p style="color:#8b4557;line-height:2.2;font-size:0.9rem;">
@@ -1501,7 +1501,7 @@
 
     <!-- 真结局 ③ 电影式制作人员 -->
     <div class="page" id="pageTrueCredits" style="background:#000;position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden;z-index:50;" onclick="fullRestart()">
-        <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:90%;max-width:400px;animation:creditsRoll 25s linear forwards;text-align:center;padding-bottom:40px;">
+        <div id="creditsRoller" style="position:absolute;bottom:0;left:50%;transform:translateX(-50%) translateY(100vh);width:90%;max-width:400px;text-align:center;padding-bottom:40px;transition:transform 25s linear;">
             <div style="height:100vh;"></div>
             <p style="color:rgba(255,255,255,0.5);font-size:0.7rem;letter-spacing:6px;margin-bottom:24px;">CAST</p>
             <p style="color:#fff;font-size:1rem;letter-spacing:4px;margin:8px 0;">策 划</p>
@@ -1671,6 +1671,12 @@
             const bgmType = num <= 2 ? 'romantic' : num === 3 ? 'dark' : (num >= 4 && num <= 6) || num === 'Game' ? 'epic' : null;
             if (bgmType) setTimeout(() => playBGMByType(bgmType), 200);
             if (num === 'Game') setTimeout(checkAllCleared, 300);
+            if (num === 'TrueCredits') {
+                setTimeout(function() {
+                    var roller = document.getElementById('creditsRoller');
+                    if (roller) { roller.style.transition = 'none'; roller.style.transform = 'translateX(-50%) translateY(100vh)'; roller.offsetHeight; roller.style.transition = 'transform 25s linear'; roller.style.transform = 'translateX(-50%) translateY(-200%)'; }
+                }, 100);
+            }
             // 跑酷页面：黑背景补丁 + 隐藏浮动粒子
             if (num === 'RabbitGame') {
                 document.body.style.background = '#0a0015';

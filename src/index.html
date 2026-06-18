@@ -369,31 +369,39 @@
     </div>
 
     <!-- 真结局 ③ 电影式制作人员 -->
-    <div class="page" id="pageTrueCredits">
-        <div class="movie-credits-wrapper">
-            <div class="movie-credits-scroll">
-                <div class="movie-credit-header">🎬</div>
-                <div class="movie-credit-role">策 划</div>
-                <div class="movie-credit-name">鸽 鸽</div>
-                <div class="movie-credit-role">编 剧</div>
-                <div class="movie-credit-name">鸽 鸽</div>
-                <div class="movie-credit-role">美 术</div>
-                <div class="movie-credit-name">鸽 鸽</div>
-                <div class="movie-credit-role">程 序</div>
-                <div class="movie-credit-name">鸽 鸽</div>
-                <div class="movie-credit-role">音 乐</div>
-                <div class="movie-credit-name">鸽 鸽</div>
-                <div class="movie-credit-role" style="margin-top:20px;">初 稿</div>
-                <div class="movie-credit-name">豆 包</div>
-                <div class="movie-credit-role">终 稿</div>
-                <div class="movie-credit-name" style="font-size:1.4rem;">Claude Code</div>
-                <div class="movie-credit-role" style="margin-top:20px;">特别鸣谢</div>
-                <div class="movie-credit-name" style="font-size:1.1rem;">DeepSeek V4.0 Pro</div>
-                <div class="movie-credit-footer">💕</div>
-            </div>
-            <button class="victory-btn" onclick="fullRestart()" style="margin:20px auto 0;display:block;max-width:200px;">🎉 恭喜通关</button>
+    <div class="page" id="pageTrueCredits" style="background:#000;position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden;z-index:50;" onclick="fullRestart()">
+        <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:90%;max-width:400px;animation:creditsRoll 25s linear forwards;text-align:center;padding-bottom:40px;">
+            <div style="height:100vh;"></div>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.7rem;letter-spacing:6px;margin-bottom:24px;">CAST</p>
+            <p style="color:#fff;font-size:1rem;letter-spacing:4px;margin:8px 0;">策 划</p>
+            <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin:4px 0 20px;">鸽 鸽</p>
+            <p style="color:#fff;font-size:1rem;letter-spacing:4px;margin:8px 0;">编 剧</p>
+            <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin:4px 0 20px;">鸽 鸽</p>
+            <p style="color:#fff;font-size:1rem;letter-spacing:4px;margin:8px 0;">美 术</p>
+            <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin:4px 0 20px;">鸽 鸽</p>
+            <p style="color:#fff;font-size:1rem;letter-spacing:4px;margin:8px 0;">程 序</p>
+            <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin:4px 0 20px;">鸽 鸽</p>
+            <p style="color:#fff;font-size:1rem;letter-spacing:4px;margin:8px 0;">音 乐</p>
+            <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin:4px 0 20px;">鸽 鸽</p>
+            <div style="margin:32px 0 24px;width:30px;height:1px;background:rgba(255,255,255,0.3);margin-left:auto;margin-right:auto;"></div>
+            <p style="color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:4px;margin-bottom:16px;">初 稿</p>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin:4px 0 20px;">豆 包</p>
+            <p style="color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:4px;margin-bottom:16px;">终 稿</p>
+            <p style="color:#fff;font-size:1.1rem;letter-spacing:3px;margin:4px 0 20px;">Claude Code</p>
+            <div style="margin:32px 0 24px;width:30px;height:1px;background:rgba(255,255,255,0.3);margin-left:auto;margin-right:auto;"></div>
+            <p style="color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:4px;margin-bottom:16px;">特别鸣谢</p>
+            <p style="color:#fff;font-size:0.95rem;letter-spacing:3px;margin:4px 0 40px;">DeepSeek V4.0 Pro</p>
+            <p style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-top:20px;">感谢游玩《鸽兔传奇》</p>
+            <p style="color:rgba(255,255,255,0.3);font-size:0.65rem;">点击屏幕重新开始</p>
+            <p style="color:#fff;font-size:2rem;margin-top:60px;">💕</p>
         </div>
     </div>
+    <style>
+        @keyframes creditsRoll {
+            0% { transform: translateX(-50%) translateY(0); }
+            100% { transform: translateX(-50%) translateY(-100%); }
+        }
+    </style>
 
     <!-- 伪结局：战胜魔龙 - 电影级 -->
     <div class="page" id="pageVictory">

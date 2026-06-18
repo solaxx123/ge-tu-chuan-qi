@@ -106,10 +106,12 @@
                 const unlocked = achievements[ach.id];
                 if (unlocked) unlockedCount++;
                 if (ach.id !== 'ultimate' && ach.id !== 'rose5' && unlocked) baseUnlocked++;
+                var displayDesc = ach.desc;
+                if (ach.id === 'easter' && !unlocked && unlockedCount >= 7) displayDesc = '点击标题试试';
                 const cls = unlocked ? 'unlocked' : 'locked';
                 const icon = unlocked ? ach.icon : '🔒';
                 const check = unlocked ? '<div class="achievement-check">✓</div>' : '';
-                grid.innerHTML += '<div class="achievement-item ' + cls + '" title="' + ach.desc + '"><div class="achievement-icon">' + icon + '</div><div class="achievement-info"><div class="achievement-name">' + ach.name + '</div><div class="achievement-desc">' + ach.desc + '</div></div>' + check + '</div>';
+                grid.innerHTML += '<div class="achievement-item ' + cls + '" title="' + displayDesc + '"><div class="achievement-icon">' + icon + '</div><div class="achievement-info"><div class="achievement-name">' + ach.name + '</div><div class="achievement-desc">' + displayDesc + '</div></div>' + check + '</div>';
             });
             const totalAch = ACHIEVEMENTS.filter(a => !a.hidden).length;
             document.getElementById('achievementProgress').textContent =
@@ -193,6 +195,14 @@
         }
         
         renderAchievements();
+
+        // 暴露给HTML onclick的全局函数
+        window._triggerVictory = function() {
+            endingUnlocked = true;
+            victoryCountdown();
+            var btn = document.getElementById('victoryReadyBtn');
+            if (btn) btn.remove();
+        };
 
         function checkAllCleared() {
             const total = ACHIEVEMENTS.filter(a => !a.hidden).length;
@@ -881,17 +891,22 @@
             headerClicks++;
             const headerEl = document.getElementById('header');
             if (headerClicks === 1) {
-                showFrustration('🔮 再点一次标题试试？');
+                showFrustration('没有反应？再点一下试试');
                 headerEl.style.transform = 'scale(1.03)';
                 setTimeout(() => headerEl.style.transform = 'scale(1)', 200);
-            } else if (headerClicks >= 2) {
+            } else if (headerClicks === 2) {
+                showFrustration('多点几下嘛~');
+                headerEl.style.transform = 'scale(1.05)';
+                setTimeout(() => headerEl.style.transform = 'scale(1)', 200);
+            } else if (headerClicks >= 3) {
                 unlockAchievement('easter');
                 headerClicks = 0;
                 headerEl.style.transform = 'scale(1)';
                 const bigMsg = document.createElement('div');
-                bigMsg.textContent = '💕 鸽兔永远在一起 💕';
-                bigMsg.style.cssText = 'position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);z-index:500;font-size:1.2rem;font-weight:900;color:#ff6b9d;background:rgba(255,255,255,0.95);padding:18px 28px;border-radius:18px;box-shadow:0 8px 40px rgba(255,107,157,0.3);pointer-events:none;';
+                bigMsg.textContent = '💕 彩蛋已解锁！鸽兔永远在一起 💕';
+                bigMsg.style.cssText = 'position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);z-index:500;font-size:1.4rem;font-weight:900;color:#ff6b9d;background:rgba(255,255,255,0.95);padding:18px 28px;border-radius:18px;box-shadow:0 8px 40px rgba(255,107,157,0.3);pointer-events:none;';
                 document.body.appendChild(bigMsg);
+                for(var _i=0;_i<25;_i++){setTimeout(function(){var hd=document.createElement('div');hd.textContent=['❤️','💕','💖','✨'][Math.floor(Math.random()*4)];hd.style.cssText='position:fixed;z-index:600;pointer-events:none;font-size:'+(20+Math.random()*30)+'px;left:'+Math.random()*95+'%;top:-30px;animation:heartRain '+(2+Math.random()*3)+'s ease-in forwards;';document.body.appendChild(hd);setTimeout(function(){hd.remove();},4000);},_i*60);}
                 setTimeout(function(){ bigMsg.style.opacity = '0'; bigMsg.style.transition = 'opacity 0.8s'; setTimeout(function(){ bigMsg.remove(); }, 800); }, 2000);
             }
         };
@@ -901,6 +916,10 @@
         document.getElementById('header').title = '点我有惊喜？';
         
         document.getElementById('startBtn').onclick = start;
+        var resetBtn = document.getElementById('resetAllBtn');
+        if (resetBtn) resetBtn.onclick = function() {
+            if (confirm('确定要清空所有成就和进度吗？')) { localStorage.clear(); location.reload(); }
+        };
         
         // ===== 用户第一次点击页面任何地方就自动播放BGM =====
         let firstInteraction = false;

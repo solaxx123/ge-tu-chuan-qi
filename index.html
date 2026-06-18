@@ -1784,10 +1784,13 @@
             document.getElementById('achievementProgress').textContent =
                 `已解锁：${unlockedCount} / ${totalAch}`;
 
-            if (unlockedCount >= totalAch && !endingUnlocked && gameStarted && running) {
+            if (unlockedCount >= totalAch && !endingUnlocked) {
                 const vBtn = document.getElementById('victoryReadyBtn');
-                if (vBtn) { vBtn.style.display = 'block'; playAchievement(); }
-                showFrustration('✨ 宝物已集齐！点击按钮击败魔龙');
+                if (vBtn) { vBtn.style.display = 'block'; }
+                if (gameStarted && running) {
+                    playAchievement();
+                    showFrustration('✨ 宝物已集齐！点击按钮击败魔龙');
+                }
             }
 
         }

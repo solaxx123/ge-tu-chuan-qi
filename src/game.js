@@ -20,6 +20,9 @@
             const bgmType = num <= 2 ? 'romantic' : num === 3 ? 'dark' : (num >= 4 && num <= 6) || num === 'Game' ? 'epic' : null;
             if (bgmType) setTimeout(() => playBGMByType(bgmType), 200);
             if (num === 'Game') setTimeout(checkAllCleared, 300);
+            // 跑酷页面隐藏浮动背景，避免透出
+            var floatBg = document.getElementById('floatBg');
+            if (floatBg) floatBg.style.display = (num === 'RabbitGame') ? 'none' : '';
         }
 
         function startGame() {

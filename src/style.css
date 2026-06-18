@@ -556,10 +556,9 @@
         
         /* ===== 封面页 ===== */
         .start-cover {
-            width: 100%; max-width: 100%;
-            min-height: 100vh;
+            width: 100vw; height: 100vh; max-width: 100%;
             display: flex; justify-content: center; align-items: center;
-            position: relative; padding: 20px;
+            position: fixed; top: 0; left: 0;
         }
         .cover-photo {
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -583,7 +582,7 @@
             border-radius: 24px; padding: 32px 24px; text-align: center;
             border: 1px solid rgba(255,255,255,0.7);
             box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-            position: relative; z-index: 10; width: 85%; max-width: 340px;
+            position: relative; z-index: 10; width: 88%; max-width: 360px;
         }
 
         .cover-title {

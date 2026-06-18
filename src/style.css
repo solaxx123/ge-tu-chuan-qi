@@ -537,13 +537,13 @@
         }
 
         /* ===== 电影式制作人员 ③ ===== */
-        .movie-credits-wrapper { background: #000; overflow: hidden; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 60px;
+        .movie-credits-wrapper { background: linear-gradient(180deg,#ffe6f2,#fff0f5,#ffe6f2); overflow: hidden; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
             width: 100%; max-width: 480px; margin: 0 auto;
             min-height: 100vh; display: flex; flex-direction: column;
             align-items: center; justify-content: center; padding: 40px 16px;
             background: linear-gradient(180deg, #0a0a0a, #1a1a2e, #0a0a0a);
         }
-        .movie-credits-scroll { animation: creditsRise 22s linear infinite;
+        .movie-credits-scroll { animation: creditsRise 20s linear infinite; } animation: creditsRise 22s linear infinite;
             text-align: center; color: #ddd; animation: fadeInUp 1s ease-out;
         }
         .movie-credit-header { font-size: 3rem; margin-bottom: 30px; }
@@ -1106,7 +1106,7 @@
 .fade-line{opacity:0;animation:lineIn 0.8s ease forwards;display:inline-block;}
 .true-ending-wrapper{background:radial-gradient(ellipse at 50% 30%,rgba(255,200,220,0.18) 0%,rgba(161,140,209,0.12) 35%,rgba(10,0,40,0.5) 100%) !important;}
 .movie-credits-scroll{color:#fff;width:100%;text-align:center;}
-.movie-credit-role{color:rgba(255,255,255,0.4) !important;}
-.movie-credit-name{color:#fff !important;}
-.movie-credit-header{color:#fff !important;}
-.movie-credit-footer{color:#fff !important;}
+.movie-credit-role{color:rgba(196,69,105,0.5)!important;font-size:0.75rem;letter-spacing:4px;margin:14px 0 2px}
+.movie-credit-name{color:#c44569!important;font-size:1.2rem;font-weight:600;letter-spacing:3px}
+.movie-credit-header{color:#c44569!important;font-size:3rem;margin-bottom:30px}
+.movie-credit-footer{color:#ff6b9d!important;font-size:2rem;margin-top:30px}

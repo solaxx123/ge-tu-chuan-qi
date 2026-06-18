@@ -248,7 +248,8 @@
 
     <!-- 游戏页面 -->
     <div class="page" id="pageGame">
-        <div class="game-box">
+        <div id="gameDreamBg" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;transition:background 2s ease;"></div>
+        <div class="game-box" style="position:relative;z-index:1;">
             <div class="header" id="header">
                 <h1 style="font-size:1.3rem;">⚔️ 鸽兔传奇 ⚔️ <span id="easterIcon" style="font-size:0.8rem;opacity:0.5;animation:pulse 2s ease-in-out infinite;cursor:pointer;" onclick="event.stopPropagation();document.getElementById('header').click();">🔮</span></h1>
                 <p class="subtitle">收集宝物，用真爱之力救出兔兔公主 <span id="muteBtn" style="cursor:pointer;font-size:1rem;" onclick="event.stopPropagation();toggleMute()" title="静音">🔊</span></p>

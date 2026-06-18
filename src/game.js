@@ -587,6 +587,7 @@
                 localStorage.setItem('snakeLoveDate', highScoreDate);
                 document.getElementById('highScore').textContent = highScore;
                 document.getElementById('highScoreDate').textContent = '📅 ' + highScoreDate;
+                updateDreamBg();
             }
         }
         
@@ -611,6 +612,38 @@
             if (dui) dui.textContent = diamondCount;
             if (rui) rui.textContent = roseCount;
         }
+
+        // 梦幻背景：根据历史最高分在页面背景上渐变 + 花瓣
+        var dreamPetals = [];
+        function updateDreamBg() {
+            var dl = highScore < 99 ? 0 : highScore < 520 ? 0.25 : highScore < 1314 ? 0.5 : highScore < 3000 ? 0.75 : 1;
+            var bg = document.getElementById('gameDreamBg');
+            if (bg) {
+                if (dl === 0) bg.style.background = '';
+                else if (dl <= 0.25) bg.style.background = 'radial-gradient(ellipse at 50% 50%, rgba(255,200,220,0.08) 0%, transparent 70%)';
+                else if (dl <= 0.5) bg.style.background = 'radial-gradient(ellipse at 50% 50%, rgba(255,180,210,0.12) 0%, rgba(255,200,220,0.04) 50%, transparent 75%)';
+                else if (dl <= 0.75) bg.style.background = 'radial-gradient(ellipse at 50% 50%, rgba(255,160,200,0.18) 0%, rgba(255,180,210,0.08) 40%, rgba(200,150,200,0.03) 70%, transparent 85%)';
+                else bg.style.background = 'radial-gradient(ellipse at 50% 50%, rgba(255,150,190,0.22) 0%, rgba(255,170,200,0.12) 30%, rgba(220,160,210,0.06) 55%, rgba(200,180,220,0.03) 75%, transparent 90%)';
+            }
+            // Spawn petals
+            if (dl >= 0.25 && running) {
+                if (Math.random() < dl * 0.05) {
+                    var petal = document.createElement('div');
+                    petal.textContent = dl >= 0.75 ? ['🌸','💮','💕','✨'][Math.floor(Math.random()*4)] : '🌸';
+                    petal.style.cssText = 'position:fixed;z-index:0;pointer-events:none;font-size:'+(10+Math.random()*14)+'px;left:'+Math.random()*100+'%;top:-20px;opacity:0.5;animation:petalFall '+(4+Math.random()*6)+'s linear forwards;';
+                    document.body.appendChild(petal);
+                    dreamPetals.push(petal);
+                    setTimeout(function(){ petal.remove(); dreamPetals = dreamPetals.filter(function(p){return p!==petal;}); }, 10000);
+                }
+            }
+        }
+        // Inject petal fall keyframe
+        if (!document.getElementById('petalFallStyle')) {
+            var style = document.createElement('style');
+            style.id = 'petalFallStyle';
+            style.textContent = '@keyframes petalFall{0%{transform:translateY(0) rotate(0deg);opacity:0.5}100%{transform:translateY(105vh) rotate(360deg);opacity:0}}';
+            document.head.appendChild(style);
+        }
         
         function newFood() {
             while (foods.length < 1 + Math.floor(Math.random() * 2)) {
@@ -629,27 +662,15 @@
             }
         }
         function draw() {
-            // 梦幻背景：基于历史最高分阶梯进化 (0-99/99-520/520-1314/1314-3000/3000+)
-            var dreamLevel = highScore < 99 ? 0 : highScore < 520 ? 0.25 : highScore < 1314 ? 0.5 : highScore < 3000 ? 0.75 : 1;
-            var r1 = 255, g1 = Math.floor(250 - dreamLevel * 20), b1 = Math.floor(245 - dreamLevel * 10);
-            var r2 = Math.floor(255 - dreamLevel * 15), g2 = Math.floor(245 - dreamLevel * 35), b2 = Math.floor(245 - dreamLevel * 25);
+            // 干净的白粉棋盘
             var gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, 'rgb('+r1+','+g1+','+b1+')');
-            gradient.addColorStop(1, 'rgb('+r2+','+g2+','+b2+')');
+            gradient.addColorStop(0, '#fffaf0');
+            gradient.addColorStop(1, '#fff0f5');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 梦幻光效叠加 (高分段才有)
-            if (dreamLevel >= 0.5) {
-                var glow = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width*0.8);
-                glow.addColorStop(0, 'rgba(255,180,210,'+(dreamLevel*0.12)+')');
-                glow.addColorStop(1, 'rgba(255,200,230,0)');
-                ctx.fillStyle = glow;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-            }
-
-            // 网格线随等级微调
-            ctx.strokeStyle = 'rgba(255, 107, 157, '+(0.08+dreamLevel*0.05)+')';
+            // 固定网格线
+            ctx.strokeStyle = 'rgba(255, 107, 157, 0.1)';
             ctx.lineWidth = 0.5;
             for (let i = 0; i <= size; i++) {
                 ctx.beginPath();
@@ -662,13 +683,6 @@
                 ctx.stroke();
             }
 
-            // 高分段：背景飘落花瓣
-            if (dreamLevel >= 0.25 && Math.random() < dreamLevel * 0.4) {
-                var petal = dreamLevel >= 0.75 ? ['🌸','💮','💕','✨'][Math.floor(Math.random()*4)] : '🌸';
-                ctx.font = (10+Math.random()*10)+'px Arial';
-                ctx.fillText(petal, Math.random()*canvas.width, Math.random()*canvas.height);
-            }
-            
             snake.forEach((s, i) => {
                 const x = s.x * grid;
                 const y = s.y * grid;
@@ -806,9 +820,12 @@
             startEasterHintTimer();
             gameLoop();
 
+            var frameCount = 0;
             function gameLoop() {
                 if (!running) return;
                 update();
+                frameCount++;
+                if (frameCount % 5 === 0) updateDreamBg();
                 const speed = Math.max(100, 150 - Math.floor(score / 200) * 4);
                 loop = setTimeout(gameLoop, speed);
             }

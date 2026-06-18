@@ -18,9 +18,8 @@
         }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            display: grid;
+            place-items: center;
             padding: 0;
         }
         

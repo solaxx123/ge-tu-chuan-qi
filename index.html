@@ -28,9 +28,8 @@
         }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            display: grid;
+            place-items: center;
             padding: 0;
         }
         
@@ -2650,7 +2649,7 @@
             var bird = { y: 0, vy: 0, r: 18 };
             var pipes = [];
             var score = 0, running = false, animId = null, lastTime = 0;
-            var GRAVITY = 0.0012, JUMP_VEL = -0.40, PIPE_SPEED = 0.15, PIPE_GAP = 150, PIPE_WIDTH = 55, PIPE_SPACING = 280, TARGET = 10;
+            var GRAVITY = 0.0012, JUMP_VEL = -0.50, PIPE_SPEED = 0.15, PIPE_GAP = 150, PIPE_WIDTH = 55, PIPE_SPACING = 280, TARGET = 10;
 
             function reset() { bird.y = H/2; bird.vy = 0; pipes = []; score = 0; updateUI(); }
             function updateUI() { var e = document.getElementById("rabbitKeys"); if (e) e.textContent = score; }
@@ -2703,7 +2702,7 @@
                 if (pipes.length === 0 || pipes[pipes.length-1].x < W - PIPE_SPACING) spawnPipe();
             }
 
-            function jump() { if (!running) { start(); return; } bird.vy = JUMP_VEL * 16; playClick(); }
+            function jump() { if (!running) { start(); return; } bird.vy = JUMP_VEL; playClick(); }
             function gameOver() { running = false; cancelAnimationFrame(animId); playHit(); document.getElementById("rabbitStartBtn").textContent = "🐰 重新挑战"; document.getElementById("rabbitStartBtn").disabled = false; draw(); }
 
             function win() {

@@ -566,9 +566,10 @@
         
         /* ===== 封面页 ===== */
         .start-cover {
-            width: 100%; height: 100%;
+            width: 100vw; height: 100vh; max-width: 100vw;
             display: flex; justify-content: center; align-items: center;
-            position: fixed; top: 0; left: 0;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            margin: 0; padding: 0;
         }
         .cover-photo {
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -1149,7 +1150,7 @@
     <div class="frustration-popup" id="frustrationPopup"></div>
     
     <!-- 第0章：游戏开始封面 -->
-    <div class="page active" id="page0">
+    <div class="page active" id="page0" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;"
         <div class="start-cover">
             <div class="cover-photo"></div>
             <div class="cover-gradient"></div>

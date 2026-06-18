@@ -2274,8 +2274,8 @@
             }
         }
         function draw() {
-            // 梦幻背景：基于历史最高分逐渐变化
-            var dreamLevel = Math.min(1, highScore / 1314);
+            // 梦幻背景：基于历史最高分阶梯进化 (0-99/99-520/520-1314/1314-3000/3000+)
+            var dreamLevel = highScore < 99 ? 0 : highScore < 520 ? 0.25 : highScore < 1314 ? 0.5 : highScore < 3000 ? 0.75 : 1;
             var r1 = 255, g1 = Math.floor(250 - dreamLevel * 20), b1 = Math.floor(245 - dreamLevel * 10);
             var r2 = Math.floor(255 - dreamLevel * 15), g2 = Math.floor(245 - dreamLevel * 35), b2 = Math.floor(245 - dreamLevel * 25);
             var gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
@@ -2284,17 +2284,17 @@
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 梦幻光效叠加
-            if (dreamLevel > 0.1) {
-                var glow = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width*0.7);
-                glow.addColorStop(0, 'rgba(255,180,200,'+(dreamLevel*0.08)+')');
-                glow.addColorStop(1, 'rgba(255,200,220,0)');
+            // 梦幻光效叠加 (高分段才有)
+            if (dreamLevel >= 0.5) {
+                var glow = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width*0.8);
+                glow.addColorStop(0, 'rgba(255,180,210,'+(dreamLevel*0.12)+')');
+                glow.addColorStop(1, 'rgba(255,200,230,0)');
                 ctx.fillStyle = glow;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
 
-            // 网格线
-            ctx.strokeStyle = 'rgba(255, 107, 157, '+(0.08+dreamLevel*0.04)+')';
+            // 网格线随等级微调
+            ctx.strokeStyle = 'rgba(255, 107, 157, '+(0.08+dreamLevel*0.05)+')';
             ctx.lineWidth = 0.5;
             for (let i = 0; i <= size; i++) {
                 ctx.beginPath();
@@ -2308,9 +2308,10 @@
             }
 
             // 高分段：背景飘落花瓣
-            if (dreamLevel > 0.3 && Math.random() < dreamLevel * 0.3) {
-                ctx.font = (10+Math.random()*8)+'px Arial';
-                ctx.fillText('🌸', Math.random()*canvas.width, Math.random()*canvas.height);
+            if (dreamLevel >= 0.25 && Math.random() < dreamLevel * 0.4) {
+                var petal = dreamLevel >= 0.75 ? ['🌸','💮','💕','✨'][Math.floor(Math.random()*4)] : '🌸';
+                ctx.font = (10+Math.random()*10)+'px Arial';
+                ctx.fillText(petal, Math.random()*canvas.width, Math.random()*canvas.height);
             }
             
             snake.forEach((s, i) => {

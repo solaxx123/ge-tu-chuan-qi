@@ -957,106 +957,103 @@
 
         init();
 
-        // ==================== 兔兔地牢跑酷引擎 ====================
-        const rabbitCanvas = document.getElementById('rabbitCanvas');
-        if (rabbitCanvas) {
-            const rctx = rabbitCanvas.getContext('2d');
-            const rW = 400, rH = 500;
-            let rabbit = { y: rH/2, vy: 0, size: 28 };
-            let bars = [];
-            let rabbitKeys = 0;
-            let rabbitLives = 1;
-            let rabbitRunning = false;
-            let rabbitLoop = null;
-            const GRAVITY = 0.35, JUMP = -6.5, BAR_SPEED = 1.8, BAR_GAP = 140, BAR_WIDTH = 45, TARGET_KEYS = 10;
-            let rabbitLastFrame = 0;
+        // ==================== 兔兔地牢跑酷引擎 (Flappy Bird全屏) ====================
+        (function() {
+            var rabbitCanvas = document.getElementById("rabbitCanvas");
+            if (!rabbitCanvas) return;
+            var ctx = rabbitCanvas.getContext("2d");
+            var W, H;
+            function resize() { W = window.innerWidth; H = window.innerHeight; rabbitCanvas.width = W; rabbitCanvas.height = H; }
+            resize(); window.addEventListener("resize", resize);
 
-            function initRabbitGame() {
-                rabbit = { y: rH/2, vy: 0, size: 22 };
-                bars = []; rabbitKeys = 0; rabbitLives = 1;
-                updateRabbitUI(); drawRabbit();
+            var bird = { y: 0, vy: 0, r: 18 };
+            var pipes = [];
+            var score = 0, running = false, animId = null, lastTime = 0;
+            var GRAVITY = 0.0012, JUMP_VEL = -0.55, PIPE_SPEED = 0.15, PIPE_GAP = 150, PIPE_WIDTH = 55, PIPE_SPACING = 280, TARGET = 10;
+
+            function reset() { bird.y = H/2; bird.vy = 0; pipes = []; score = 0; updateUI(); }
+            function updateUI() { var e = document.getElementById("rabbitKeys"); if (e) e.textContent = score; }
+
+            function spawnPipe() {
+                var minTop = 50, maxTop = H - PIPE_GAP - 50;
+                var topH = minTop + Math.random() * (maxTop - minTop);
+                pipes.push({ x: W, topH: topH, passed: false, isLast: pipes.length >= TARGET });
             }
-            function updateRabbitUI() {
-                document.getElementById('rabbitKeys').textContent = rabbitKeys + '/' + TARGET_KEYS;
-                document.getElementById('rabbitLives').textContent = rabbitLives;
-            }
-            function drawRabbit() {
-                const bgGrad = rctx.createLinearGradient(0, 0, 0, rH);
-                bgGrad.addColorStop(0, '#0a0015'); bgGrad.addColorStop(0.5, '#150030'); bgGrad.addColorStop(1, '#0a0015');
-                rctx.fillStyle = bgGrad; rctx.fillRect(0, 0, rW, rH);
-                rctx.fillStyle = '#1a0a2e';
-                for (let i = 0; i < rW; i += 30) { rctx.fillRect(i, 0, 15, 8); rctx.fillRect(i, rH - 8, 15, 8); }
-                bars.forEach(b => {
-                    rctx.fillStyle = '#4a3060';
-                    rctx.fillRect(b.x, 0, BAR_WIDTH, b.topH);
-                    rctx.fillRect(b.x, b.topH + BAR_GAP, BAR_WIDTH, rH - b.topH - BAR_GAP);
-                    rctx.fillStyle = '#6a5080';
-                    rctx.fillRect(b.x - 2, b.topH - 4, BAR_WIDTH + 4, 6);
-                    rctx.fillRect(b.x - 2, b.topH + BAR_GAP - 2, BAR_WIDTH + 4, 6);
-                    if (b.isLast) { rctx.font = '24px Arial'; rctx.fillText('🕊️🔒', b.x + BAR_WIDTH/2 - 18, b.topH + BAR_GAP/2 + 8); } else if (!b.passed) { rctx.font = '18px Arial'; rctx.fillText('🗝️', b.x + BAR_WIDTH/2 - 9, b.topH + BAR_GAP/2 + 6); }
+
+            function draw() {
+                var grad = ctx.createLinearGradient(0, 0, 0, H);
+                grad.addColorStop(0, "#0a0015"); grad.addColorStop(0.5, "#150030"); grad.addColorStop(1, "#0a0015");
+                ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
+                ctx.fillStyle = "#1a0a2e";
+                for (var i = 0; i < W; i += 30) { ctx.fillRect(i, 0, 14, 6); ctx.fillRect(i, H-6, 14, 6); }
+                pipes.forEach(function(p) {
+                    ctx.fillStyle = "#3a2050";
+                    ctx.fillRect(p.x, 0, PIPE_WIDTH, p.topH);
+                    ctx.fillRect(p.x, p.topH + PIPE_GAP, PIPE_WIDTH, H - p.topH - PIPE_GAP);
+                    ctx.fillStyle = "#5a3870";
+                    ctx.fillRect(p.x - 2, p.topH - 4, PIPE_WIDTH + 4, 8);
+                    ctx.fillRect(p.x - 2, p.topH + PIPE_GAP - 4, PIPE_WIDTH + 4, 8);
+                    if (p.isLast) { ctx.font = "22px Arial"; ctx.fillText("🕊️", p.x + PIPE_WIDTH/2 - 12, p.topH + PIPE_GAP/2 + 7); }
+                    else if (!p.passed) { ctx.font = "16px Arial"; ctx.fillText("🗝️", p.x + PIPE_WIDTH/2 - 8, p.topH + PIPE_GAP/2 + 5); }
                 });
-                rctx.font = rabbit.size + 'px Arial'; rctx.fillText('🐰', 80, rabbit.y + 10);
-                if (!rabbitRunning && rabbitLives <= 0) {
-                    rctx.fillStyle = 'rgba(0,0,0,0.6)'; rctx.fillRect(0, 0, rW, rH);
-                    rctx.fillStyle = '#ff6b9d'; rctx.font = 'bold 22px Arial'; rctx.textAlign = 'center';
-                    rctx.fillText('💔 兔兔被抓了！', rW/2, rH/2 - 10);
-                    rctx.font = '14px Arial'; rctx.fillText('点击按钮重试', rW/2, rH/2 + 20); rctx.textAlign = 'start';
+                ctx.font = "26px Arial";
+                var angle = Math.min(0.5, Math.max(-0.3, bird.vy * 0.15));
+                ctx.save(); ctx.translate(80, bird.y); ctx.rotate(angle);
+                ctx.fillText("🐰", -13, 8); ctx.restore();
+                if (!running && pipes.length > 0) {
+                    ctx.fillStyle = "rgba(0,0,0,0.55)"; ctx.fillRect(0, 0, W, H);
+                    ctx.fillStyle = "#ff6b9d"; ctx.font = "bold 22px Arial"; ctx.textAlign = "center";
+                    ctx.fillText("💔 兔兔被抓了！", W/2, H/2); ctx.textAlign = "start";
                 }
             }
-            function updateRabbit() {
-                if (!rabbitRunning) return;
-                rabbit.vy += GRAVITY; rabbit.y += rabbit.vy;
-                if (rabbit.y < 5 || rabbit.y > rH - 5) { loseRabbitLife(); return; }
-                for (let i = bars.length - 1; i >= 0; i--) {
-                    bars[i].x -= BAR_SPEED;
-                    if (Math.abs(bars[i].x - 80) < BAR_WIDTH + rabbit.size/2) {
-                        if (rabbit.y - rabbit.size/2 < bars[i].topH || rabbit.y + rabbit.size/2 > bars[i].topH + BAR_GAP) {
-                            loseRabbitLife(); return;
-                        }
+
+            function update(dt) {
+                if (!running) return;
+                bird.vy += GRAVITY * dt; bird.y += bird.vy * dt;
+                if (bird.y - bird.r < 0 || bird.y + bird.r > H) { gameOver(); return; }
+                for (var i = pipes.length - 1; i >= 0; i--) {
+                    var p = pipes[i]; p.x -= PIPE_SPEED * dt;
+                    if (80 + bird.r > p.x && 80 - bird.r < p.x + PIPE_WIDTH) {
+                        if (bird.y - bird.r < p.topH || bird.y + bird.r > p.topH + PIPE_GAP) { gameOver(); return; }
                     }
-                    if (bars[i].x + BAR_WIDTH < 60 && !bars[i].passed) {
-                        bars[i].passed = true; rabbitKeys++; updateRabbitUI(); playEat();
-                        if (rabbitKeys >= TARGET_KEYS) { rabbitWin(); return; }
-                    }
-                    if (bars[i].x + BAR_WIDTH < -20) bars.splice(i, 1);
+                    if (!p.passed && p.x + PIPE_WIDTH < 80) { p.passed = true; score++; updateUI(); playEat(); if (score >= TARGET) { win(); return; } }
+                    if (p.x + PIPE_WIDTH < -50) pipes.splice(i, 1);
                 }
-                if (bars.length === 0 || bars[bars.length - 1].x < rW - 200) {
-                    const minH = 35, maxH = rH - BAR_GAP - 35;
-                    const isLast = bars.length >= TARGET_KEYS;
-                bars.push({ x: rW, topH: minH + Math.random() * (maxH - minH), passed: false, isLast: isLast });
-                }
-                updateRabbitUI(); drawRabbit();
+                if (pipes.length === 0 || pipes[pipes.length-1].x < W - PIPE_SPACING) spawnPipe();
             }
-            function loseRabbitLife() {
-                rabbitLives--; playHit();
-                if (rabbitLives <= 0) {
-                    rabbitRunning = false; cancelAnimationFrame(rabbitLoop);
-                    document.getElementById('rabbitStartBtn').textContent = '🐰 重新挑战';
-                    document.getElementById('rabbitStartBtn').disabled = false;
-                    updateRabbitUI(); drawRabbit();
-                } else { rabbit.y = rH/2; rabbit.vy = 0; bars = []; updateRabbitUI(); }
+
+            function jump() { if (!running) { start(); return; } bird.vy = JUMP_VEL * 16; playClick(); }
+            function gameOver() { running = false; cancelAnimationFrame(animId); playHit(); document.getElementById("rabbitStartBtn").textContent = "🐰 重新挑战"; document.getElementById("rabbitStartBtn").disabled = false; draw(); }
+
+            function win() {
+                running = false; cancelAnimationFrame(animId); playVictoryMusic();
+                document.getElementById("rabbitStartBtn").textContent = "🐰 已通关！";
+                document.getElementById("rabbitStartBtn").disabled = true;
+                for (var i = 0; i < 25; i++) { (function(j) { setTimeout(function() {
+                    var p = document.createElement("div");
+                    p.textContent = ["🗝️","💕","🐰","✨"][Math.floor(Math.random()*4)];
+                    p.style.cssText = "position:fixed;z-index:1000;pointer-events:none;font-size:"+(18+Math.random()*25)+"px;left:"+Math.random()*95+"%;top:-20px;animation:heartRain "+(1.5+Math.random()*2)+"s ease-in forwards;";
+                    document.body.appendChild(p); setTimeout(function(){p.remove();},3000);
+                }, j*50); })(i); }
+                setTimeout(function() { goPage("TrueEnding"); }, 2500);
             }
-            function rabbitWin() {
-                rabbitRunning = false; cancelAnimationFrame(rabbitLoop); playVictoryMusic();
-                document.getElementById('rabbitStartBtn').textContent = '🐰 已通关！';
-                document.getElementById('rabbitStartBtn').disabled = true;
-                for (let i = 0; i < 25; i++) { setTimeout(() => { const p = document.createElement('div'); p.textContent = ['🗝️','💕','🐰','✨'][Math.floor(Math.random()*4)]; p.style.cssText = 'position:fixed;z-index:500;pointer-events:none;font-size:'+(18+Math.random()*25)+'px;left:'+Math.random()*95+'%;top:-20px;animation:heartRain '+(1.5+Math.random()*2)+'s ease-in forwards;'; document.body.appendChild(p); setTimeout(() => p.remove(), 3000); }, i*50); }
-                setTimeout(() => goPage('TrueEnding'), 2500);
+
+            function start() {
+                reset(); running = true; lastTime = performance.now();
+                document.getElementById("rabbitStartBtn").textContent = "🐰 跑酷中...";
+                document.getElementById("rabbitStartBtn").disabled = true;
+                var hint = document.getElementById("rabbitHint"); if(hint) hint.style.display = "none";
+                spawnPipe();
+                (function loop(ts) {
+                    if (!running) return;
+                    var dt = ts - lastTime; if (dt > 100) dt = 100;
+                    lastTime = ts; update(dt); draw();
+                    animId = requestAnimationFrame(loop);
+                })(lastTime);
             }
-            function rabbitJump() { if (!rabbitRunning) return; rabbit.vy = JUMP; playClick(); }
-            function startRabbitGame() {
-                initRabbitGame(); rabbitRunning = true; rabbitLives = 1; rabbitKeys = 0; bars = [];
-                updateRabbitUI();
-                document.getElementById('rabbitStartBtn').textContent = '🐰 跑酷中...';
-                document.getElementById('rabbitStartBtn').disabled = true;
-                drawRabbit();
-                rabbitLastFrame = performance.now();
-                (function rloop(ts) { if (!rabbitRunning) return; var dt = ts - rabbitLastFrame; if (dt >= 20) { rabbitLastFrame = ts; updateRabbit(); } rabbitLoop = requestAnimationFrame(rloop); })();
-            }
-            document.getElementById('rabbitStartBtn').onclick = startRabbitGame;
-            rabbitCanvas.onclick = rabbitJump;
-            document.addEventListener("click", (e) => { if(document.getElementById("pageRabbitGame").classList.contains("active")) rabbitJump(); });
-            document.addEventListener("touchstart", (e) => { if(document.getElementById("pageRabbitGame").classList.contains("active")) { rabbitJump(); } }, {passive: false});
-            rabbitCanvas.ontouchstart = (e) => { e.preventDefault(); rabbitJump(); };
-            initRabbitGame(); drawRabbit();
-        }
+
+            rabbitCanvas.addEventListener("click", function(e) { e.preventDefault(); jump(); });
+            rabbitCanvas.addEventListener("touchstart", function(e) { e.preventDefault(); jump(); });
+            document.getElementById("rabbitStartBtn").onclick = function() { start(); };
+            reset(); draw();
+        })();

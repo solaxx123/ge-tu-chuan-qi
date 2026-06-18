@@ -1674,9 +1674,16 @@
             const bgmType = num <= 2 ? 'romantic' : num === 3 ? 'dark' : (num >= 4 && num <= 6) || num === 'Game' ? 'epic' : null;
             if (bgmType) setTimeout(() => playBGMByType(bgmType), 200);
             if (num === 'Game') setTimeout(checkAllCleared, 300);
-            // 跑酷页面隐藏浮动背景，避免透出
-            var floatBg = document.getElementById('floatBg');
-            if (floatBg) floatBg.style.display = (num === 'RabbitGame') ? 'none' : '';
+            // 跑酷页面：黑背景补丁 + 隐藏浮动粒子
+            if (num === 'RabbitGame') {
+                document.body.style.background = '#0a0015';
+                var floatBg = document.getElementById('floatBg');
+                if (floatBg) floatBg.style.display = 'none';
+            } else {
+                document.body.style.background = '';
+                var floatBg = document.getElementById('floatBg');
+                if (floatBg) floatBg.style.display = '';
+            }
         }
 
         function startGame() {
@@ -2612,7 +2619,8 @@
             let rabbitLives = 1;
             let rabbitRunning = false;
             let rabbitLoop = null;
-            const GRAVITY = 0.45, JUMP = -8, BAR_SPEED = 2.0, BAR_GAP = 140, BAR_WIDTH = 45, TARGET_KEYS = 10;
+            const GRAVITY = 0.35, JUMP = -6.5, BAR_SPEED = 1.8, BAR_GAP = 140, BAR_WIDTH = 45, TARGET_KEYS = 10;
+            let rabbitLastFrame = 0;
 
             function initRabbitGame() {
                 rabbit = { y: rH/2, vy: 0, size: 22 };
@@ -2693,7 +2701,8 @@
                 document.getElementById('rabbitStartBtn').textContent = '🐰 跑酷中...';
                 document.getElementById('rabbitStartBtn').disabled = true;
                 drawRabbit();
-                (function rloop(ts) { if (!rabbitRunning) return; updateRabbit(); rabbitLoop = requestAnimationFrame(rloop); })();
+                rabbitLastFrame = performance.now();
+                (function rloop(ts) { if (!rabbitRunning) return; var dt = ts - rabbitLastFrame; if (dt >= 20) { rabbitLastFrame = ts; updateRabbit(); } rabbitLoop = requestAnimationFrame(rloop); })();
             }
             document.getElementById('rabbitStartBtn').onclick = startRabbitGame;
             rabbitCanvas.onclick = rabbitJump;

@@ -26,7 +26,7 @@
             if (num === 'TrueCredits') {
                 setTimeout(function() {
                     var roller = document.getElementById('creditsRoller');
-                    if (roller) { roller.style.transition = 'none'; roller.style.transform = 'translateX(-50%) translateY(100vh)'; requestAnimationFrame(function() { roller.offsetHeight; roller.style.transition = 'transform 25s linear'; roller.style.transform = 'translateX(-50%) translateY(-300%)'; }); }
+                    if (roller) { roller.style.transition = 'none'; roller.style.transform = 'translateX(-50%) translateY(100vh)'; requestAnimationFrame(function() { roller.offsetHeight; roller.style.transition = 'transform 50s linear'; roller.style.transform = 'translateX(-50%) translateY(-300%)'; }); }
                 }, 200);
             }
             // 跑酷页面：黑背景补丁 + 隐藏浮动粒子

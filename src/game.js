@@ -11,6 +11,9 @@
             }
         }
         function showPage(num) {
+            // 翻页音效
+            initAudio();
+            if (!audioMuted) { playTone(600, 0.04, 'sine', 0.08); setTimeout(() => playTone(800, 0.05, 'sine', 0.06), 30); }
             const target = document.getElementById('page' + num);
             if (!target) return;
             target.style.display = 'block';
@@ -165,6 +168,7 @@
                 showAchievementToast(`${ach.icon} ${ach.name}`);
                 flash('gold');
                 playAchievement();
+                if (navigator.vibrate) navigator.vibrate([15, 30, 15]);
                 const hpBar = document.getElementById('dragonHP');
                 if (hpBar) { hpBar.style.animation = 'none'; hpBar.offsetHeight; hpBar.style.animation = 'hpShake 0.5s ease'; }
                 // 持久化成就
@@ -618,9 +622,12 @@
             }
         }
         function draw() {
+            const t = Math.min(1, score / 800);
+            const r1 = 255, g1 = Math.floor(250 - t * 30), b1 = Math.floor(240 - t * 60);
+            const r2 = Math.floor(255 - t * 25), g2 = Math.floor(240 - t * 60), b2 = Math.floor(245 - t * 100);
             const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, '#fffaf0');
-            gradient.addColorStop(1, '#fff0f5');
+            gradient.addColorStop(0, `rgb(${r1},${g1},${b1})`);
+            gradient.addColorStop(1, `rgb(${r2},${g2},${b2})`);
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             

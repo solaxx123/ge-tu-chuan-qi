@@ -26,8 +26,8 @@
             if (num === 'TrueCredits') {
                 setTimeout(function() {
                     var roller = document.getElementById('creditsRoller');
-                    if (roller) { roller.style.transition = 'none'; roller.style.transform = 'translateX(-50%) translateY(100vh)'; roller.offsetHeight; roller.style.transition = 'transform 25s linear'; roller.style.transform = 'translateX(-50%) translateY(-200%)'; }
-                }, 100);
+                    if (roller) { roller.style.transition = 'none'; roller.style.transform = 'translateX(-50%) translateY(100vh)'; requestAnimationFrame(function() { roller.offsetHeight; roller.style.transition = 'transform 25s linear'; roller.style.transform = 'translateX(-50%) translateY(-300%)'; }); }
+                }, 200);
             }
             // 跑酷页面：黑背景补丁 + 隐藏浮动粒子
             if (num === 'RabbitGame') {
@@ -1073,7 +1073,7 @@
                 if (pipes.length === 0 || pipes[pipes.length-1].x < W - PIPE_SPACING) spawnPipe();
             }
 
-            function jump() { if (!running) { start(); return; } bird.vy = JUMP_VEL; playClick(); }
+            function jump() { if (won) return; if (!running) { start(); return; } bird.vy = JUMP_VEL; playClick(); }
             function gameOver() { running = false; cancelAnimationFrame(animId); playHit(); document.getElementById("rabbitStartBtn").textContent = "🐰 重新挑战"; document.getElementById("rabbitStartBtn").disabled = false; draw(); }
 
             function win() {

@@ -149,7 +149,7 @@
 
         function victoryCountdown() {
             const countdownEl = document.createElement('div');
-            countdownEl.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:200;text-align:center;pointer-events:none;font-size:24px;color:#ff6b9d;font-weight:bold;background:rgba(255,255,255,0.92);padding:30px 40px;border-radius:20px;box-shadow:0 10px 40px rgba(255,107,157,0.3);border:2px solid rgba(255,107,157,0.3);';
+            countdownEl.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:200;text-align:center;pointer-events:none;font-size:20px;color:#ff6b9d;font-weight:bold;background:rgba(255,255,255,0.92);padding:28px 36px;border-radius:20px;box-shadow:0 10px 40px rgba(255,107,157,0.3);border:2px solid rgba(255,107,157,0.3);white-space:nowrap;max-width:90vw;';
             countdownEl.innerHTML = '💖 真爱之力正在汇聚...';
             document.body.appendChild(countdownEl);
             const steps = [

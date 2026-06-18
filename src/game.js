@@ -1004,7 +1004,7 @@
             var bird = { y: 0, vy: 0, r: 18 };
             var pipes = [];
             var score = 0, running = false, animId = null, lastTime = 0;
-            var GRAVITY = 0.0016, JUMP_VEL = -0.55, PIPE_SPEED = 0.15, PIPE_GAP = 150, PIPE_WIDTH = 55, PIPE_SPACING = 280, TARGET = 10;
+            var GRAVITY = 0.0018, JUMP_VEL = -0.58, PIPE_SPEED = 0.15, PIPE_GAP = 150, PIPE_WIDTH = 55, PIPE_SPACING = 310, TARGET = 10;
 
             function reset() { bird.y = H/2; bird.vy = 0; pipes = []; score = 0; updateUI(); }
             function updateUI() { var e = document.getElementById("rabbitKeys"); if (e) e.textContent = score; }

@@ -2651,10 +2651,10 @@
 
             var bird = { y: 0, vy: 0, r: 18 };
             var pipes = [];
-            var score = 0, running = false, animId = null, lastTime = 0;
+            var score = 0, running = false, won = false, animId = null, lastTime = 0;
             var GRAVITY = 0.0018, JUMP_VEL = -0.58, PIPE_SPEED = 0.15, PIPE_GAP = 150, PIPE_WIDTH = 55, PIPE_SPACING = 340, TARGET = 10;
 
-            function reset() { bird.y = H/2; bird.vy = 0; pipes = []; score = 0; updateUI(); }
+            function reset() { bird.y = H/2; bird.vy = 0; pipes = []; score = 0; won = false; updateUI(); }
             function updateUI() { var e = document.getElementById("rabbitKeys"); if (e) e.textContent = score; }
 
             function spawnPipe() {
@@ -2683,10 +2683,17 @@
                 var angle = Math.min(0.5, Math.max(-0.3, bird.vy * 0.15));
                 ctx.save(); ctx.translate(80, bird.y); ctx.rotate(angle);
                 ctx.fillText("🐰", -13, 8); ctx.restore();
-                if (!running && pipes.length > 0) {
+                if (!running && (pipes.length > 0 || won)) {
                     ctx.fillStyle = "rgba(0,0,0,0.55)"; ctx.fillRect(0, 0, W, H);
-                    ctx.fillStyle = "#ff6b9d"; ctx.font = "bold 22px Arial"; ctx.textAlign = "center";
-                    ctx.fillText("💔 兔兔被抓了！", W/2, H/2); ctx.textAlign = "start";
+                    ctx.font = "bold 22px Arial"; ctx.textAlign = "center";
+                    if (won) {
+                        ctx.fillStyle = "#ffd700";
+                        ctx.fillText("🗝️ 成功救出鸽鸽！💕", W/2, H/2);
+                    } else {
+                        ctx.fillStyle = "#ff6b9d";
+                        ctx.fillText("💔 兔兔被抓了！", W/2, H/2);
+                    }
+                    ctx.textAlign = "start";
                 }
             }
 
@@ -2709,7 +2716,7 @@
             function gameOver() { running = false; cancelAnimationFrame(animId); playHit(); document.getElementById("rabbitStartBtn").textContent = "🐰 重新挑战"; document.getElementById("rabbitStartBtn").disabled = false; draw(); }
 
             function win() {
-                running = false; cancelAnimationFrame(animId); playVictoryMusic();
+                running = false; won = true; cancelAnimationFrame(animId); playVictoryMusic();
                 document.getElementById("rabbitStartBtn").textContent = "🐰 已通关！";
                 document.getElementById("rabbitStartBtn").disabled = true;
                 for (var i = 0; i < 25; i++) { (function(j) { setTimeout(function() {
